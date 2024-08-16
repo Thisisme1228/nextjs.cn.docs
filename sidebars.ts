@@ -21,7 +21,7 @@ const sidebars: SidebarsConfig = {
       label: "getting-started",
       link: { type: "doc", id: "index" },
       items: [
-        "getting-started/installation",
+        // "getting-started/installation",
         // "getting-started/project-structure",
       ],
     },
