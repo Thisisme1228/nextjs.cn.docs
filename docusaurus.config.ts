@@ -2,6 +2,20 @@ import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
+// Reverse the sidebar items ordering (including nested category items)
+function reverseSidebarItems(items) {
+  // Reverse items in categories
+  const result = items.map((item) => {
+    if (item.type === "category") {
+      return { ...item, items: reverseSidebarItems(item.items) };
+    }
+    return item;
+  });
+  // Reverse items at current level
+  result.reverse();
+  return result;
+}
+
 const config: Config = {
   title: "Next.js",
   tagline: "中文网站",
@@ -15,8 +29,8 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
+  organizationName: "Thisisme1228", // Usually your GitHub org/user name.
+  projectName: "nextjs.cn.docs", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -25,8 +39,8 @@ const config: Config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
+    defaultLocale: "zh-Hans",
+    locales: ["zh-Hans"],
   },
 
   presets: [
@@ -38,23 +52,24 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/vercel/next.js/blob/canary/docs/01-getting-started/index.mdx",
+          breadcrumbs: false,
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ["rss", "atom"],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-          // Useful options to enforce blogging best practices
-          onInlineTags: "warn",
-          onInlineAuthors: "warn",
-          onUntruncatedBlogPosts: "warn",
-        },
+        // blog: {
+        //   showReadingTime: true,
+        //   feedOptions: {
+        //     type: ["rss", "atom"],
+        //     xslt: true,
+        //   },
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     "https://github.com/vercel/next.js/blob/canary/docs/01-getting-started/index.mdx",
+        //   // Useful options to enforce blogging best practices
+        //   onInlineTags: "warn",
+        //   onInlineAuthors: "warn",
+        //   onUntruncatedBlogPosts: "warn",
+        // },
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -66,7 +81,7 @@ const config: Config = {
     // Replace with your project's social card
     image: "img/docusaurus-social-card.jpg",
     navbar: {
-      title: "14",
+      // title: "14",
       logo: {
         alt: "Next.js",
         src: "img/logo.svg",
@@ -94,6 +109,12 @@ const config: Config = {
           position: "right",
         },
       ],
+    },
+    docs: {
+      sidebar: {
+        hideable: true,
+        autoCollapseCategories: false,
+      },
     },
     algolia: {
       appId: "AUJYIQ70HN",
