@@ -18,11 +18,11 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     {
       type: "category",
-      label: "getting-started",
+      label: "开始",
       link: { type: "doc", id: "index" },
       items: [
-        // "getting-started/installation",
-        // "getting-started/project-structure",
+        "getting-started/installation",
+        "getting-started/project-structure",
       ],
     },
     {

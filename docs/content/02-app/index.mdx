@@ -1,0 +1,67 @@
+---
+title: App Router
+description: 使用新的APP Router及Next.js和React的最新特性，包括：布局、服务器组件、Suspense等.
+---
+
+通过[创建您的第一个页面](/docs/content/app/building-your-application/routing/layouts-and-templates)开始使用 APP Router
+
+## 常见问题
+
+### 如何在一个页面中使用 request 对象?
+
+您不打算使用原生 reqeust 对象. 不过, 您能够通过 server-only 功能使用 [`headers`](/docs/content/app/api-reference/functions/headers) 和 [`cookies`](/docs/content/app/api-reference/functions/cookies). 您也能够 [设置 cookies](#how-can-i-set-cookies).
+
+[Layouts](/docs/content/app/building-your-application/routing/layouts-and-templates#layouts) 不渲染. 它们可能被缓存和重复使用以避免在切换页面时进行不必要的计算. 通过限制布局获取原生请求 ，Next.js 能够预防在布局中执行可能耗时或代价高的、对性能产生消极作用的用户代码。
+
+该设计也为跨页面布局强制了一致的和可预见的行为，从而简化了开发和调试。
+
+取决于您构建的 UI 模式，[平行 Routes](/docs/content/app/building-your-application/routing/parallel-routes)允许您在同一个布局中渲染多个页面，并且页面中可以使用路由段和 URL 中的参数。
+
+### 如何在页面中使用 URL?
+
+默认情况下，页面是服务器组件。您可以在页面中通过[`params`](/docs/content/app/api-reference/file-conventions/page#params-optional) prop 和[`searchParams`](/docs/content/app/api-reference/file-conventions/page#searchparams-optional) prop 使用路由段。
+
+如果您正在使用客户端组件，您可以通过[`usePathname`](/docs/content/app/api-reference/functions/use-pathname), [`useSelectedLayoutSegment`](/docs/content/app/api-reference/functions/use-selected-layout-segment), 和 [`useSelectedLayoutSegments`](/docs/content/app/api-reference/functions/use-selected-layout-segments)使用更复杂的路由
+
+此外，根据您正在构建的 UI 规则， [平行路由](/docs/content/app/building-your-application/routing/parallel-routes)允许您在相同的布局中渲染多个页面，并且页面可以使用路由段和 URL 搜索参数
+
+### 如何从服务器组件重定向?
+
+您能够使用 [`redirect`](/docs/content/app/api-reference/functions/redirect) 从一个页面重定向到一个相对或绝对的 URL。 [`redirect`](/docs/content/app/api-reference/functions/redirect) 是暂时的 (307) 重定向, 然而 [`permanentRedirect`](/docs/content/app/api-reference/functions/permanentRedirect) 是永久的 (308) 重定向. 当这些功能在流式 UI 中使用时, 它们会插入一个 meta tag 去触发客户端的重定向 。
+
+### 如何处理 APP Router 的身份认证?
+
+以下是一些支持 APP Router 的常见身份认证解决方式:
+
+- [NextAuth.js](https://next-auth.js.org/configuration/nextjs#in-app-router)
+- [Clerk](https://clerk.com/docs/quickstarts/nextjs)
+- [Lucia](https://lucia-auth.com/getting-started/nextjs-app)
+- [Auth0](https://github.com/auth0/nextjs-auth0#app-router)
+- [Stytch](https://stytch.com/docs/example-apps/frontend/nextjs)
+- [Kinde](https://kinde.com/docs/developer-tools/nextjs-sdk/)
+- [WorkOS](https://workos.com/docs/user-management)
+- 或者手动处理 sessions or JWTs
+
+### 如何设置 cookies?
+
+您可以在[Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations#cookies) 或 [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers) 中使用 [`cookies`](/docs/content/app/api-reference/functions/cookies) 功能设置 cookies.
+
+由于 HTTP 不允许在流开始后设置 cookies，您不能直接在页面或布局中直接设置 cookies。您也可以在[Middleware](/docs/content/app/building-your-application/routing/middleware#using-cookies)设置 cookies。
+
+### 如何使 App Router 缓存无效?
+
+Next.js 中有多层缓存, 因此，有多种方式使缓存的不同部分无效 。[关于缓存了解更多](/docs/content/app/building-your-application/caching)。
+
+### 有使用 APP Router 的综合的、开源的应用程序吗？
+
+是的。 您可以查看开源的使用 APP Router 的两个大型例子： [Next.js Commerce](https://vercel.com/templates/next.js/nextjs-commerce) 或[Platforms Starter Kit](https://vercel.com/templates/next.js/platforms-starter-kit)。
+
+## 了解更多
+
+- [路由基本原理](/docs/content/app/building-your-application/routing)
+- [数据获取、缓存和重新验证](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating)
+- [Forms 和 Mutations](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)
+- [缓存](/docs/content/app/building-your-application/caching)
+- [渲染基本原理](/docs/content/app/building-your-application/rendering)
+- [服务器组件](/docs/content/app/building-your-application/rendering/server-components)
+- [客服端组件](/docs/content/app/building-your-application/rendering/client-components)

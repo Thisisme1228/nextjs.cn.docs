@@ -124,6 +124,11 @@ const config: Config = {
     footer: {
       style: "dark",
       links: [
+        // {
+        //   label: "如发现翻译问题，请发送邮件",
+        //   position: "top",
+        //   href: "878723827@qq.com",
+        // },
         {
           label: "中文文档出处：Thisisme1228/nextjs.cn.docs 仓库",
           position: "center",
