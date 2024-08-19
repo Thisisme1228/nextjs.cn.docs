@@ -12,7 +12,7 @@ Intercepting routes allows you to load a route from another part of your applica
 
 For example, when clicking on a photo in a feed, you can display the photo in a modal, overlaying the feed. In this case, Next.js intercepts the `/photo/123` route, masks the URL, and overlays it over `/feed`.
 
-<Image
+<img
   alt="Intercepting routes soft navigation"
   srcLight="/docs/light/intercepting-routes-soft-navigate.png"
   srcDark="/docs/dark/intercepting-routes-soft-navigate.png"
@@ -22,7 +22,7 @@ For example, when clicking on a photo in a feed, you can display the photo in a 
 
 However, when navigating to the photo by clicking a shareable URL or by refreshing the page, the entire photo page should render instead of the modal. No route interception should occur.
 
-<Image
+<img
   alt="Intercepting routes hard navigation"
   srcLight="/docs/light/intercepting-routes-hard-navigate.png"
   srcDark="/docs/dark/intercepting-routes-hard-navigate.png"
@@ -43,7 +43,7 @@ You can use:
 
 For example, you can intercept the `photo` segment from within the `feed` segment by creating a `(..)photo` directory.
 
-<Image
+<img
   alt="Intercepting routes folder structure"
   srcLight="/docs/light/intercepted-routes-files.png"
   srcDark="/docs/dark/intercepted-routes-files.png"
@@ -66,7 +66,7 @@ Intercepting Routes can be used together with [Parallel Routes](/docs/content/ap
 
 Consider the following UI pattern, where a user can open a photo modal from a gallery using client-side navigation, or navigate to the photo page directly from a shareable URL:
 
-<Image
+<img
   alt="Intercepting routes modal example"
   srcLight="/docs/light/intercepted-routes-modal-example.png"
   srcDark="/docs/dark/intercepted-routes-modal-example.png"

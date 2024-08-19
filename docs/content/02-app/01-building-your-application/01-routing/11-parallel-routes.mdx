@@ -10,7 +10,7 @@ Parallel Routes allows you to simultaneously or conditionally render one or more
 
 For example, considering a dashboard, you can use parallel routes to simultaneously render the `team` and `analytics` pages:
 
-<Image
+<img
   alt="Parallel Routes Diagram"
   srcLight="/docs/light/parallel-routes.png"
   srcDark="/docs/dark/parallel-routes.png"
@@ -22,7 +22,7 @@ For example, considering a dashboard, you can use parallel routes to simultaneou
 
 Parallel routes are created using named **slots**. Slots are defined with the `@folder` convention. For example, the following file structure defines two slots: `@analytics` and `@team`:
 
-<Image
+<img
   alt="Parallel Routes File-system Structure"
   srcLight="/docs/light/parallel-routes-file-system.png"
   srcDark="/docs/dark/parallel-routes-file-system.png"
@@ -87,7 +87,7 @@ You can define a `default.js` file to render as a fallback for unmatched slots d
 
 Consider the following folder structure. The `@team` slot has a `/settings` page, but `@analytics` does not.
 
-<Image
+<img
   alt="Parallel Routes unmatched routes"
   srcLight="/docs/light/parallel-routes-unmatched-routes.png"
   srcDark="/docs/dark/parallel-routes-unmatched-routes.png"
@@ -135,7 +135,7 @@ When a user navigates to `app/@auth/login` (or `/login` in the URL bar), `loginS
 
 You can use Parallel Routes to conditionally render routes based on certain conditions, such as user role. For example, to render a different dashboard page for the `/admin` or `/user` roles:
 
-<Image
+<img
   alt="Conditional routes diagram"
   srcLight="/docs/light/conditional-routes-ui.png"
   srcDark="/docs/dark/conditional-routes-ui.png"
@@ -173,7 +173,7 @@ You can add a `layout` inside a slot to allow users to navigate the slot indepen
 
 For example, the `@analytics` slot has two subpages: `/page-views` and `/visitors`.
 
-<Image
+<img
   alt="Analytics slot with two subpages and a layout"
   srcLight="/docs/light/parallel-routes-tab-groups.png"
   srcDark="/docs/dark/parallel-routes-tab-groups.png"
@@ -226,7 +226,7 @@ Parallel Routes can be used together with [Intercepting Routes](/docs/content/ap
 
 Consider the following UI pattern, where a user can open a login modal from a layout using client-side navigation, or access a separate `/login` page:
 
-<Image
+<img
   alt="Parallel Routes Diagram"
   srcLight="/docs/light/parallel-routes-auth-modal.png"
   srcDark="/docs/dark/parallel-routes-auth-modal.png"
@@ -236,7 +236,7 @@ Consider the following UI pattern, where a user can open a login modal from a la
 
 To implement this pattern, start by creating a `/login` route that renders your **main** login page.
 
-<Image
+<img
   alt="Parallel Routes Diagram"
   srcLight="/docs/light/parallel-routes-modal-login-page.png"
   srcDark="/docs/dark/parallel-routes-modal-login-page.png"
@@ -467,7 +467,7 @@ export default function CatchAll() {
 
 Parallel Routes can be streamed independently, allowing you to define independent error and loading states for each route:
 
-<Image
+<img
   alt="Parallel routes enable custom error and loading states"
   srcLight="/docs/light/parallel-routes-cinematic-universe.png"
   srcDark="/docs/dark/parallel-routes-cinematic-universe.png"

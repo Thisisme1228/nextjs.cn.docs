@@ -24,7 +24,7 @@ A route group can be created by wrapping a folder's name in parenthesis: `(folde
 
 To organize routes without affecting the URL, create a group to keep related routes together. The folders in parenthesis will be omitted from the URL (e.g. `(marketing)` or `(shop)`.
 
-<Image
+<img
   alt="Organizing Routes with Route Groups"
   srcLight="/docs/light/route-group-organisation.png"
   srcDark="/docs/dark/route-group-organisation.png"
@@ -34,7 +34,7 @@ To organize routes without affecting the URL, create a group to keep related rou
 
 Even though routes inside `(marketing)` and `(shop)` share the same URL hierarchy, you can create a different layout for each group by adding a `layout.js` file inside their folders.
 
-<Image
+<img
   alt="Route Groups with Multiple Layouts"
   srcLight="/docs/light/route-group-multiple-layouts.png"
   srcDark="/docs/dark/route-group-multiple-layouts.png"
@@ -46,7 +46,7 @@ Even though routes inside `(marketing)` and `(shop)` share the same URL hierarch
 
 To opt specific routes into a layout, create a new route group (e.g. `(shop)`) and move the routes that share the same layout into the group (e.g. `account` and `cart`). The routes outside of the group will not share the layout (e.g. `checkout`).
 
-<Image
+<img
   alt="Route Groups with Opt-in Layouts"
   srcLight="/docs/light/route-group-opt-in-layouts.png"
   srcDark="/docs/dark/route-group-opt-in-layouts.png"
@@ -58,7 +58,7 @@ To opt specific routes into a layout, create a new route group (e.g. `(shop)`) a
 
 To create multiple [root layouts](/docs/content/app/building-your-application/routing/layouts-and-templates#root-layout-required), remove the top-level `layout.js` file, and add a `layout.js` file inside each route group. This is useful for partitioning an application into sections that have a completely different UI or experience. The `<html>` and `<body>` tags need to be added to each root layout.
 
-<Image
+<img
   alt="Route Groups with Multiple Root Layouts"
   srcLight="/docs/light/route-group-multiple-root-layouts.png"
   srcDark="/docs/dark/route-group-multiple-root-layouts.png"

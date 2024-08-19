@@ -51,7 +51,7 @@ import profilePic from "./me.png";
 
 export default function Page() {
   return (
-    <Image
+    <img
       src={profilePic}
       alt="Picture of the author"
       // width={500} automatically provided
@@ -73,7 +73,7 @@ import profilePic from "../public/me.png";
 
 export default function Page() {
   return (
-    <Image
+    <img
       src={profilePic}
       alt="Picture of the author"
       // width={500} automatically provided
@@ -102,7 +102,7 @@ import Image from "next/image";
 
 export default function Page() {
   return (
-    <Image
+    <img
       src="https://s3.amazonaws.com/my-bucket/profile.png"
       alt="Picture of the author"
       width={500}
@@ -153,7 +153,7 @@ You can define a loader per-image with the [`loader` prop](/docs/content/app/api
 
 You should add the `priority` property to the image that will be the [Largest Contentful Paint (LCP) element](https://web.dev/lcp/#what-elements-are-considered) for each page. Doing so allows Next.js to specially prioritize the image for loading (e.g. through preload tags or priority hints), leading to a meaningful boost in LCP.
 
-The LCP element is typically the largest image or text block visible within the viewport of the page. When you run `next dev`, you'll see a console warning if the LCP element is an `<Image>` without the `priority` property.
+The LCP element is typically the largest image or text block visible within the viewport of the page. When you run `next dev`, you'll see a console warning if the LCP element is an `<img>` without the `priority` property.
 
 Once you've identified the LCP image, you can add the property like this:
 
@@ -166,7 +166,7 @@ export default function Home() {
   return (
     <>
       <h1>My Homepage</h1>
-      <Image
+      <img
         src="/me.png"
         alt="Picture of the author"
         width={500}
@@ -188,7 +188,7 @@ import Image from "next/image";
 import profilePic from "../public/me.png";
 
 export default function Page() {
-  return <Image src={profilePic} alt="Picture of the author" priority />;
+  return <img src={profilePic} alt="Picture of the author" priority />;
 }
 ```
 
@@ -241,7 +241,7 @@ Styling the Image component is similar to styling a normal `<img>` element, but 
 
 ### Responsive
 
-<Image
+<img
   alt="Responsive image filling the width and height of its parent container"
   srcLight="/docs/light/responsive-image.png"
   srcDark="/docs/dark/responsive-image.png"
@@ -256,7 +256,7 @@ import mountains from "../public/mountains.jpg";
 export default function Responsive() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <Image
+      <img
         alt="Mountains"
         // Importing an image will
         // automatically set the width and height
@@ -275,7 +275,7 @@ export default function Responsive() {
 
 ### Fill Container
 
-<Image
+<img
   alt="Grid of images filling parent container width"
   srcLight="/docs/light/fill-container.png"
   srcDark="/docs/dark/fill-container.png"
@@ -297,7 +297,7 @@ export default function Fill() {
       }}
     >
       <div style={{ position: "relative", height: "400px" }}>
-        <Image
+        <img
           alt="Mountains"
           src={mountains}
           fill
@@ -315,7 +315,7 @@ export default function Fill() {
 
 ### Background Image
 
-<Image
+<img
   alt="Background image taking full width and height of page"
   srcLight="/docs/light/background-image.png"
   srcDark="/docs/dark/background-image.png"
@@ -329,7 +329,7 @@ import mountains from "../public/mountains.jpg";
 
 export default function Background() {
   return (
-    <Image
+    <img
       alt="Mountains"
       src={mountains}
       placeholder="blur"

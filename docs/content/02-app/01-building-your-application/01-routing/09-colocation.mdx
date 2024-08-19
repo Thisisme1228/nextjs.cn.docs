@@ -26,7 +26,7 @@ Each folder represents a route segment that is mapped to a corresponding segment
 
 However, even though route structure is defined through folders, a route is **not publicly accessible** until a `page.js` or `route.js` file is added to a route segment.
 
-<Image
+<img
   alt="A diagram showing how a route is not publicly accessible until a page.js or route.js file is added to a route segment."
   srcLight="/docs/light/project-organization-not-routable.png"
   srcDark="/docs/dark/project-organization-not-routable.png"
@@ -36,7 +36,7 @@ However, even though route structure is defined through folders, a route is **no
 
 And, even when a route is made publicly accessible, only the **content returned** by `page.js` or `route.js` is sent to the client.
 
-<Image
+<img
   alt="A diagram showing how page.js and route.js files make routes publicly accessible."
   srcLight="/docs/light/project-organization-routable.png"
   srcDark="/docs/dark/project-organization-routable.png"
@@ -46,7 +46,7 @@ And, even when a route is made publicly accessible, only the **content returned*
 
 This means that **project files** can be **safely colocated** inside route segments in the `app` directory without accidentally being routable.
 
-<Image
+<img
   alt="A diagram showing colocated project files are not routable even when a segment contains a page.js or route.js file."
   srcLight="/docs/light/project-organization-colocation.png"
   srcDark="/docs/dark/project-organization-colocation.png"
@@ -69,7 +69,7 @@ Private folders can be created by prefixing a folder with an underscore: `_folde
 
 This indicates the folder is a private implementation detail and should not be considered by the routing system, thereby **opting the folder and all its subfolders** out of routing.
 
-<Image
+<img
   alt="An example folder structure using private folders"
   srcLight="/docs/light/project-organization-private-folders.png"
   srcDark="/docs/dark/project-organization-private-folders.png"
@@ -96,7 +96,7 @@ Route groups can be created by wrapping a folder in parenthesis: `(folderName)`
 
 This indicates the folder is for organizational purposes and should **not be included** in the route's URL path.
 
-<Image
+<img
   alt="An example folder structure using route groups"
   srcLight="/docs/light/project-organization-route-groups.png"
   srcDark="/docs/dark/project-organization-route-groups.png"
@@ -115,7 +115,7 @@ Route groups are useful for:
 
 Next.js supports storing application code (including `app`) inside an optional [`src` directory](/docs/content/app/building-your-application/configuring/src-directory). This separates application code from project configuration files which mostly live in the root of a project.
 
-<Image
+<img
   alt="An example folder structure with the `src` directory"
   srcLight="/docs/light/project-organization-src-directory.png"
   srcDark="/docs/dark/project-organization-src-directory.png"
@@ -147,7 +147,7 @@ The following section lists a very high-level overview of common strategies. The
 
 This strategy stores all application code in shared folders in the **root of your project** and keeps the `app` directory purely for routing purposes.
 
-<Image
+<img
   alt="An example folder structure with project files outside of app"
   srcLight="/docs/light/project-organization-project-root.png"
   srcDark="/docs/dark/project-organization-project-root.png"
@@ -159,7 +159,7 @@ This strategy stores all application code in shared folders in the **root of you
 
 This strategy stores all application code in shared folders in the **root of the `app` directory**.
 
-<Image
+<img
   alt="An example folder structure with project files inside app"
   srcLight="/docs/light/project-organization-app-root.png"
   srcDark="/docs/dark/project-organization-app-root.png"
@@ -171,7 +171,7 @@ This strategy stores all application code in shared folders in the **root of the
 
 This strategy stores globally shared application code in the root `app` directory and **splits** more specific application code into the route segments that use them.
 
-<Image
+<img
   alt="An example folder structure with project files split by feature or route"
   srcLight="/docs/light/project-organization-app-root-split.png"
   srcDark="/docs/dark/project-organization-app-root-split.png"

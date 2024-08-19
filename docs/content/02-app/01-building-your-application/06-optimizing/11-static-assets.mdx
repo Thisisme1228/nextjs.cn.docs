@@ -14,7 +14,7 @@ For example, the file `public/avatars/me.png` can be viewed by visiting the `/av
 import Image from "next/image";
 
 export function Avatar({ id, alt }) {
-  return <Image src={`/avatars/${id}.png`} alt={alt} width="64" height="64" />;
+  return <img src={`/avatars/${id}.png`} alt={alt} width="64" height="64" />;
 }
 
 export function AvatarOfMe() {

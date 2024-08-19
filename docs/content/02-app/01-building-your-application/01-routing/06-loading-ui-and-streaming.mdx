@@ -5,7 +5,7 @@ description: Built on top of Suspense, Loading UI allows you to create a fallbac
 
 The special file `loading.js` helps you create meaningful Loading UI with [React Suspense](https://react.dev/reference/react/Suspense). With this convention, you can show an [instant loading state](#instant-loading-states) from the server while the content of a route segment loads. The new content is automatically swapped in once rendering is complete.
 
-<Image
+<img
   alt="Loading UI"
   srcLight="/docs/light/loading-ui.png"
   srcDark="/docs/dark/loading-ui.png"
@@ -19,7 +19,7 @@ An instant loading state is fallback UI that is shown immediately upon navigatio
 
 Create a loading state by adding a `loading.js` file inside a folder.
 
-<Image
+<img
   alt="loading.js special file"
   srcLight="/docs/light/loading-special-file.png"
   srcDark="/docs/dark/loading-special-file.png"
@@ -43,7 +43,7 @@ export default function Loading() {
 
 In the same folder, `loading.js` will be nested inside `layout.js`. It will automatically wrap the `page.js` file and any children below in a `<Suspense>` boundary.
 
-<Image
+<img
   alt="loading.js overview"
   srcLight="/docs/light/loading-overview.png"
   srcDark="/docs/dark/loading-overview.png"
@@ -79,7 +79,7 @@ With SSR, there's a series of steps that need to be completed before a user can 
 4. A non-interactive user interface is shown using the generated HTML, and CSS.
 5. Finally, React [hydrates](https://react.dev/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html) the user interface to make it interactive.
 
-<Image
+<img
   alt="Chart showing Server Rendering without Streaming"
   srcLight="/docs/light/server-rendering-without-streaming-chart.png"
   srcDark="/docs/dark/server-rendering-without-streaming-chart.png"
@@ -91,7 +91,7 @@ These steps are sequential and blocking, meaning the server can only render the 
 
 SSR with React and Next.js helps improve the perceived loading performance by showing a non-interactive page to the user as soon as possible.
 
-<Image
+<img
   alt="Server Rendering without Streaming"
   srcLight="/docs/light/server-rendering-without-streaming.png"
   srcDark="/docs/dark/server-rendering-without-streaming.png"
@@ -103,7 +103,7 @@ However, it can still be slow as all data fetching on server needs to be complet
 
 **Streaming** allows you to break down the page's HTML into smaller chunks and progressively send those chunks from the server to the client.
 
-<Image
+<img
   alt="How Server Rendering with Streaming Works"
   srcLight="/docs/light/server-rendering-with-streaming.png"
   srcDark="/docs/dark/server-rendering-with-streaming.png"
@@ -115,7 +115,7 @@ This enables parts of the page to be displayed sooner, without waiting for all t
 
 Streaming works well with React's component model because each component can be considered a chunk. Components that have higher priority (e.g. product information) or that don't rely on data can be sent first (e.g. layout), and React can start hydration earlier. Components that have lower priority (e.g. reviews, related products) can be sent in the same server request after their data has been fetched.
 
-<Image
+<img
   alt="Chart showing Server Rendering with Streaming"
   srcLight="/docs/light/server-rendering-with-streaming-chart.png"
   srcDark="/docs/dark/server-rendering-with-streaming-chart.png"

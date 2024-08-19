@@ -1,5 +1,5 @@
 ---
-title: <Image>
+title: <img>
 description: Optimize Images in your Next.js Application using the built-in `next/image` Component.
 ---
 
@@ -21,17 +21,17 @@ description: Optimize Images in your Next.js Application using the built-in `nex
 This API reference will help you understand how to use [props](#props) and [configuration options](#configuration-options) available for the Image Component. For features and usage, please see the [Image Component](/docs/content/app/building-your-application/optimizing/images) page.
 
 ```jsx filename="app/page.js"
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Page() {
   return (
-    <Image
+    <img
       src="/profile.png"
       width={500}
       height={500}
       alt="Picture of the author"
     />
-  )
+  );
 }
 ```
 
@@ -66,19 +66,19 @@ Here's a summary of the props available for the Image Component:
 The Image Component requires the following properties: `src`, `alt`, `width` and `height` (or `fill`).
 
 ```jsx filename="app/page.js"
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Page() {
   return (
     <div>
-      <Image
+      <img
         src="/profile.png"
         width={500}
         height={500}
         alt="Picture of the author"
       />
     </div>
-  )
+  );
 }
 ```
 
@@ -121,7 +121,7 @@ If the image is [purely decorative](https://html.spec.whatwg.org/multipage/image
 
 ## Optional Props
 
-The `<Image />` component accepts a number of additional properties beyond those which are required. This section describes the most commonly-used properties of the Image component. Find details about more rarely-used properties in the [Advanced Props](#advanced-props) section.
+The `<img />` component accepts a number of additional properties beyond those which are required. This section describes the most commonly-used properties of the Image component. Find details about more rarely-used properties in the [Advanced Props](#advanced-props) section.
 
 ### `loader`
 
@@ -138,24 +138,24 @@ Here is an example of using a custom loader:
 <AppOnly>
 
 ```js
-'use client'
+"use client";
 
-import Image from 'next/image'
+import Image from "next/image";
 
 const imageLoader = ({ src, width, quality }) => {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
-}
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
+};
 
 export default function Page() {
   return (
-    <Image
+    <img
       loader={imageLoader}
       src="me.png"
       alt="Picture of the author"
       width={500}
       height={500}
     />
-  )
+  );
 }
 ```
 
@@ -166,22 +166,22 @@ export default function Page() {
 <PagesOnly>
 
 ```js
-import Image from 'next/image'
+import Image from "next/image";
 
 const imageLoader = ({ src, width, quality }) => {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
-}
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
+};
 
 export default function Page() {
   return (
-    <Image
+    <img
       loader={imageLoader}
       src="me.png"
       alt="Picture of the author"
       width={500}
       height={500}
     />
-  )
+  );
 }
 ```
 
@@ -223,18 +223,18 @@ The `sizes` property serves two important purposes related to image performance:
 For example, if you know your styling will cause an image to be full-width on mobile devices, in a 2-column layout on tablets, and a 3-column layout on desktop displays, you should include a sizes property such as the following:
 
 ```jsx
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Page() {
   return (
     <div className="grid-element">
-      <Image
+      <img
         fill
         src="/example.png"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     </div>
-  )
+  );
 }
 ```
 
@@ -269,7 +269,7 @@ Should only be used when the image is visible above the fold. Defaults to `false
 ### `placeholder`
 
 ```js
-placeholder = 'empty' // "empty" | "blur" | "data:image/..."
+placeholder = "empty"; // "empty" | "blur" | "data:image/..."
 ```
 
 A placeholder to use while the image is loading. Possible values are `blur`, `empty`, or `data:image/...`. Defaults to `empty`.
@@ -290,7 +290,7 @@ Try it out:
 
 ## Advanced Props
 
-In some cases, you may need more advanced usage. The `<Image />` component optionally accepts the following advanced properties.
+In some cases, you may need more advanced usage. The `<img />` component optionally accepts the following advanced properties.
 
 ### `style`
 
@@ -298,12 +298,12 @@ Allows passing CSS styles to the underlying image element.
 
 ```jsx filename="components/ProfileImage.js"
 const imageStyle = {
-  borderRadius: '50%',
-  border: '1px solid #fff',
-}
+  borderRadius: "50%",
+  border: "1px solid #fff",
+};
 
 export default function ProfileImage() {
-  return <Image src="..." style={imageStyle} />
+  return <img src="..." style={imageStyle} />;
 }
 ```
 
@@ -316,7 +316,7 @@ Remember that the required width and height props can interact with your styling
 ```jsx
 'use client'
 
-<Image onLoadingComplete={(img) => console.log(img.naturalWidth)} />
+<img onLoadingComplete={(img) => console.log(img.naturalWidth)} />
 ```
 
 </AppOnly>
@@ -324,7 +324,7 @@ Remember that the required width and height props can interact with your styling
 <PagesOnly>
 
 ```jsx
-<Image onLoadingComplete={(img) => console.log(img.naturalWidth)} />
+<img onLoadingComplete={(img) => console.log(img.naturalWidth)} />
 ```
 
 </PagesOnly>
@@ -344,7 +344,7 @@ The callback function will be called with one argument, a reference to the under
 ### `onLoad`
 
 ```jsx
-<Image onLoad={(e) => console.log(e.target.naturalWidth)} />
+<img onLoad={(e) => console.log(e.target.naturalWidth)} />
 ```
 
 A callback function that is invoked once the image is completely loaded and the [placeholder](#placeholder) has been removed.
@@ -360,7 +360,7 @@ The callback function will be called with one argument, the Event which has a `t
 ### `onError`
 
 ```jsx
-<Image onError={(e) => console.error(e.target.id)} />
+<img onError={(e) => console.error(e.target.id)} />
 ```
 
 A callback function that is invoked if the image fails to load.
@@ -376,7 +376,7 @@ A callback function that is invoked if the image fails to load.
 > **Recommendation**: This property is only meant for advanced use cases. Switching an image to load with `eager` will normally **hurt performance**. We recommend using the [`priority`](#priority) property instead, which will eagerly preload the image.
 
 ```js
-loading = 'lazy' // {lazy} | {eager}
+loading = "lazy"; // {lazy} | {eager}
 ```
 
 The loading behavior of the image. Defaults to `lazy`.
@@ -414,11 +414,11 @@ When true, the source image will be served as-is instead of changing quality,
 size, or format. Defaults to `false`.
 
 ```js
-import Image from 'next/image'
+import Image from "next/image";
 
 const UnoptimizedImage = (props) => {
-  return <Image {...props} unoptimized />
-}
+  return <img {...props} unoptimized />;
+};
 ```
 
 Since Next.js 12.3.0, this prop can be assigned to all images by updating `next.config.js` with the following configuration:
@@ -428,15 +428,15 @@ module.exports = {
   images: {
     unoptimized: true,
   },
-}
+};
 ```
 
 ### `overrideSrc`
 
-When providing the `src` prop to the `<Image>` component, both the `srcset` and `src` attributes are generated automatically for the resulting `<img>`.
+When providing the `src` prop to the `<img>` component, both the `srcset` and `src` attributes are generated automatically for the resulting `<img>`.
 
 ```jsx filename="input.js"
-<Image src="/me.jpg" />
+<img src="/me.jpg" />
 ```
 
 ```html filename="output.html"
@@ -451,10 +451,10 @@ When providing the `src` prop to the `<Image>` component, both the `srcset` and 
 
 In some cases, it is not desirable to have the `src` attribute generated and you may wish to override it using the `overrideSrc` prop.
 
-For example, when upgrading an existing website from `<img>` to `<Image>`, you may wish to maintain the same `src` attribute for SEO purposes such as image ranking or avoiding recrawl.
+For example, when upgrading an existing website from `<img>` to `<img>`, you may wish to maintain the same `src` attribute for SEO purposes such as image ranking or avoiding recrawl.
 
 ```jsx filename="input.js"
-<Image src="/me.jpg" overrideSrc="/override.jpg" />
+<img src="/me.jpg" overrideSrc="/override.jpg" />
 ```
 
 ```html filename="output.html"
@@ -469,7 +469,7 @@ For example, when upgrading an existing website from `<img>` to `<Image>`, you m
 
 ### Other Props
 
-Other properties on the `<Image />` component will be passed to the underlying
+Other properties on the `<img />` component will be passed to the underlying
 `img` element with the exception of the following:
 
 - `srcSet`. Use [Device Sizes](#devicesizes) instead.
@@ -488,14 +488,14 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'example.com',
-        port: '',
-        pathname: '/account123/**',
+        protocol: "https",
+        hostname: "example.com",
+        port: "",
+        pathname: "/account123/**",
       },
     ],
   },
-}
+};
 ```
 
 > **Good to know**: The example above will ensure the `src` property of `next/image` must start with `https://example.com/account123/`. Any other protocol, hostname, port, or unmatched path will respond with 400 Bad Request.
@@ -507,13 +507,13 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**.example.com',
-        port: '',
+        protocol: "https",
+        hostname: "**.example.com",
+        port: "",
       },
     ],
   },
-}
+};
 ```
 
 > **Good to know**: The example above will ensure the `src` property of `next/image` must start with `https://img1.example.com` or `https://me.avatar.example.com` or any number of subdomains. Any other protocol, port, or unmatched hostname will respond with 400 Bad Request.
@@ -540,9 +540,9 @@ Below is an example of the `domains` property in the `next.config.js` file:
 ```js filename="next.config.js"
 module.exports = {
   images: {
-    domains: ['assets.acme.com'],
+    domains: ["assets.acme.com"],
   },
-}
+};
 ```
 
 ### `loaderFile`
@@ -552,10 +552,10 @@ If you want to use a cloud provider to optimize images instead of using the Next
 ```js filename="next.config.js"
 module.exports = {
   images: {
-    loader: 'custom',
-    loaderFile: './my/image/loader.js',
+    loader: "custom",
+    loaderFile: "./my/image/loader.js",
   },
-}
+};
 ```
 
 This must point to a file relative to the root of your Next.js application. The file must export a default function that returns a string, for example:
@@ -563,10 +563,10 @@ This must point to a file relative to the root of your Next.js application. The 
 <AppOnly>
 
 ```js filename="my/image/loader.js"
-'use client'
+"use client";
 
 export default function myImageLoader({ src, width, quality }) {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
 }
 ```
 
@@ -576,7 +576,7 @@ export default function myImageLoader({ src, width, quality }) {
 
 ```js filename="my/image/loader.js"
 export default function myImageLoader({ src, width, quality }) {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
 }
 ```
 
@@ -609,7 +609,7 @@ module.exports = {
   images: {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
   },
-}
+};
 ```
 
 ### `imageSizes`
@@ -625,7 +625,7 @@ module.exports = {
   images: {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-}
+};
 ```
 
 ### `formats`
@@ -639,9 +639,9 @@ If no configuration is provided, the default below is used.
 ```js filename="next.config.js"
 module.exports = {
   images: {
-    formats: ['image/webp'],
+    formats: ["image/webp"],
   },
-}
+};
 ```
 
 You can enable AVIF support with the following configuration.
@@ -649,9 +649,9 @@ You can enable AVIF support with the following configuration.
 ```js filename="next.config.js"
 module.exports = {
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
   },
-}
+};
 ```
 
 > **Good to know**:
@@ -686,7 +686,7 @@ module.exports = {
   images: {
     minimumCacheTTL: 60,
   },
-}
+};
 ```
 
 The expiration (or rather Max Age) of the optimized image is defined by either the `minimumCacheTTL` or the upstream image `Cache-Control` header, whichever is larger.
@@ -708,7 +708,7 @@ module.exports = {
   images: {
     disableStaticImages: true,
   },
-}
+};
 ```
 
 ### `dangerouslyAllowSVG`
@@ -723,10 +723,10 @@ However, if you need to serve SVG images with the default Image Optimization API
 module.exports = {
   images: {
     dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
+    contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-}
+};
 ```
 
 In addition, it is strongly recommended to also set `contentDispositionType` to force the browser to download the image, as well as `contentSecurityPolicy` to prevent scripts embedded in the image from executing.
@@ -742,9 +742,9 @@ You can optionally configure `inline` to allow the browser to render the image w
 ```js filename="next.config.js"
 module.exports = {
   images: {
-    contentDispositionType: 'inline',
+    contentDispositionType: "inline",
   },
-}
+};
 ```
 
 ## Animated Images
@@ -764,21 +764,21 @@ You can render a responsive image using one of the following methods below.
 If the source image is not dynamic, you can statically import to create a responsive image:
 
 ```jsx filename="components/author.js"
-import Image from 'next/image'
-import me from '../photos/me.jpg'
+import Image from "next/image";
+import me from "../photos/me.jpg";
 
 export default function Author() {
   return (
-    <Image
+    <img
       src={me}
       alt="Picture of the author"
       sizes="100vw"
       style={{
-        width: '100%',
-        height: 'auto',
+        width: "100%",
+        height: "auto",
       }}
     />
-  )
+  );
 }
 ```
 
@@ -791,22 +791,22 @@ Try it out:
 If the source image is a dynamic or a remote url, you will also need to provide `width` and `height` to set the correct aspect ratio of the responsive image:
 
 ```jsx filename="components/page.js"
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Page({ photoUrl }) {
   return (
-    <Image
+    <img
       src={photoUrl}
       alt="Picture of the author"
       sizes="100vw"
       style={{
-        width: '100%',
-        height: 'auto',
+        width: "100%",
+        height: "auto",
       }}
       width={500}
       height={300}
     />
-  )
+  );
 }
 ```
 
@@ -819,22 +819,22 @@ Try it out:
 If you don't know the aspect ratio, you will need to set the [`fill`](#fill) prop and set `position: relative` on the parent. Optionally, you can set `object-fit` style depending on the desired stretch vs crop behavior:
 
 ```jsx filename="app/page.js"
-import Image from 'next/image'
+import Image from "next/image";
 
 export default function Page({ photoUrl }) {
   return (
-    <div style={{ position: 'relative', width: '300px', height: '500px' }}>
-      <Image
+    <div style={{ position: "relative", width: "300px", height: "500px" }}>
+      <img
         src={photoUrl}
         alt="Picture of the author"
         sizes="300px"
         fill
         style={{
-          objectFit: 'contain',
+          objectFit: "contain",
         }}
       />
     </div>
-  )
+  );
 }
 ```
 
@@ -844,7 +844,7 @@ Try it out:
 
 ## Theme Detection CSS
 
-If you want to display a different image for light and dark mode, you can create a new component that wraps two `<Image>` components and reveals the correct one based on a CSS media query.
+If you want to display a different image for light and dark mode, you can create a new component that wraps two `<img>` components and reveals the correct one based on a CSS media query.
 
 ```css filename="components/theme-image.module.css"
 .imgDark {
@@ -862,40 +862,40 @@ If you want to display a different image for light and dark mode, you can create
 ```
 
 ```tsx filename="components/theme-image.tsx" switcher
-import styles from './theme-image.module.css'
-import Image, { ImageProps } from 'next/image'
+import styles from "./theme-image.module.css";
+import Image, { ImageProps } from "next/image";
 
-type Props = Omit<ImageProps, 'src' | 'priority' | 'loading'> & {
-  srcLight: string
-  srcDark: string
-}
+type Props = Omit<imgProps, "src" | "priority" | "loading"> & {
+  srcLight: string;
+  srcDark: string;
+};
 
 const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props
+  const { srcLight, srcDark, ...rest } = props;
 
   return (
     <>
-      <Image {...rest} src={srcLight} className={styles.imgLight} />
-      <Image {...rest} src={srcDark} className={styles.imgDark} />
+      <img {...rest} src={srcLight} className={styles.imgLight} />
+      <img {...rest} src={srcDark} className={styles.imgDark} />
     </>
-  )
-}
+  );
+};
 ```
 
 ```jsx filename="components/theme-image.js" switcher
-import styles from './theme-image.module.css'
-import Image from 'next/image'
+import styles from "./theme-image.module.css";
+import Image from "next/image";
 
 const ThemeImage = (props) => {
-  const { srcLight, srcDark, ...rest } = props
+  const { srcLight, srcDark, ...rest } = props;
 
   return (
     <>
-      <Image {...rest} src={srcLight} className={styles.imgLight} />
-      <Image {...rest} src={srcDark} className={styles.imgDark} />
+      <img {...rest} src={srcLight} className={styles.imgLight} />
+      <img {...rest} src={srcDark} className={styles.imgDark} />
     </>
-  )
-}
+  );
+};
 ```
 
 > **Good to know**: The default behavior of `loading="lazy"` ensures that only the correct image is loaded. You cannot use `priority` or `loading="eager"` because that would cause both images to load. Instead, you can use [`fetchPriority="high"`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/fetchPriority).
@@ -915,16 +915,16 @@ This also avoid calling React `useState()` so it can lead to better performance,
 If you want to display a different image for light and dark mode, you can use the [`<picture>`](https://developer.mozilla.org/docs/Web/HTML/Element/picture) element to display a different image based on the user's [preferred color scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme).
 
 ```jsx filename="app/page.js"
-import { getImageProps } from 'next/image'
+import { getImageProps } from "next/image";
 
 export default function Page() {
-  const common = { alt: 'Theme Example', width: 800, height: 400 }
+  const common = { alt: "Theme Example", width: 800, height: 400 };
   const {
     props: { srcSet: dark },
-  } = getImageProps({ ...common, src: '/dark.png' })
+  } = getImageProps({ ...common, src: "/dark.png" });
   const {
     props: { srcSet: light, ...rest },
-  } = getImageProps({ ...common, src: '/light.png' })
+  } = getImageProps({ ...common, src: "/light.png" });
 
   return (
     <picture>
@@ -932,7 +932,7 @@ export default function Page() {
       <source media="(prefers-color-scheme: light)" srcSet={light} />
       <img {...rest} />
     </picture>
-  )
+  );
 }
 ```
 
@@ -941,10 +941,10 @@ export default function Page() {
 If you want to display a different image for mobile and desktop, sometimes called [Art Direction](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images#art_direction), you can provide different `src`, `width`, `height`, and `quality` props to `getImageProps()`.
 
 ```jsx filename="app/page.js"
-import { getImageProps } from 'next/image'
+import { getImageProps } from "next/image";
 
 export default function Home() {
-  const common = { alt: 'Art Direction Example', sizes: '100vw' }
+  const common = { alt: "Art Direction Example", sizes: "100vw" };
   const {
     props: { srcSet: desktop },
   } = getImageProps({
@@ -952,8 +952,8 @@ export default function Home() {
     width: 1440,
     height: 875,
     quality: 80,
-    src: '/desktop.jpg',
-  })
+    src: "/desktop.jpg",
+  });
   const {
     props: { srcSet: mobile, ...rest },
   } = getImageProps({
@@ -961,16 +961,16 @@ export default function Home() {
     width: 750,
     height: 1334,
     quality: 70,
-    src: '/mobile.jpg',
-  })
+    src: "/mobile.jpg",
+  });
 
   return (
     <picture>
       <source media="(min-width: 1000px)" srcSet={desktop} />
       <source media="(min-width: 500px)" srcSet={mobile} />
-      <img {...rest} style={{ width: '100%', height: 'auto' }} />
+      <img {...rest} style={{ width: "100%", height: "auto" }} />
     </picture>
-  )
+  );
 }
 ```
 
@@ -979,31 +979,31 @@ export default function Home() {
 You can even convert the `srcSet` string to the [`image-set()`](https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set) CSS function to optimize a background image.
 
 ```jsx filename="app/page.js"
-import { getImageProps } from 'next/image'
+import { getImageProps } from "next/image";
 
-function getBackgroundImage(srcSet = '') {
+function getBackgroundImage(srcSet = "") {
   const imageSet = srcSet
-    .split(', ')
+    .split(", ")
     .map((str) => {
-      const [url, dpi] = str.split(' ')
-      return `url("${url}") ${dpi}`
+      const [url, dpi] = str.split(" ");
+      return `url("${url}") ${dpi}`;
     })
-    .join(', ')
-  return `image-set(${imageSet})`
+    .join(", ");
+  return `image-set(${imageSet})`;
 }
 
 export default function Home() {
   const {
     props: { srcSet },
-  } = getImageProps({ alt: '', width: 128, height: 128, src: '/img.png' })
-  const backgroundImage = getBackgroundImage(srcSet)
-  const style = { height: '100vh', width: '100vw', backgroundImage }
+  } = getImageProps({ alt: "", width: 128, height: 128, src: "/img.png" });
+  const backgroundImage = getBackgroundImage(srcSet);
+  const style = { height: "100vh", width: "100vw", backgroundImage };
 
   return (
     <main style={style}>
       <h1>Hello World</h1>
     </main>
-  )
+  );
 }
 ```
 
@@ -1020,24 +1020,24 @@ This `next/image` component uses browser native [lazy loading](https://caniuse.c
 
 ## Version History
 
-| Version    | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v15.0.0`  | `contentDispositionType` configuration default changed to `attachment`.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `v14.2.0`  | `overrideSrc` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `v14.1.0`  | `getImageProps()` is stable.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `v14.0.0`  | `onLoadingComplete` prop and `domains` config deprecated.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `v13.4.14` | `placeholder` prop support for `data:/image...`                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `v13.2.0`  | `contentDispositionType` configuration added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `v13.0.6`  | `ref` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Version    | Changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v15.0.0`  | `contentDispositionType` configuration default changed to `attachment`.                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `v14.2.0`  | `overrideSrc` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `v14.1.0`  | `getImageProps()` is stable.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `v14.0.0`  | `onLoadingComplete` prop and `domains` config deprecated.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `v13.4.14` | `placeholder` prop support for `data:/image...`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `v13.2.0`  | `contentDispositionType` configuration added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `v13.0.6`  | `ref` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `v13.0.0`  | The `next/image` import was renamed to `next/legacy/image`. The `next/future/image` import was renamed to `next/image`. A [codemod is available](/docs/content/app/building-your-application/upgrading/codemods#next-image-to-legacy-image) to safely and automatically rename your imports. `<span>` wrapper removed. `layout`, `objectFit`, `objectPosition`, `lazyBoundary`, `lazyRoot` props removed. `alt` is required. `onLoadingComplete` receives reference to `img` element. Built-in loader config removed. |
-| `v12.3.0`  | `remotePatterns` and `unoptimized` configuration is stable.                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `v12.2.0`  | Experimental `remotePatterns` and experimental `unoptimized` configuration added. `layout="raw"` removed.                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `v12.1.1`  | `style` prop added. Experimental support for `layout="raw"` added.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `v12.1.0`  | `dangerouslyAllowSVG` and `contentSecurityPolicy` configuration added.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `v12.0.9`  | `lazyRoot` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `v12.0.0`  | `formats` configuration added.<br/>AVIF support added.<br/>Wrapper `<div>` changed to `<span>`.                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `v11.1.0`  | `onLoadingComplete` and `lazyBoundary` props added.                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `v11.0.0`  | `src` prop support for static import.<br/>`placeholder` prop added.<br/>`blurDataURL` prop added.                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `v10.0.5`  | `loader` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `v10.0.1`  | `layout` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `v10.0.0`  | `next/image` introduced.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `v12.3.0`  | `remotePatterns` and `unoptimized` configuration is stable.                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `v12.2.0`  | Experimental `remotePatterns` and experimental `unoptimized` configuration added. `layout="raw"` removed.                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `v12.1.1`  | `style` prop added. Experimental support for `layout="raw"` added.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `v12.1.0`  | `dangerouslyAllowSVG` and `contentSecurityPolicy` configuration added.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `v12.0.9`  | `lazyRoot` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `v12.0.0`  | `formats` configuration added.<br/>AVIF support added.<br/>Wrapper `<div>` changed to `<span>`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `v11.1.0`  | `onLoadingComplete` and `lazyBoundary` props added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `v11.0.0`  | `src` prop support for static import.<br/>`placeholder` prop added.<br/>`blurDataURL` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `v10.0.5`  | `loader` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `v10.0.1`  | `layout` prop added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `v10.0.0`  | `next/image` introduced.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
