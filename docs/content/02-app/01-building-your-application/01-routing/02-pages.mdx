@@ -1,22 +1,21 @@
 ---
 title: Pages
-description: Create your first page in Next.js
+description: 在Next.js中创建您的第一个页面。
 related:
   links:
     - app/building-your-application/routing/layouts-and-templates
     - app/building-your-application/routing/linking-and-navigating
 ---
 
-A page is UI that is **unique** to a route. You can define a page by default exporting a component from a `page.js` file.
+页面是路由**唯一的**UI。您可以通过在一个`page.js`文件中定义一个默认输出的组件来生成页面。
 
-For example, to create your `index` page, add the `page.js` file inside the `app` directory:
+例如, 在`app`目录中添加一个`page.js`文件来创建`index`页面 ：
 
-<Image
+<img
   alt="page.js special file"
-  srcLight="/docs/light/page-special-file.png"
-  srcDark="/docs/dark/page-special-file.png"
-  width="1600"
-  height="444"
+  src="/page-special-file.avif"
+  width="100%"
+  height="auto"
 />
 
 ```tsx filename="app/page.tsx" switcher
@@ -26,14 +25,7 @@ export default function Page() {
 }
 ```
 
-```jsx filename="app/page.js" switcher
-// `app/page.js` is the UI for the `/` URL
-export default function Page() {
-  return <h1>Hello, Home page!</h1>;
-}
-```
-
-Then, to create further pages, create a new folder and add the `page.js` file inside it. For example, to create a page for the `/dashboard` route, create a new folder called `dashboard`, and add the `page.js` file inside it:
+然后, 通过创建一个新文件夹并添加`page.js`文件在其中来创建更多的页面。例如：你能够创建一个新的`dashboard`文件夹，并且创建一个`page.js`文件在其文件夹中，来创建一个`/dashboard`路由。
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 // `app/dashboard/page.tsx` is the UI for the `/dashboard` URL
@@ -42,17 +34,10 @@ export default function Page() {
 }
 ```
 
-```jsx filename="app/dashboard/page.js" switcher
-// `app/dashboard/page.js` is the UI for the `/dashboard` URL
-export default function Page() {
-  return <h1>Hello, Dashboard Page!</h1>;
-}
-```
-
-> **Good to know**:
+> **您需要知道**:
 >
-> - The `.js`, `.jsx`, or `.tsx` file extensions can be used for Pages.
-> - A page is always the [leaf](/docs/content/app/building-your-application/routing#terminology) of the [route subtree](/docs/content/app/building-your-application/routing#terminology).
-> - A `page.js` file is required to make a route segment publicly accessible.
-> - Pages are [Server Components](/docs/content/app/building-your-application/rendering/server-components) by default, but can be set to a [Client Component](/docs/content/app/building-your-application/rendering/client-components).
-> - Pages can fetch data. View the [Data Fetching](/docs/content/app/building-your-application/data-fetching) section for more information.
+> - 页面能够使用 `.js`, `.jsx`, or `.tsx`文件扩展名。
+> - 页面总是[路由子树](/docs/content/app/building-your-application/routing#terminology)的[叶子节点](/docs/content/app/building-your-application/routing#terminology)。
+> - 需要一个`page.js`文件使路由段可公开访问。
+> - 默认情况下，页面是[服务器组件](/docs/content/app/building-your-application/rendering/server-components), 但可以设置为[客户端组件](/docs/content/app/building-your-application/rendering/client-components).
+> - 页面能够获取数据。查看[数据获取](/docs/content/app/building-your-application/data-fetching) 部分来了解更多。

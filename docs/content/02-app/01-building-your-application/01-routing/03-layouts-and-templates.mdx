@@ -1,46 +1,30 @@
 ---
-title: Layouts and Templates
-description: Create your first shared layout in Next.js.
+title: 布局和模版
+description: 在Next.js中创建第一个可共享的布局。
 ---
 
-The special files [layout.js](#layouts) and [template.js](#templates) allow you to create UI that is shared between [routes](/docs/content/app/building-your-application/routing/defining-routes#creating-routes). This page will guide you through how and when to use these special files.
+特殊文件[layout.js](#layouts) 和 [template.js](#templates) 让您创建可在 [路由](/docs/content/app/building-your-application/routing/defining-routes#creating-routes)间共享的 UI。本页面将知道您如何及何时使用这些特殊文件。
 
-## Layouts
+## 布局
 
-A layout is UI that is **shared** between multiple routes. On navigation, layouts preserve state, remain interactive, and do not re-render. Layouts can also be [nested](#nesting-layouts).
+布局是在多个路由间共享的 UI。在导航是，布局保留状态，保持交互性并且不会重新渲染。也可以[嵌套布局](#nesting-layouts)。
 
-You can define a layout by default exporting a React component from a `layout.js` file. The component should accept a `children` prop that will be populated with a child layout (if it exists) or a page during rendering.
+您能够通过在`layout.js`文件中默认输出一个 React 组件来定义一个布局。该组件应该接收一个`children`属性，用作在渲染过程中填充子布局或页面。
 
-For example, the layout will be shared with the `/dashboard` and `/dashboard/settings` pages:
+例如，以下布局将会被`/dashboard` 和 `/dashboard/settings` 页面共享。
 
-<Image
+<img
   alt="layout.js special file"
-  srcLight="/docs/light/layout-special-file.png"
-  srcDark="/docs/dark/layout-special-file.png"
-  width="1600"
-  height="606"
+  src="/layout-special-file.avif"
+  width="100%"
+  height="auto"
 />
-
-```tsx filename="app/dashboard/layout.tsx" switcher
-export default function DashboardLayout({
-  children, // will be a page or nested layout
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <section>
-      {/* Include shared UI here e.g. a header or sidebar */}
-      <nav></nav>
-
-      {children}
-    </section>
-  );
-}
-```
 
 ```jsx filename="app/dashboard/layout.js" switcher
 export default function DashboardLayout({
   children, // will be a page or nested layout
+}: {
+  children: React.ReactNode,
 }) {
   return (
     <section>
@@ -53,15 +37,15 @@ export default function DashboardLayout({
 }
 ```
 
-### Root Layout (Required)
+### 根布局 (必须)
 
-The root layout is defined at the top level of the `app` directory and applies to all routes. This layout is **required** and must contain `html` and `body` tags, allowing you to modify the initial HTML returned from the server.
+根布局在顶层定义并应用于所有路由。此布局是必须得并且必须包含`html` 和 `body`标签，允许您修改由服务器返回的初始化 HTML。
 
-```tsx filename="app/layout.tsx" switcher
+```jsx filename="app/layout.tsx" switcher
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
 }) {
   return (
     <html lang="en">
@@ -74,32 +58,13 @@ export default function RootLayout({
 }
 ```
 
-```jsx filename="app/layout.js" switcher
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        {/* Layout UI */}
-        <main>{children}</main>
-      </body>
-    </html>
-  );
-}
-```
+### 嵌套布局
 
-### Nesting Layouts
+默认情况下, 文件夹层次结构中的布局是可**嵌套的**, 这代表其通过`children`属性包裹子布局。您可以在特定的路由段（文件夹）中通过添加`layout.js`文件来嵌套布局。
 
-By default, layouts in the folder hierarchy are **nested**, which means they wrap child layouts via their `children` prop. You can nest layouts by adding `layout.js` inside specific route segments (folders).
+例如，在`dashboard`文件夹中新建一个`layout.js`文件来创建`/dashboard`路由的布局。
 
-For example, to create a layout for the `/dashboard` route, add a new `layout.js` file inside the `dashboard` folder:
-
-<Image
-  alt="Nested Layout"
-  srcLight="/docs/light/nested-layout.png"
-  srcDark="/docs/dark/nested-layout.png"
-  width="1600"
-  height="606"
-/>
+<img alt="Nested Layout" src="/nested-layout.avif" width="100%" height="auto" />
 
 ```tsx filename="app/dashboard/layout.tsx" switcher
 export default function DashboardLayout({
@@ -117,49 +82,46 @@ export default function DashboardLayout({ children }) {
 }
 ```
 
-If you were to combine the two layouts above, the root layout (`app/layout.js`) would wrap the dashboard layout (`app/dashboard/layout.js`), which would wrap route segments inside `app/dashboard/*`.
+如果您要合并上面的两个布局, 根布局 (`app/layout.js`) 将会包裹 dashboard 布局 (`app/dashboard/layout.js`), 从而生成 `app/dashboard/*`路由段.
 
-The two layouts would be nested as such:
+这两个布局将这样嵌套:
 
-<Image
+<img
   alt="Nested Layouts"
-  srcLight="/docs/light/nested-layouts-ui.png"
-  srcDark="/docs/dark/nested-layouts-ui.png"
-  width="1600"
-  height="1026"
+  src="/nested-layouts-ui.avif"
+  width="100%"
+  height="auto"
 />
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - `.js`, `.jsx`, or `.tsx` file extensions can be used for Layouts.
-> - Only the root layout can contain `<html>` and `<body>` tags.
-> - When a `layout.js` and `page.js` file are defined in the same folder, the layout will wrap the page.
-> - Layouts are [Server Components](/docs/content/app/building-your-application/rendering/server-components) by default but can be set to a [Client Component](/docs/content/app/building-your-application/rendering/client-components).
-> - Layouts can fetch data. View the [Data Fetching](/docs/content/app/building-your-application/data-fetching) section for more information.
-> - Passing data between a parent layout and its children is not possible. However, you can fetch the same data in a route more than once, and React will [automatically dedupe the requests](/docs/content/app/building-your-application/caching#request-memoization) without affecting performance.
-> - Layouts do not have access to `pathname` ([learn more](/docs/content/app/api-reference/file-conventions/layout)). But imported Client Components can access the pathname using [`usePathname`](/docs/content/app/api-reference/functions/use-pathname) hook.
-> - Layouts do not have access to the route segments below itself. To access all route segments, you can use [`useSelectedLayoutSegment`](/docs/content/app/api-reference/functions/use-selected-layout-segment) or [`useSelectedLayoutSegments`](/docs/content/app/api-reference/functions/use-selected-layout-segments) in a Client Component.
-> - You can use [Route Groups](/docs/content/app/building-your-application/routing/route-groups) to opt specific route segments in and out of shared layouts.
-> - You can use [Route Groups](/docs/content/app/building-your-application/routing/route-groups) to create multiple root layouts. See an [example here](/docs/content/app/building-your-application/routing/route-groups#creating-multiple-root-layouts).
-> - **Migrating from the `pages` directory:** The root layout replaces the [`_app.js`](/docs/content/pages/building-your-application/routing/custom-app) and [`_document.js`](/docs/content/pages/building-your-application/routing/custom-document) files. [View the migration guide](/docs/content/app/building-your-application/upgrading/app-router-migration#migrating-_documentjs-and-_appjs).
+> - 布局能够使用`.js`, `.jsx`, or `.tsx`文件扩展名。
+> - 只有根布局能够包含 `<html>` 和 `<body>` 标签。
+> - 当在同一文件夹下定义一个`layout.js`文件和一个`page.js`文件时, layout 将会包裹 page。
+> - 默认情况下，布局是 [服务器端组件](/docs/content/app/building-your-application/rendering/server-components) ，但是能够设置为[客户端组件](/docs/content/app/building-your-application/rendering/client-components).
+> - 布局能够获取数据。查看[数据获取](/docs/content/app/building-your-application/data-fetching) 部分来了解更多。
+> - 不能再父子布局间传递数据。不过，您可以在路由中多次获取相同的数据，并且 React 会 [自动清除重复数据请求](/docs/content/app/building-your-application/caching#request-memoization)而不会影响性能。
+> - 布局无法访问`pathname` ([了解更多](/docs/content/app/api-reference/file-conventions/layout)). 但是引入的客户端组件能够通过[`usePathname`](/docs/content/app/api-reference/functions/use-pathname) hook 访问 pathname。
+> - 布局无法访问其下方的路由段。您可以在客户端组件中使用[`useSelectedLayoutSegment`](/docs/content/app/api-reference/functions/use-selected-layout-segment) 或 [`useSelectedLayoutSegments`](/docs/content/app/api-reference/functions/use-selected-layout-segments)来访问所有路由段。
+> - 您能够使用[路由组](/docs/content/app/building-your-application/routing/route-groups)来选择共享布局中的具体路由段。
+> - 您你能够使用[路由组](/docs/content/app/building-your-application/routing/route-groups)来创建多个根布局.查看[示例](/docs/content/app/building-your-application/routing/route-groups#creating-multiple-root-layouts).
 
-## Templates
+## 模版
 
-Templates are similar to layouts in that they wrap a child layout or page. Unlike layouts that persist across routes and maintain state, templates create a new instance for each of their children on navigation. This means that when a user navigates between routes that share a template, a new instance of the child is mounted, DOM elements are recreated, state is **not** preserved in Client Components, and effects are re-synchronized.
+模版在包裹子布局或页面方面与布局类似。不同于布局在跨路由中持续保持状态，模版在导航时为它们的每个子项创建了新的实力。这意味着用户在共享模版的路由间导航时，会挂载一个新的子实例，重新创建 DOM 元素，客户端组件不会保留状态并重新同步效果。
 
-There may be cases where you need those specific behaviors, and templates would be a more suitable option than layouts. For example:
+也许有些情况下，你需要这些特定行为，并且模版会是相对于布局更为适合的选择。例如：
 
-- To resynchronize `useEffect` on navigation.
-- To reset the state of a child Client Components on navigation.
+- 导航时重新同步 `useEffect`。
+- 导航时重置子客户端组件的状态。
 
-A template can be defined by exporting a default React component from a `template.js` file. The component should accept a `children` prop.
+模版可能通过在一个`template.js`文件中导出一个默认 React 组件来定义。且组件应该接收一个`children`属性。
 
-<Image
+<img
   alt="template.js special file"
-  srcLight="/docs/light/template-special-file.png"
-  srcDark="/docs/dark/template-special-file.png"
-  width="1600"
-  height="444"
+  src="/template-special-file.avif"
+  width="100%"
+  height="auto"
 />
 
 ```tsx filename="app/template.tsx" switcher
@@ -174,7 +136,7 @@ export default function Template({ children }) {
 }
 ```
 
-In terms of nesting, `template.js` is rendered between a layout and its children. Here's a simplified output:
+就嵌套而言, `template.js`在父子布局间呈现。下列是一个简化的输出:
 
 ```jsx filename="Output"
 <Layout>
@@ -183,13 +145,13 @@ In terms of nesting, `template.js` is rendered between a layout and its children
 </Layout>
 ```
 
-## Examples
+## 例子
 
 ### Metadata
 
-You can modify the `<head>` HTML elements such as `title` and `meta` using the [Metadata APIs](/docs/content/app/building-your-application/optimizing/metadata).
+您能够使用[Metadata APIs](/docs/content/app/building-your-application/optimizing/metadata)修改 HTML 元素`<head>`，如：`title` 和 `meta`。
 
-Metadata can be defined by exporting a [`metadata` object](/docs/content/app/api-reference/functions/generate-metadata#the-metadata-object) or [`generateMetadata` function](/docs/content/app/api-reference/functions/generate-metadata#generatemetadata-function) in a [`layout.js`](/docs/content/app/api-reference/file-conventions/layout) or [`page.js`](/docs/content/app/api-reference/file-conventions/page) file.
+Metadaya 能够由在 [`layout.js`](/docs/content/app/api-reference/file-conventions/layout) 或 [`page.js`](/docs/content/app/api-reference/file-conventions/page)文件中输出[`metadata` 对象](/docs/content/app/api-reference/functions/generate-metadata#the-metadata-object) 或 [`generateMetadata` function](/docs/content/app/api-reference/functions/generate-metadata#generatemetadata-function)来定义。
 
 ```tsx filename="app/page.tsx" switcher
 import type { Metadata } from "next";
@@ -213,15 +175,15 @@ export default function Page() {
 }
 ```
 
-> **Good to know**: You should **not** manually add `<head>` tags such as `<title>` and `<meta>` to root layouts. Instead, use the [Metadata API](/docs/content/app/api-reference/functions/generate-metadata) which automatically handles advanced requirements such as streaming and de-duplicating `<head>` elements.
+> **您需要知道**: 您**不**应该在根布局中手动添加`<head>` 标签，如： `<title>`和`<meta>`。 相反, 使用自动处理高级需求的[Metadata API](/docs/content/app/api-reference/functions/generate-metadata)，如：流式处理和重复数据删除`<head>`元素.
 
-Learn more about available metadata options in the [API reference](/docs/content/app/api-reference/functions/generate-metadata).
+在[API reference](/docs/content/app/api-reference/functions/generate-metadata)了解更多关于可用的 metadata 选项。
 
-### Active Nav Links
+### Active 导航链接
 
-You can use the [usePathname()](/docs/content/app/api-reference/functions/use-pathname) hook to determine if a nav link is active.
+您可以使用[usePathname()](/docs/content/app/api-reference/functions/use-pathname) hook 来决定是否导航链接处于活动状态。
 
-Since `usePathname()` is a client hook, you need to extract the nav links into a Client Component, which can be imported into your layout or template:
+因为 `usePathname()`是客户端 hook,您需要将导航链接提取进客户端组件,该组件可以导入进您的布局或模版中：
 
 ```tsx filename="app/ui/nav-links.tsx" switcher
 "use client";
