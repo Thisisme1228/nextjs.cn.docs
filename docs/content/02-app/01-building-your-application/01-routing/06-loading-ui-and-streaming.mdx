@@ -1,30 +1,23 @@
 ---
-title: Loading UI and Streaming
-description: Built on top of Suspense, Loading UI allows you to create a fallback for specific route segments, and automatically stream content as it becomes ready.
+title: 加载UI和流式处理
+description: 建立在Suspense之上, 加载UI允许您为具体的路由段创建一个备用, 并且当它准备好了会自动传输内容。
 ---
 
-The special file `loading.js` helps you create meaningful Loading UI with [React Suspense](https://react.dev/reference/react/Suspense). With this convention, you can show an [instant loading state](#instant-loading-states) from the server while the content of a route segment loads. The new content is automatically swapped in once rendering is complete.
+特殊文件`loading.js`伴随着 [React Suspense](https://react.dev/reference/react/Suspense)帮助您创建重要的加载 UI。按照这个约定,您能够在路由段的内容加载时显示一个来自服务器的[立即加载状态](#instant-loading-states)。一旦渲染完成，会立即换为新内容。
 
-<img
-  alt="Loading UI"
-  srcLight="/docs/light/loading-ui.png"
-  srcDark="/docs/dark/loading-ui.png"
-  width="1600"
-  height="691"
-/>
+<img alt="Loading UI" src="/loading-ui.avif" width="100%" height="auto" />
 
-## Instant Loading States
+## 即使加载状态
 
-An instant loading state is fallback UI that is shown immediately upon navigation. You can pre-render loading indicators such as skeletons and spinners, or a small but meaningful part of future screens such as a cover photo, title, etc. This helps users understand the app is responding and provides a better user experience.
+即使加载状态是导航时立即显示的备选 UI. 您能够预渲染加载指示器，如 skeletons 和 spinners, 或是之后屏幕中小的但重要的部分，如封面照片、标题等。这有助于用户了解应用程序正在响应并提供了更好的用户体验。
 
-Create a loading state by adding a `loading.js` file inside a folder.
+通过在文件夹中添加`loading.js`文件来创建加载状态。
 
 <img
   alt="loading.js special file"
-  srcLight="/docs/light/loading-special-file.png"
-  srcDark="/docs/dark/loading-special-file.png"
-  width="1600"
-  height="606"
+  src="/loading-special-file.avif"
+  width="100%"
+  height="auto"
 />
 
 ```tsx filename="app/dashboard/loading.tsx" switcher
@@ -41,93 +34,86 @@ export default function Loading() {
 }
 ```
 
-In the same folder, `loading.js` will be nested inside `layout.js`. It will automatically wrap the `page.js` file and any children below in a `<Suspense>` boundary.
+同一文件夹中，`loading.js`会嵌套在`layout.js`中。它会自动将`page.js`文件和下面的子项包裹在`<Suspense>`边界中。
 
 <img
   alt="loading.js overview"
-  srcLight="/docs/light/loading-overview.png"
-  srcDark="/docs/dark/loading-overview.png"
-  width="1600"
-  height="768"
+  src="/loading-overview.avif"
+  width="100%"
+  height="auto"
 />
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - Navigation is immediate, even with [server-centric routing](/docs/content/app/building-your-application/routing/linking-and-navigating#how-routing-and-navigation-works).
-> - Navigation is interruptible, meaning changing routes does not need to wait for the content of the route to fully load before navigating to another route.
-> - Shared layouts remain interactive while new route segments load.
+> - 导航是即时的，即使使用[服务器为中心的路由](/docs/content/app/building-your-application/routing/linking-and-navigating#how-routing-and-navigation-works)也是如此。
+> - 导航是可中断的,意味着不需要等待路由的内容充分加载再导航到其它路由。
+> - 新路由段加载时，共享路由保持可交互性。
 
-> **Recommendation:** Use the `loading.js` convention for route segments (layouts and pages) as Next.js optimizes this functionality.
+> **建议:** 为路由段(layouts and pages)使用`loading.js` 约定，因为 Next.js 优化了此功能。
 
-## Streaming with Suspense
+## 带有 Suspense 的 Streaming
 
-In addition to `loading.js`, you can also manually create Suspense Boundaries for your own UI components. The App Router supports streaming with [Suspense](https://react.dev/reference/react/Suspense) for both [Node.js and Edge runtimes](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes).
+除了`loading.js`, 您能够为您的 UI 组件手动创建 Suspense 边界。App Router 支持为[Node.js 和 Edge runtimes](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes)使用[Suspense](https://react.dev/reference/react/Suspense)的 streaming。
 
-> **Good to know**:
+> **您需要了解**:
 >
-> - [Some browsers](https://bugs.webkit.org/show_bug.cgi?id=252413) buffer a streaming response. You may not see the streamed response until the response exceeds 1024 bytes. This typically only affects “hello world” applications, but not real applications.
+> - [某些浏览器](https://bugs.webkit.org/show_bug.cgi?id=252413)会缓冲流响应。您可能直到响应超出 1024 字节后才会看到流响应。这通常只会影响“hello world”应用程序,而不是真正的应用程序。
 
-### What is Streaming?
+### 什么是 Streaming?
 
-To learn how Streaming works in React and Next.js, it's helpful to understand **Server-Side Rendering (SSR)** and its limitations.
+为了了解 Streaming 在 React 和 Next.js 中的工作原理, 了解**Server-Side Rendering (SSR)**和它的限制会很有帮助。
 
-With SSR, there's a series of steps that need to be completed before a user can see and interact with a page:
+使用 SSR，在用户看见并与页面交互前有一系列步骤需要完成。
 
-1. First, all data for a given page is fetched on the server.
-2. The server then renders the HTML for the page.
-3. The HTML, CSS, and JavaScript for the page are sent to the client.
-4. A non-interactive user interface is shown using the generated HTML, and CSS.
-5. Finally, React [hydrates](https://react.dev/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html) the user interface to make it interactive.
+1. 首先, 从服务器获取给定页面的所有数据。
+2. 然后，服务器为页面渲染 HTML。
+3. 页面的 HTML, CSS, 和 JavaScript 将发送到客户端。
+4. 使用生成的 HTML 和 CSS 显示非交互的用户界面。
+5. 最后, React [hydrates](https://react.dev/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html)用户界面，使其具有交互性。
 
 <img
   alt="Chart showing Server Rendering without Streaming"
-  srcLight="/docs/light/server-rendering-without-streaming-chart.png"
-  srcDark="/docs/dark/server-rendering-without-streaming-chart.png"
-  width="1600"
-  height="612"
+  src="/server-rendering-without-streaming-chart.avif"
+  width="100%"
+  height="auto"
 />
 
-These steps are sequential and blocking, meaning the server can only render the HTML for a page once all the data has been fetched. And, on the client, React can only hydrate the UI once the code for all components in the page has been downloaded.
+这些步骤是依次发生并阻塞性的，意味着服务器只有在获取了所有数据后才能为页面渲染 HTML。而且，在客户端，React 只有在下载了页面中所有组件的代码后才能激活 UI。
 
-SSR with React and Next.js helps improve the perceived loading performance by showing a non-interactive page to the user as soon as possible.
+带有 React 和 Next.js 的 SSR 通过向用户显示非交互页面来帮助提升加载性能。
 
 <img
   alt="Server Rendering without Streaming"
-  srcLight="/docs/light/server-rendering-without-streaming.png"
-  srcDark="/docs/dark/server-rendering-without-streaming.png"
-  width="1600"
-  height="748"
+  src="/server-rendering-without-streaming.avif"
+  width="100%"
+  height="auto"
 />
 
-However, it can still be slow as all data fetching on server needs to be completed before the page can be shown to the user.
+然而, 它可能还是很慢，因为在用户看到页面前，需要完成从服务器上获取所有数据。
 
-**Streaming** allows you to break down the page's HTML into smaller chunks and progressively send those chunks from the server to the client.
+**Streaming** 让您将页面的 HTML 拆分为较小的块并逐步将这些块从服务器发送到客户端。
 
 <img
   alt="How Server Rendering with Streaming Works"
-  srcLight="/docs/light/server-rendering-with-streaming.png"
-  srcDark="/docs/dark/server-rendering-with-streaming.png"
-  width="1600"
-  height="785"
+  src="/server-rendering-with-streaming.avif"
+  width="100%"
+  height="auto"
 />
 
-This enables parts of the page to be displayed sooner, without waiting for all the data to load before any UI can be rendered.
+这样可以更快地显示页面的某些部分, 而无需等待所有数据加载完成才渲染 UI。
 
-Streaming works well with React's component model because each component can be considered a chunk. Components that have higher priority (e.g. product information) or that don't rely on data can be sent first (e.g. layout), and React can start hydration earlier. Components that have lower priority (e.g. reviews, related products) can be sent in the same server request after their data has been fetched.
+Streaming 与 React's 组件模型配合的很好，因为可以将每个组件视为一个 chunk。可能优先发送（如：layout）有更高优先权（如：产品信息）的或不依赖数据的组件, 且 React 可能更早地开始冻结。在同样的服务器请求中，可能在数据获取后才发送优先权较低的组件(如：评论和相关产品)。
 
 <img
   alt="Chart showing Server Rendering with Streaming"
-  srcLight="/docs/light/server-rendering-with-streaming-chart.png"
-  srcDark="/docs/dark/server-rendering-with-streaming-chart.png"
-  width="1600"
-  height="730"
+  src="/server-rendering-with-streaming-chart.avif"
+  width="100%"
+  height="auto"
 />
 
-Streaming is particularly beneficial when you want to prevent long data requests from blocking the page from rendering as it can reduce the [Time To First Byte (TTFB)](https://web.dev/ttfb/) and [First Contentful Paint (FCP)](https://web.dev/first-contentful-paint/). It also helps improve [Time to Interactive (TTI)](https://developer.chrome.com/en/docs/lighthouse/performance/interactive/), especially on slower devices.
+### 例如
 
-### Example
-
-`<Suspense>` works by wrapping a component that performs an asynchronous action (e.g. fetch data), showing fallback UI (e.g. skeleton, spinner) while it's happening, and then swapping in your component once the action completes.
+`<Suspense>`的工作原理是通过包裹一个执行异步操作的组件(如：获取数据), 在异步操作发生时展示 fallback UI (如： skeleton 和 spinner), 然后在操作完成后更换组件。
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import { Suspense } from "react";
@@ -164,21 +150,3 @@ export default function Posts() {
   );
 }
 ```
-
-By using Suspense, you get the benefits of:
-
-1. **Streaming Server Rendering** - Progressively rendering HTML from the server to the client.
-2. **Selective Hydration** - React prioritizes what components to make interactive first based on user interaction.
-
-For more Suspense examples and use cases, please see the [React Documentation](https://react.dev/reference/react/Suspense).
-
-### SEO
-
-- Next.js will wait for data fetching inside [`generateMetadata`](/docs/content/app/api-reference/functions/generate-metadata) to complete before streaming UI to the client. This guarantees the first part of a streamed response includes `<head>` tags.
-- Since streaming is server-rendered, it does not impact SEO. You can use the [Rich Results Test](https://search.google.com/test/rich-results) tool from Google to see how your page appears to Google's web crawlers and view the serialized HTML ([source](https://web.dev/rendering-on-the-web/#seo-considerations)).
-
-### Status Codes
-
-When streaming, a `200` status code will be returned to signal that the request was successful.
-
-The server can still communicate errors or issues to the client within the streamed content itself, for example, when using [`redirect`](/docs/content/app/api-reference/functions/redirect) or [`notFound`](/docs/content/app/api-reference/functions/not-found). Since the response headers have already been sent to the client, the status code of the response cannot be updated. This does not affect SEO.

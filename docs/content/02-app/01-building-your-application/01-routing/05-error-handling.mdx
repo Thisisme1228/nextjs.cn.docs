@@ -1,23 +1,23 @@
 ---
-title: Error Handling
-description: Learn how to display expected errors and handle uncaught exceptions.
+title: 错误处理
+description: 学习如何显示预期错误和处理未捕获的异常。
 related:
   links:
     - app/api-reference/file-conventions/error
 ---
 
-Errors can be divided into two categories: **expected errors** and **uncaught exceptions**:
+错误可分为两类: **预期错误** 和 **未捕获错误**:
 
-- **Model expected errors as return values**: Avoid using `try`/`catch` for expected errors in Server Actions. Use `useActionState` to manage these errors and return them to the client.
-- **Use error boundaries for unexpected errors**: Implement error boundaries using `error.tsx` and `global-error.tsx` files to handle unexpected errors and provide a fallback UI.
+- **将预期错误自定义为返回值**: 避免在服务器操作中使用 `try`/`catch`表示预期错误。 使用 `useActionState`来管理这些错误并将它们返回到客户端。
+- **对意外错误使用错误边界**: 使用`error.tsx` 和 `global-error.tsx` 文件执行错误边界来处理意外错误并提供回退 UI.
 
-## Handling Expected Errors
+## 处理预期错误
 
-Expected errors are those that can occur during the normal operation of the application, such as those from [server-side form validation](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations#server-side-form-validation) or failed requests. These errors should be handled explicitly and returned to the client.
+预期错误是能够在应用程序正常操作期间发生的错误，例如来自[服务器端表单验证](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations#server-side-form-validation)或失败请求。应该详细处理这些错误并返回到客户端。
 
-### Handling Expected Errors from Server Actions
+### 处理服务器操作中的预期错误
 
-Use the `useActionState` hook (previously `useFormState`) to manage the state of Server Actions, including handling errors. This approach avoids `try`/`catch` blocks for expected errors, which should be modeled as return values rather than thrown exceptions.
+使用 `useActionState` hook (以前是 `useFormState`) 管理服务器操作的状态, 包括错误处理。 这种方式避免`try`/`catch`块阻止预期错误, 这些错误应该被包装为返回值而不是抛出异常。
 
 ```tsx filename="app/actions.ts" switcher
 "use server";
@@ -53,7 +53,7 @@ export async function createUser(prevState, formData) {
 }
 ```
 
-Then, you can pass your action to the `useActionState` hook and use the returned `state` to display an error message.
+然后,您能够向`useActionState` hook 传递您的 action 并使用此返回的`状态`来展示错误信息。
 
 ```tsx filename="app/ui/signup.tsx" highlight={11,18-20} switcher
 "use client";
@@ -105,11 +105,11 @@ export function Signup() {
 }
 ```
 
-You could also use the returned state to display a toast message from the client component.
+您也能够使用返回的状态来显示来自客户端组件的 Toast 消息。
 
-### Handling Expected Errors from Server Components
+### 处理服务器组件的预期错误
 
-When fetching data inside of a Server Component, you can use the response to conditionally render an error message or [`redirect`](/docs/content/app/building-your-application/routing/redirecting#redirect-function).
+在服务器组件内获取数据时,您能够使用响应有条件地渲染一个错误信息或[`重定向`](/docs/content/app/building-your-application/routing/redirecting#redirect-function).
 
 ```tsx filename="app/page.tsx" switcher
 export default async function Page() {
@@ -137,19 +137,20 @@ export default async function Page() {
 }
 ```
 
-## Uncaught Exceptions
+## 未捕获的异常
 
-Uncaught exceptions are unexpected errors that indicate bugs or issues that should not occur during the normal flow of your application. These should be handled by throwing errors, which will then be caught by error boundaries.
+未捕获的异常表面在您的应用程序正常流程中不应该发生的意外错误或 bug。它们应该由抛出错误来处理，然后错误边界会捕获这些错误。
 
-- **Common:** Handle uncaught errors below the root layout with `error.js`.
-- **Optional:** Handle granular uncaught errors with nested `error.js` files (e.g. `app/dashboard/error.js`)
-- **Uncommon:** Handle uncaught errors in the root layout with `global-error.js`.
+- **Common:** 使用`error.js`处理根布局下未捕获的错误。
+- **Optional:** 使用嵌套的`error.js`文件处理未捕获的颗粒错误。 (e.g. `app/dashboard/error.js`)
+- **Uncommon:** 使用`global-error.js`处理根布局中未捕获的错误。
 
-### Using Error Boundaries
+### 使用错误边界
 
-Next.js uses error boundaries to handle uncaught exceptions. Error boundaries catch errors in their child components and display a fallback UI instead of the component tree that crashed.
+Next.js 使用错误边界来错误未捕获的异常。错误边界在它们的子组件中捕获错误并展示回退 UI，而不是崩溃的组件树。
 
 Create an error boundary by adding an `error.tsx` file inside a route segment and exporting a React component:
+通过在路由段中添加一个`error.tsx`文件并且输出一个 React 组件来创建错误边界。
 
 ```tsx filename="app/dashboard/error.tsx" switcher
 "use client"; // Error boundaries must be Client Components
@@ -211,23 +212,22 @@ export default function Error({ error, reset }) {
 }
 ```
 
-If you want errors to bubble up to the parent error boundary, you can `throw` when rendering the `error` component.
+如果您希望错误向上冒泡到父错误边界, 你能够在渲染错误组件的时候`throw`错误。
 
-### Handling Errors in Nested Routes
+### 处理嵌套路由中的错误
 
-Errors will bubble up to the nearest parent error boundary. This allows for granular error handling by placing `error.tsx` files at different levels in the [route hierarchy](/docs/content/app/building-your-application/routing#component-hierarchy).
+错误将冒泡到最近的父错误边界。这允许通过将`error.tsx`文件放置在[路由层次结构](/docs/content/app/building-your-application/routing#component-hierarchy)中的不同的层级来处理错误。
 
 <img
   alt="Nested Error Component Hierarchy"
-  srcLight="/docs/light/nested-error-component-hierarchy.png"
-  srcDark="/docs/dark/nested-error-component-hierarchy.png"
-  width="1600"
-  height="687"
+  src="/nested-error-component-hierarchy.avif"
+  width="100%"
+  height="auto"
 />
 
-### Handling Global Errors
+### 处理全局错误
 
-While less common, you can handle errors in the root layout using `app/global-error.js`, located in the root app directory, even when leveraging [internationalization](/docs/content/app/building-your-application/routing/internationalization). Global error UI must define its own `<html>` and `<body>` tags, since it is replacing the root layout or template when active.
+虽然很少见, 您可以在根布局中使用`app/global-error.js`来处理错误,其位于根路径的 app 文件夹中, 即使在使用 [国际化](/docs/content/app/building-your-application/routing/internationalization)时也是如此。全局错误 UI 必须定义它自己的`<html>` 和 `<body>` 标签, 因为在激活时它会替换掉根布局或模版。
 
 ```tsx filename="app/global-error.tsx" switcher
 "use client"; // Error boundaries must be Client Components
