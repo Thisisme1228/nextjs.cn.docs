@@ -1,78 +1,74 @@
 ---
-title: Route Groups
-description: Route Groups can be used to partition your Next.js application into different sections.
+title: 路由组
+description: 路由组可以用来将Next.js应用程序划分为不同的部分。
 ---
 
-In the `app` directory, nested folders are normally mapped to URL paths. However, you can mark a folder as a **Route Group** to prevent the folder from being included in the route's URL path.
+在`app`文件夹中, URL 路径通常由嵌套文件夹映射。但是,您可以通过将文件夹标记为**路由组**来防止将文件夹包含在路由在 URL 路径中。
 
-This allows you to organize your route segments and project files into logical groups without affecting the URL path structure.
+这让您在不影响 URL 路径结构的情况下来将路由段和项目文件组织到逻辑组中。
 
-Route groups are useful for:
+路由组适用于:
 
-- [Organizing routes into groups](#organize-routes-without-affecting-the-url-path) e.g. by site section, intent, or team.
-- Enabling [nested layouts](/docs/content/app/building-your-application/routing/layouts-and-templates) in the same route segment level:
-  - [Creating multiple nested layouts in the same segment, including multiple root layouts](#creating-multiple-root-layouts)
-  - [Adding a layout to a subset of routes in a common segment](#opting-specific-segments-into-a-layout)
+- [分组路由](#在不影响URL路径的情况下组织路由) ，例如：按 site 部分、意图或团队。
+- 在同一路由段级别中使用[嵌套布局](/docs/content/app/building-your-application/routing/layouts-and-templates):
+- [在同一路由段中创建多个嵌套布局，包括多个根布局](#creating-multiple-root-layouts)
+- [向公共段中的路由子集添加布局](#opting-specific-segments-into-a-layout)
 
-## Convention
+## 公约
 
-A route group can be created by wrapping a folder's name in parenthesis: `(folderName)`
+可以通过将文件名外包裹圆括号来创建路由组。`(folderName)`
 
-## Examples
+## 例子
 
-### Organize routes without affecting the URL path
+### 在不影响 URL 路径的情况下组织路由
 
-To organize routes without affecting the URL, create a group to keep related routes together. The folders in parenthesis will be omitted from the URL (e.g. `(marketing)` or `(shop)`.
+想在不影响 URL 的情况下组织路由，请创建一个组来将相关的路由保存在一起。URL 会忽略圆括号中的文件夹。（如：`(marketing)`或`(shop)）
 
 <img
   alt="Organizing Routes with Route Groups"
-  srcLight="/docs/light/route-group-organisation.png"
-  srcDark="/docs/dark/route-group-organisation.png"
-  width="1600"
-  height="930"
+  src="/route-group-organisation.avif"
+  width="100%"
+  height="auto"
 />
 
-Even though routes inside `(marketing)` and `(shop)` share the same URL hierarchy, you can create a different layout for each group by adding a `layout.js` file inside their folders.
+即使`(marketing)` 和 `(shop)`中的路由共享相同的 URL 层次结构，您能够通过在各自文件夹中添加 layout.js`文件来为每个组创建不同的布局。
 
 <img
   alt="Route Groups with Multiple Layouts"
-  srcLight="/docs/light/route-group-multiple-layouts.png"
-  srcDark="/docs/dark/route-group-multiple-layouts.png"
-  width="1600"
-  height="768"
+  src="/route-group-multiple-layouts.avif"
+  width="100%"
+  height="auto"
 />
 
-### Opting specific segments into a layout
+### 在布局中选择具体的段
 
-To opt specific routes into a layout, create a new route group (e.g. `(shop)`) and move the routes that share the same layout into the group (e.g. `account` and `cart`). The routes outside of the group will not share the layout (e.g. `checkout`).
+为了在布局中选择具体的路由，请创建一个路由组（如：`(shop)`）并将共享同一个布局的路由移动到这个组中（如：`account` 和 `cart`）。组外的路由不会分享此布局（如：`checkout`）。
 
 <img
   alt="Route Groups with Opt-in Layouts"
-  srcLight="/docs/light/route-group-opt-in-layouts.png"
-  srcDark="/docs/dark/route-group-opt-in-layouts.png"
-  width="1600"
-  height="930"
+  src="/route-group-opt-in-layouts.avif"
+  width="100%"
+  height="auto"
 />
 
-### Creating multiple root layouts
+### 创建多个根布局
 
-To create multiple [root layouts](/docs/content/app/building-your-application/routing/layouts-and-templates#root-layout-required), remove the top-level `layout.js` file, and add a `layout.js` file inside each route group. This is useful for partitioning an application into sections that have a completely different UI or experience. The `<html>` and `<body>` tags need to be added to each root layout.
+为了创建多个[根布局](/docs/content/app/building-your-application/routing/layouts-and-templates#root-layout-required), 请移除顶级的`layout.js`文件,并在每个路由组中添加`layout.js`文件。这对于将应用程序分割为有不同 UI 或体验的多个部分非常有用。每个布局中需要添加`<html>` 和 `<body>`标签。
 
 <img
   alt="Route Groups with Multiple Root Layouts"
-  srcLight="/docs/light/route-group-multiple-root-layouts.png"
-  srcDark="/docs/dark/route-group-multiple-root-layouts.png"
-  width="1600"
-  height="687"
+  src="/route-group-multiple-root-layouts.avif"
+  width="100%"
+  height="auto"
 />
 
-In the example above, both `(marketing)` and `(shop)` have their own root layout.
+以上例子中, `(marketing)` 和 `(shop)` 有它们各自的根布局。
 
 ---
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - The naming of route groups has no special significance other than for organization. They do not affect the URL path.
-> - Routes that include a route group **should not** resolve to the same URL path as other routes. For example, since route groups don't affect URL structure, `(marketing)/about/page.js` and `(shop)/about/page.js` would both resolve to `/about` and cause an error.
-> - If you use multiple root layouts without a top-level `layout.js` file, your home `page.js` file should be defined in one of the route groups, For example: `app/(marketing)/page.js`.
-> - Navigating **across multiple root layouts** will cause a **full page load** (as opposed to a client-side navigation). For example, navigating from `/cart` that uses `app/(shop)/layout.js` to `/blog` that uses `app/(marketing)/layout.js` will cause a full page load. This **only** applies to multiple root layouts.
+> - 除了对组织管理而言，路由组的命名没有特别的意义。它们不会影响 URL 路径。
+> - 包含路由组的路由不应该与其它路由解析为相同的 URL 路径。例如，因为路由组不影响 URL 结构， `(marketing)/about/page.js` 和 `(shop)/about/page.js`都会解析为`/about`并导致错误。
+> - 如果您使用没有顶级`layout.js`文件的多个根布局，则应该在其中一个路由组中定义主`page.js` 文件,例如：`app/(marketing)/page.js`.
+> - **在多个根布局间**导航会导致**整个页面加载** (与客户端导航相反)。 例如, 从使用`app/(shop)/layout.js`的`/cart`导航到使用`app/(marketing)/layout.js`的`/blog`会导致整个页面加载。这**仅**适用于多个根布局。

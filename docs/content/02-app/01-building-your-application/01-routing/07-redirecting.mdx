@@ -1,6 +1,6 @@
 ---
-title: Redirecting
-description: Learn the different ways to handle redirects in Next.js.
+title: 重定向
+description: 了解在Next.js中处理重定向的不同方式
 related:
   links:
     - app/api-reference/functions/redirect
@@ -9,37 +9,21 @@ related:
     - app/api-reference/next-config-js/redirects
 ---
 
-There are a few ways you can handle redirects in Next.js. This page will go through each available option, use cases, and how to manage large numbers of redirects.
+在 Next.js 中有几种方式可以处理重定向。本页会介绍每个可选项、用例和如何管理大量重定向。
 
-<AppOnly>
-
-| API                                                            | Purpose                                           | Where                                             | Status Code                            |
-| -------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | -------------------------------------- |
-| [`redirect`](#redirect-function)                               | Redirect user after a mutation or event           | Server Components, Server Actions, Route Handlers | 307 (Temporary) or 303 (Server Action) |
-| [`permanentRedirect`](#permanentredirect-function)             | Redirect user after a mutation or event           | Server Components, Server Actions, Route Handlers | 308 (Permanent)                        |
-| [`useRouter`](#userouter-hook)                                 | Perform a client-side navigation                  | Event Handlers in Client Components               | N/A                                    |
-| [`redirects` in `next.config.js`](#redirects-in-nextconfigjs)  | Redirect an incoming request based on a path      | `next.config.js` file                             | 307 (Temporary) or 308 (Permanent)     |
-| [`NextResponse.redirect`](#nextresponseredirect-in-middleware) | Redirect an incoming request based on a condition | Middleware                                        | Any                                    |
-
-</AppOnly>
-
-<PagesOnly>
-
-| API                                                            | Purpose                                           | Where                 | Status Code                        |
-| -------------------------------------------------------------- | ------------------------------------------------- | --------------------- | ---------------------------------- |
-| [`useRouter`](#userouter-hook)                                 | Perform a client-side navigation                  | Components            | N/A                                |
-| [`redirects` in `next.config.js`](#redirects-in-nextconfigjs)  | Redirect an incoming request based on a path      | `next.config.js` file | 307 (Temporary) or 308 (Permanent) |
-| [`NextResponse.redirect`](#nextresponseredirect-in-middleware) | Redirect an incoming request based on a condition | Middleware            | Any                                |
-
-</PagesOnly>
-
-<AppOnly>
+| API                                                            | Purpose                  | Where                                | Status Code                      |
+| -------------------------------------------------------------- | ------------------------ | ------------------------------------ | -------------------------------- |
+| [`redirect`](#redirect-function)                               | 在突变或事件后重定向用户 | 服务器组件，服务器操作，路由处理程序 | 307 (暂时的) 或 303 (服务器操作) |
+| [`permanentRedirect`](#permanentredirect-function)             | 在突变或事件后重定向用户 | 服务器组件，服务器操作，路由处理程序 | 308 (永久的)                     |
+| [`useRouter`](#userouter-hook)                                 | 执行客户端导航           | 客户端组件中的事件处理程序           | N/A                              |
+| [`redirects` in `next.config.js`](#redirects-in-nextconfigjs)  | 根据路径重定向传入请求   | `next.config.js` file                | 307 (暂时的) or 308 (永久的)     |
+| [`NextResponse.redirect`](#nextresponseredirect-in-middleware) | 根据状态重定向传入请求   | Middleware                           | Any                              |
 
 ## `redirect` function
 
-The `redirect` function allows you to redirect the user to another URL. You can call `redirect` in [Server Components](/docs/content/app/building-your-application/rendering/server-components), [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers), and [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations).
+The `redirect` function 让您将用户重定向到其它 URL。您能够在[服务器组件](/docs/content/app/building-your-application/rendering/server-components), [路由处理器](/docs/content/app/building-your-application/routing/route-handlers), 和 [服务器操作](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)中调用`redirect`。
 
-`redirect` is often used after a mutation or event. For example, creating a post:
+经常在突变或事件后使用`redirect`。如：创建帖子:
 
 ```tsx filename="app/actions.tsx" switcher
 "use server";
@@ -77,21 +61,21 @@ export async function createPost(id) {
 }
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - `redirect` returns a 307 (Temporary Redirect) status code by default. When used in a Server Action, it returns a 303 (See Other), which is commonly used for redirecting to a success page as a result of a POST request.
-> - `redirect` internally throws an error so it should be called outside of `try/catch` blocks.
-> - `redirect` can be called in Client Components during the rendering process but not in event handlers. You can use the [`useRouter` hook](#userouter-hook) instead.
-> - `redirect` also accepts absolute URLs and can be used to redirect to external links.
-> - If you'd like to redirect before the render process, use [`next.config.js`](#redirects-in-nextconfigjs) or [Middleware](#nextresponseredirect-in-middleware).
+> - `redirect` 在默认情况下会返回一个 307(暂时重定向)状态码。当在服务器操作中使用时, 会返回 303 (请参阅其它)状态码, 其通常作为 POST 请求重定向到成功页的结果。
+> - `redirect` 内部抛出错误，因此要在`try/catch`外调用它。
+> - `redirect`可能会在渲染过程中而不是事件处理程序期间在客户端组件中调用。您可以使用[`useRouter` hook](#userouter-hook) 代替.
+> - `redirect` 也接受绝对路径，并且重定向到外部链接。
+> - 如果您想在渲染程序之前重定向, 使用 [`next.config.js`](#redirects-in-nextconfigjs) 或 [Middleware](#nextresponseredirect-in-middleware).
 
-See the [`redirect` API reference](/docs/content/app/api-reference/functions/redirect) for more information.
+参阅 [`redirect` API reference](/docs/content/app/api-reference/functions/redirect) 获取更多信息。
 
 ## `permanentRedirect` function
 
-The `permanentRedirect` function allows you to **permanently** redirect the user to another URL. You can call `permanentRedirect` in [Server Components](/docs/content/app/building-your-application/rendering/server-components), [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers), and [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations).
+The `permanentRedirect` function 让您将用户**永久**重定向到其它 URL。你能够在[服务器组件](/docs/content/app/building-your-application/rendering/server-components), [路由处理程序](/docs/content/app/building-your-application/routing/route-handlers), 和 [服务器操作](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)中调用`permanentRedirect`。
 
-`permanentRedirect` is often used after a mutation or event that changes an entity's canonical URL, such as updating a user's profile URL after they change their username:
+`permanentRedirect`常常在改变了实体的规范 URL 的突变或事件后使用,如： 在用户更改了用户名后更新用户的个人资料 URL:
 
 ```tsx filename="app/actions.ts" switcher
 "use server";
@@ -129,21 +113,17 @@ export async function updateUsername(username, formData) {
 }
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - `permanentRedirect` returns a 308 (permanent redirect) status code by default.
-> - `permanentRedirect` also accepts absolute URLs and can be used to redirect to external links.
-> - If you'd like to redirect before the render process, use [`next.config.js`](#redirects-in-nextconfigjs) or [Middleware](#nextresponseredirect-in-middleware).
+> - `permanentRedirect` 在默认情况下返回 308 (永久重定向) 状态码。
+> - `permanentRedirect` 也接受绝对路径和重定向到外部的链接。
+> - 如果您想在渲染过程前重定向, 使用[`next.config.js`](#redirects-in-nextconfigjs) 或 [Middleware](#nextresponseredirect-in-middleware).
 
-See the [`permanentRedirect` API reference](/docs/content/app/api-reference/functions/permanentRedirect) for more information.
-
-</AppOnly>
+参阅[`permanentRedirect` API reference](/docs/content/app/api-reference/functions/permanentRedirect)获取更多信息。
 
 ## `useRouter()` hook
 
-<AppOnly>
-
-If you need to redirect inside an event handler in a Client Component, you can use the `push` method from the `useRouter` hook. For example:
+如果您需要在客户端组件中的事件处理程序内进行重定向，您能够使用`useRouter` hook 中的`push` 方法。例如:
 
 ```tsx filename="app/page.tsx" switcher
 "use client";
@@ -176,66 +156,20 @@ export default function Page() {
   );
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-If you need to redirect inside a component, you can use the `push` method from the `useRouter` hook. For example:
-
-```tsx filename="app/page.tsx" switcher
-import { useRouter } from "next/router";
-
-export default function Page() {
-  const router = useRouter();
-
-  return (
-    <button type="button" onClick={() => router.push("/dashboard")}>
-      Dashboard
-    </button>
-  );
-}
-```
-
-```jsx filename="app/page.js" switcher
-import { useRouter } from "next/router";
-
-export default function Page() {
-  const router = useRouter();
-
-  return (
-    <button type="button" onClick={() => router.push("/dashboard")}>
-      Dashboard
-    </button>
-  );
-}
-```
-
-</PagesOnly>
 
 > **Good to know**:
 >
-> - If you don't need to programmatically navigate a user, you should use a [`<Link>`](/docs/content/app/api-reference/components/link) component.
+> - 如果您不需要以编程方式导航用户, 您应该使用[`<Link>`](/docs/content/app/api-reference/components/link)组件。
 
-<AppOnly>
-
-See the [`useRouter` API reference](/docs/content/app/api-reference/functions/use-router) for more information.
-
-</AppOnly>
-
-<PagesOnly>
-
-See the [`useRouter` API reference](/docs/content/pages/api-reference/functions/use-router) for more information.
-
-</PagesOnly>
+参阅[`useRouter` API reference](/docs/content/app/api-reference/functions/use-router)获取更多信息。
 
 ## `redirects` in `next.config.js`
 
-The `redirects` option in the `next.config.js` file allows you to redirect an incoming request path to a different destination path. This is useful when you change the URL structure of pages or have a list of redirects that are known ahead of time.
+`next.config.js` 文件中的`redirects`选项允许您将传入的请求路径重定向到不同的地址路径。这在您改变页面的 URL 结构或提前知道重定向列表的时候极为有用。
 
-`redirects` supports [path](/docs/content/app/api-reference/next-config-js/redirects#path-matching), [header, cookie, and query matching](/docs/content/app/api-reference/next-config-js/redirects#header-cookie-and-query-matching), giving you the flexibility to redirect users based on an incoming request.
+`redirects` 支持 [path](/docs/content/app/api-reference/next-config-js/redirects#path-matching), [header, cookie, 和 query matching](/docs/content/app/api-reference/next-config-js/redirects#header-cookie-and-query-matching), 使您能够根据传入的请求灵活地重定向到用户。
 
-To use `redirects`, add the option to your `next.config.js` file:
+要使用`redirects`, 请在`next.config.js` 文件中添加此选项：
 
 ```js filename="next.config.js"
 module.exports = {
@@ -258,19 +192,13 @@ module.exports = {
 };
 ```
 
-See the [`redirects` API reference](/docs/content/app/api-reference/next-config-js/redirects) for more information.
-
-> **Good to know**:
->
-> - `redirects` can return a 307 (Temporary Redirect) or 308 (Permanent Redirect) status code with the `permanent` option.
-> - `redirects` may have a limit on platforms. For example, on Vercel, there's a limit of 1,024 redirects. To manage a large number of redirects (1000+), consider creating a custom solution using [Middleware](/docs/content/app/building-your-application/routing/middleware). See [managing redirects at scale](#managing-redirects-at-scale-advanced) for more.
-> - `redirects` runs **before** Middleware.
+参阅[`redirects` API reference](/docs/content/app/api-reference/next-config-js/redirects)获取更多信息。
 
 ## `NextResponse.redirect` in Middleware
 
-Middleware allows you to run code before a request is completed. Then, based on the incoming request, redirect to a different URL using `NextResponse.redirect`. This is useful if you want to redirect users based on a condition (e.g. authentication, session management, etc) or have [a large number of redirects](#managing-redirects-at-scale-advanced).
+Middleware 允许您在请求完成前运行代码。然后，基于传入的请求, 使用`NextResponse.redirect`重定向到不同的 URL。这在您想基于状态重定向用户时非常有用，如： (e.g. authentication, session management, 等) 或有 [大量重定向](#managing-redirects-at-scale-advanced).
 
-For example, to redirect the user to a `/login` page if they are not authenticated:
+例如, 如果用户身份认证失败，将用户重定向到`/login`页面:
 
 ```tsx filename="middleware.ts" switcher
 import { NextResponse, NextRequest } from "next/server";
@@ -314,28 +242,26 @@ export const config = {
 };
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - Middleware runs **after** `redirects` in `next.config.js` and **before** rendering.
+> - Middleware 在`next.config.js`的`redirects`之后、渲染之前运行。
 
-See the [Middleware](/docs/content/app/building-your-application/routing/middleware) documentation for more information.
+参阅[Middleware](/docs/content/app/building-your-application/routing/middleware) 文档获取更多信息。
 
-## Managing redirects at scale (advanced)
+## 大规模管理重定向(高级)
 
-To manage a large number of redirects (1000+), you may consider creating a custom solution using Middleware. This allows you to handle redirects programmatically without having to redeploy your application.
+为了大规模管理重定向(1000+), 您可以考虑使用 Middleware 来创建自定义解决方案。这允许您在无需重新部署应用程序的条件下以编程方式处理重定向。
 
-To do this, you'll need to consider:
+为此,您需要考虑:
 
-1. Creating and storing a redirect map.
-2. Optimizing data lookup performance.
+1. 创建和存储重定向映射。
+2. 优化数据查找性能。
 
-> **Next.js Example**: See our [Middleware with Bloom filter](https://redirects-bloom-filter.vercel.app/) example for an implementation of the recommendations below.
+### 1. 创建和存储重定向映射。
 
-### 1. Creating and storing a redirect map
+重定向映射是可以存储在数据库（通常是键值对存储）或 JSON 文件中的重定向列表。
 
-A redirect map is a list of redirects that you can store in a database (usually a key-value store) or JSON file.
-
-Consider the following data structure:
+考虑以下数据结构:
 
 ```json
 {
@@ -350,7 +276,7 @@ Consider the following data structure:
 }
 ```
 
-In [Middleware](/docs/content/app/building-your-application/routing/middleware), you can read from a database such as Vercel's [Edge Config](https://vercel.com/docs/storage/edge-config/get-started?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) or [Redis](https://vercel.com/docs/storage/vercel-kv?utm_source=next-site&utm_medium=docs&utm_campaign=next-website), and redirect the user based on the incoming request:
+在[Middleware](/docs/content/app/building-your-application/routing/middleware)中, 您能够从 Vercel 数据库的[Edge Config](https://vercel.com/docs/storage/edge-config/get-started?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) 或 [Redis](https://vercel.com/docs/storage/vercel-kv?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)中读取, 并基于传入的请求重定向用户:
 
 ```tsx filename="middleware.ts" switcher
 import { NextResponse, NextRequest } from "next/server";
@@ -395,16 +321,16 @@ export async function middleware(request) {
 }
 ```
 
-### 2. Optimizing data lookup performance
+### 2. 优化数据查找性能
 
-Reading a large dataset for every incoming request can be slow and expensive. There are two ways you can optimize data lookup performance:
+为每个传入请求读取大型数据集可能是缓慢的并成本很高。有两种方式可以优化数据查找性能:
 
-- Use a database that is optimized for fast reads, such as [Vercel Edge Config](https://vercel.com/docs/storage/edge-config/get-started?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) or [Redis](https://vercel.com/docs/storage/vercel-kv?utm_source=next-site&utm_medium=docs&utm_campaign=next-website).
-- Use a data lookup strategy such as a [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) to efficiently check if a redirect exists **before** reading the larger redirects file or database.
+- 使用针对读取而进行优化了的数据集, 例如[Vercel Edge Config](https://vercel.com/docs/storage/edge-config/get-started?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) 或 [Redis](https://vercel.com/docs/storage/vercel-kv?utm_source=next-site&utm_medium=docs&utm_campaign=next-website).
+- 使用数据查找策略，例如[Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter)在读取较大的重定向文件或数据集前高效地检查是否存在重定向。
 
-Considering the previous example, you can import a generated bloom filter file into Middleware, then, check if the incoming request pathname exists in the bloom filter.
+考虑到前面的实力, 您能够将生成的 bloom filter file 引入到 Middleware 中, 然后, 核对在 bloom filter 中是否存在传入的请求路径名。
 
-If it does, forward the request to a <AppOnly>[Route Handler](/docs/content/app/building-your-application/routing/route-handlers)</AppOnly> <PagesOnly>[API Routes](/docs/content/pages/building-your-application/routing/api-routes)</PagesOnly> which will check the actual file and redirect the user to the appropriate URL. This avoids importing a large redirects file into Middleware, which can slow down every incoming request.
+如果存在, 将请求转发到[Route Handler](/docs/content/app/building-your-application/routing/route-handlers)，它会核查实际文件并将用户重定向到合适的 URL。这会避免在 Middleware 中引入减慢传入请求的大量的重定向文件。
 
 ```tsx filename="middleware.ts" switcher
 import { NextResponse, NextRequest } from "next/server";
@@ -502,9 +428,7 @@ export async function middleware(request) {
 }
 ```
 
-<AppOnly>
-
-Then, in the Route Handler:
+然后, 在路由处理程序中:
 
 ```tsx filename="app/redirects/route.ts" switcher
 import { NextRequest, NextResponse } from "next/server";
@@ -557,65 +481,7 @@ export function GET(request) {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-Then, in the API Route:
-
-```tsx filename="pages/api/redirects.ts" switcher
-import type { NextApiRequest, NextApiResponse } from "next";
-import redirects from "@/app/redirects/redirects.json";
-
-type RedirectEntry = {
-  destination: string;
-  permanent: boolean;
-};
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const pathname = req.query.pathname;
-  if (!pathname) {
-    return res.status(400).json({ message: "Bad Request" });
-  }
-
-  // Get the redirect entry from the redirects.json file
-  const redirect = (redirects as Record<string, RedirectEntry>)[pathname];
-
-  // Account for bloom filter false positives
-  if (!redirect) {
-    return res.status(400).json({ message: "No redirect" });
-  }
-
-  // Return the redirect entry
-  return res.json(redirect);
-}
-```
-
-```js filename="pages/api/redirects.js" switcher
-import redirects from "@/app/redirects/redirects.json";
-
-export default function handler(req, res) {
-  const pathname = req.query.pathname;
-  if (!pathname) {
-    return res.status(400).json({ message: "Bad Request" });
-  }
-
-  // Get the redirect entry from the redirects.json file
-  const redirect = redirects[pathname];
-
-  // Account for bloom filter false positives
-  if (!redirect) {
-    return res.status(400).json({ message: "No redirect" });
-  }
-
-  // Return the redirect entry
-  return res.json(redirect);
-}
-```
-
-</PagesOnly>
-
-> **Good to know:**
+> **您需要知道:**
 >
-> - To generate a bloom filter, you can use a library like [`bloom-filters`](https://www.npmjs.com/package/bloom-filters).
-> - You should validate requests made to your Route Handler to prevent malicious requests.
+> - 你能够使用类似于[`bloom-filters`](https://www.npmjs.com/package/bloom-filters)的库来生成 bloom filter.
+> - 您应该验证向路由处理程序发出的请求以预防恶意请求。

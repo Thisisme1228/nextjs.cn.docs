@@ -1,18 +1,18 @@
 ---
-title: Internationalization
-description: Add support for multiple languages with internationalized routing and localized content.
+title: 国际化
+description: 使用国际化路由和本地化内容为多种语言提供支持。
 ---
 
-Next.js enables you to configure the routing and rendering of content to support multiple languages. Making your site adaptive to different locales includes translated content (localization) and internationalized routes.
+Next.js 使您能够配置路由和内容渲染来支持多种语言。使您的站点适应包括翻译内容(本地化)和国际化路由的不同的地域。
 
-## Terminology
+## 术语
 
-- **Locale:** An identifier for a set of language and formatting preferences. This usually includes the preferred language of the user and possibly their geographic region.
-  - `en-US`: English as spoken in the United States
-  - `nl-NL`: Dutch as spoken in the Netherlands
-  - `nl`: Dutch, no specific region
+- **Locale:** 一组语言和格式首选项的标识符。这通常包括用户首选的语言，还可能包括他们的地理区域。
+  - `en-US`: 美式英语
+  - `nl-NL`: 荷兰语
+  - `nl`: 荷兰语，没有特定地区
 
-## Routing Overview
+## 路由概述
 
 It’s recommended to use the user’s language preferences in the browser to select which locale to use. Changing your preferred language will modify the incoming `Accept-Language` header to your application.
 
