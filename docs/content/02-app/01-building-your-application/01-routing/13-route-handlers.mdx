@@ -150,7 +150,7 @@ export const revalidate = 60;
 
 #### Cookies
 
-您能够读取或设置`next/headers`中的[`cookies`](/docs/content/app/api-reference/functions/cookies)。可以在路由处理程序中调用或在其它函数中嵌套这个服务器函数。
+您能够读取或设置`next/headers`中的[`cookies`](/docs/content/app/api-reference/functions/cookies)。可以在路由处理程序中直接调用或在其它函数中嵌套这个服务器函数。
 
 或者, 您能够使用[`Set-Cookie`](https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie) header，返回一个新的 `Response`。
 
@@ -182,7 +182,7 @@ export async function GET(request) {
 }
 ```
 
-You can also use the underlying Web APIs to read cookies from the request ([`NextRequest`](/docs/content/app/api-reference/functions/next-request)):
+您可以使用底层的 Web APIs 来读取([`NextRequest`](/docs/content/app/api-reference/functions/next-request))request 中的 cookies：
 
 ```ts filename="app/api/route.ts" switcher
 import { type NextRequest } from "next/server";
@@ -200,9 +200,9 @@ export async function GET(request) {
 
 #### Headers
 
-You can read headers with [`headers`](/docs/content/app/api-reference/functions/headers) from `next/headers`. This server function can be called directly in a Route Handler, or nested inside of another function.
+你能够使用`next/headers`中的[`headers`](/docs/content/app/api-reference/functions/headers)来读取 headers。可以在路由处理程序中直接调用或在其它函数中嵌套这个服务器函数。
 
-This `headers` instance is read-only. To set headers, you need to return a new `Response` with new `headers`.
+`headers`实例是只读的。为了设置 headers,您需要使用 new `headers`返回一个新的`Response`。
 
 ```ts filename="app/api/route.ts" switcher
 import { headers } from "next/headers";
@@ -232,7 +232,7 @@ export async function GET(request) {
 }
 ```
 
-You can also use the underlying Web APIs to read headers from the request ([`NextRequest`](/docs/content/app/api-reference/functions/next-request)):
+您也可以使用底层的 Web APIs 来读取([`NextRequest`](/docs/content/app/api-reference/functions/next-request))request 中的 headers:
 
 ```ts filename="app/api/route.ts" switcher
 import { type NextRequest } from "next/server";
@@ -266,11 +266,11 @@ export async function GET(request) {
 }
 ```
 
-### Dynamic Route Segments
+### 动态路由段
 
-> We recommend reading the [Defining Routes](/docs/content/app/building-your-application/routing/defining-routes) page before continuing.
+> 我们推荐您阅读[自定义路由](/docs/content/app/building-your-application/routing/defining-routes)页面后再继续。
 
-Route Handlers can use [Dynamic Segments](/docs/content/app/building-your-application/routing/dynamic-routes) to create request handlers from dynamic data.
+路由处理程序可以使用[动态段](/docs/content/app/building-your-application/routing/dynamic-routes) 创建来自动态数据的请求处理程序。
 
 ```ts filename="app/items/[slug]/route.ts" switcher
 export async function GET(
@@ -293,9 +293,9 @@ export async function GET(request, { params }) {
 | `app/items/[slug]/route.js` | `/items/b`  | `{ slug: 'b' }` |
 | `app/items/[slug]/route.js` | `/items/c`  | `{ slug: 'c' }` |
 
-### URL Query Parameters
+### URL 查询参数
 
-The request object passed to the Route Handler is a `NextRequest` instance, which has [some additional convenience methods](/docs/content/app/api-reference/functions/next-request#nexturl), including for more easily handling query parameters.
+传递到路由处理程序的请求对象是一个`NextRequest` 实例, 它有 [一些额外的便捷方式](/docs/content/app/api-reference/functions/next-request#nexturl), 包括更轻松地处理查询参数。
 
 ```ts filename="app/api/search/route.ts" switcher
 import { type NextRequest } from "next/server";
@@ -315,9 +315,9 @@ export function GET(request) {
 }
 ```
 
-### Streaming
+### 流
 
-Streaming is commonly used in combination with Large Language Models (LLMs), such as OpenAI, for AI-generated content. Learn more about the [AI SDK](https://sdk.vercel.ai/docs/introduction).
+流通常与 Large Language Models (LLMs)结合使用, 例如用于人工智能生成的内容 OpenAI。了解更多有关[AI SDK](https://sdk.vercel.ai/docs/introduction).
 
 ```ts filename="app/api/chat/route.ts" switcher
 import { openai } from "@ai-sdk/openai";
@@ -349,7 +349,7 @@ export async function POST(req: Request) {
 }
 ```
 
-These abstractions use the Web APIs to create a stream. You can also use the underlying Web APIs directly.
+这些摘要使用 Web APIs 创建流。 您也可以直接使用底层 Web APIs 创建。
 
 ```ts filename="app/api/route.ts" switcher
 // https://developer.mozilla.org/docs/Web/API/ReadableStream#convert_async_iterator_to_stream
@@ -431,9 +431,9 @@ export async function GET() {
 }
 ```
 
-### Request Body
+### 请求体
 
-You can read the `Request` body using the standard Web API methods:
+您可以使用标准的 Web API 方法来读取`请求`体：
 
 ```ts filename="app/items/route.ts" switcher
 export async function POST(request: Request) {
@@ -449,9 +449,9 @@ export async function POST(request) {
 }
 ```
 
-### Request Body FormData
+### 请求体 FormData
 
-You can read the `FormData` using the `request.formData()` function:
+您可以使用`request.formData()` function 来读取`FormData`:
 
 ```ts filename="app/items/route.ts" switcher
 export async function POST(request: Request) {
@@ -471,11 +471,11 @@ export async function POST(request) {
 }
 ```
 
-Since `formData` data are all strings, you may want to use [`zod-form-data`](https://www.npmjs.com/zod-form-data) to validate the request and retrieve data in the format you prefer (e.g. `number`).
+因为 `formData` 数据都是字符串, 您可能想用[`zod-form-data`](https://www.npmjs.com/zod-form-data) 来按照您偏好的形式验证请求和检索数据 (例如`number`)。
 
 ### CORS
 
-You can set CORS headers for a specific Route Handler using the standard Web API methods:
+您可以使用标准的 Web API 方法为特定的路由处理程序设置 CORS headers。
 
 ```ts filename="app/api/route.ts" switcher
 export async function GET(request: Request) {
@@ -503,14 +503,14 @@ export async function GET(request) {
 }
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - To add CORS headers to multiple Route Handlers, you can use [Middleware](/docs/content/app/building-your-application/routing/middleware#cors) or the [`next.config.js` file](/docs/content/app/api-reference/next-config-js/headers#cors).
+> - 为了向多个路由处理程序添加 CORS headers, 您可以使用[Middleware](/docs/content/app/building-your-application/routing/middleware#cors) 或[`next.config.js` 文件](/docs/content/app/api-reference/next-config-js/headers#cors)。
 > - Alternatively, see our [CORS example](https://github.com/vercel/examples/blob/main/edge-functions/cors/lib/cors.ts) package.
 
 ### Webhooks
 
-You can use a Route Handler to receive webhooks from third-party services:
+您可以使用路由处理程序来接收第三方服务的 webhooks。
 
 ```ts filename="app/api/route.ts" switcher
 export async function POST(request: Request) {
@@ -546,11 +546,11 @@ export async function POST(request) {
 }
 ```
 
-Notably, unlike API Routes with the Pages Router, you do not need to use `bodyParser` to use any additional configuration.
+最主要的是, 不同于使用 Pages router 的 API Routes, 您无需使用`bodyParser`做任何其它配置。
 
-### Non-UI Responses
+### 非 UI 响应
 
-You can use Route Handlers to return non-UI content. Note that [`sitemap.xml`](/docs/content/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts), [`robots.txt`](/docs/content/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file), [`app icons`](/docs/content/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx), and [open graph images](/docs/content/app/api-reference/file-conventions/metadata/opengraph-image) all have built-in support.
+您可以使用路由处理程序返回非 UI 的内容。请注意[`sitemap.xml`](/docs/content/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts), [`robots.txt`](/docs/content/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file), [`app icons`](/docs/content/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx), 和 [open graph images](/docs/content/app/api-reference/file-conventions/metadata/opengraph-image)都具有内置支持。
 
 ```ts filename="app/rss.xml/route.ts" switcher
 export async function GET() {
@@ -589,9 +589,9 @@ export async function GET() {
 }
 ```
 
-### Segment Config Options
+### 段配置选项
 
-Route Handlers use the same [route segment configuration](/docs/content/app/api-reference/file-conventions/route-segment-config) as pages and layouts.
+路由处理程序使用与页面和布局相同的[路由段配置](/docs/content/app/api-reference/file-conventions/route-segment-config)。
 
 ```ts filename="app/items/route.ts" switcher
 export const dynamic = "auto";
@@ -611,4 +611,4 @@ export const runtime = "nodejs";
 export const preferredRegion = "auto";
 ```
 
-See the [API reference](/docs/content/app/api-reference/file-conventions/route-segment-config) for more details.
+参阅[API reference](/docs/content/app/api-reference/file-conventions/route-segment-config)获取更多信息。
