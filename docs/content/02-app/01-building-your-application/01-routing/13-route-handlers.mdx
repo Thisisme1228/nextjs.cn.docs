@@ -1,6 +1,6 @@
 ---
-title: Route Handlers
-description: Create custom request handlers for a given route using the Web's Request and Response APIs.
+title: 路由处理程序
+description: 使用Web请求和响应APIs为指定的路由创建自定义请求处理程序。
 related:
   title: API Reference
   description: Learn more about the route.js file.
@@ -8,21 +8,20 @@ related:
     - app/api-reference/file-conventions/route
 ---
 
-Route Handlers allow you to create custom request handlers for a given route using the Web [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs.
+路由处理程序允许您使用 Web[请求](https://developer.mozilla.org/docs/Web/API/Request) 和 [响应](https://developer.mozilla.org/docs/Web/API/Response) APIs 为指定的路由创建自定义请求处理程序。
 
 <img
   alt="Route.js Special File"
-  srcLight="/docs/light/route-special-file.png"
-  srcDark="/docs/dark/route-special-file.png"
-  width="1600"
-  height="444"
+  src="/route-special-file.avif"
+  width="100%"
+  height="auto"
 />
 
-> **Good to know**: Route Handlers are only available inside the `app` directory. They are the equivalent of [API Routes](/docs/content/pages/building-your-application/routing/api-routes) inside the `pages` directory meaning you **do not** need to use API Routes and Route Handlers together.
+> **您需要知道**: 路由处理程序仅在`app`目录内部可用。它们等同于`pages`目录中的[API Routes](/docs/content/pages/building-your-application/routing/api-routes)，意味着您**不**需要将 API Routes 和 Route 处理程序一起使用。
 
-## Convention
+## 公约
 
-Route Handlers are defined in a [`route.js|ts` file](/docs/content/app/api-reference/file-conventions/route) inside the `app` directory:
+在`app`目录的[`route.js|ts` 文件](/docs/content/app/api-reference/file-conventions/route)中定义路由处理程序：
 
 ```ts filename="app/api/route.ts" switcher
 export async function GET(request: Request) {}
@@ -32,21 +31,21 @@ export async function GET(request: Request) {}
 export async function GET(request) {}
 ```
 
-Route Handlers can be nested anywhere inside the `app` directory, similar to `page.js` and `layout.js`. But there **cannot** be a `route.js` file at the same route segment level as `page.js`.
+类似于`page.js` 和 `layout.js`，可以在任何`app`目录中嵌套路由处理程序。但是 route.js 文件不能和 page.js 在同一个路由段级别。
 
-### Supported HTTP Methods
+### 支持 HTTP 方法
 
-The following [HTTP methods](https://developer.mozilla.org/docs/Web/HTTP/Methods) are supported: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, and `OPTIONS`. If an unsupported method is called, Next.js will return a `405 Method Not Allowed` response.
+支持下列[HTTP 方法](https://developer.mozilla.org/docs/Web/HTTP/Methods): `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, 和 `OPTIONS`。如果调用了不受支持的方法，Next.js 将会 return`不被支持的405`响应。
 
-### Extended `NextRequest` and `NextResponse` APIs
+### 扩展了的 `NextRequest` 和 `NextResponse` APIs
 
-In addition to supporting the native [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs, Next.js extends them with [`NextRequest`](/docs/content/app/api-reference/functions/next-request) and [`NextResponse`](/docs/content/app/api-reference/functions/next-response) to provide convenient helpers for advanced use cases.
+除了支持原有的[请求](https://developer.mozilla.org/docs/Web/API/Request) 和 [响应](https://developer.mozilla.org/docs/Web/API/Response) APIs, Next.js 用[`NextRequest`](/docs/content/app/api-reference/functions/next-request) 和 [`NextResponse`](/docs/content/app/api-reference/functions/next-response)扩展它们来为高级用例提供方便的帮手。
 
-## Behavior
+## 行为
 
-### Caching
+### 缓存
 
-Route Handlers are not cached by default. You can, however, opt into caching for `GET` methods. To do so, use a [route config option](/docs/content/app/api-reference/file-conventions/route-segment-config#dynamic) such as `export const dynamic = 'force-static'` in your Route Handler file.
+默认情况下，不会缓存路由处理程序。然而，您能够对`GET`方法进行缓存。要做到这一点, 请在路由处理文件中使用[路由配置选项](/docs/content/app/api-reference/file-conventions/route-segment-config#dynamic)，如`export const dynamic = 'force-static'`。
 
 ```ts filename="app/items/route.ts" switcher
 export const dynamic = "force-static";
@@ -80,24 +79,24 @@ export async function GET() {
 }
 ```
 
-### Special Route Handlers
+### 特殊的路由处理程序
 
-Special Route Handlers like [`sitemap.ts`](/docs/content/app/api-reference/file-conventions/metadata/sitemap), [`opengraph-image.tsx`](/docs/content/app/api-reference/file-conventions/metadata/opengraph-image), and [`icon.tsx`](/docs/content/app/api-reference/file-conventions/metadata/app-icons), and other [metadata files](/docs/content/app/api-reference/file-conventions/metadata) remain static by default unless they use dynamic functions or dynamic config options.
+默认情况下，特殊的路由处理程序，如： [`sitemap.ts`](/docs/content/app/api-reference/file-conventions/metadata/sitemap), [`opengraph-image.tsx`](/docs/content/app/api-reference/file-conventions/metadata/opengraph-image), 和 [`icon.tsx`](/docs/content/app/api-reference/file-conventions/metadata/app-icons), 以及其它的 [metadata 文件](/docs/content/app/api-reference/file-conventions/metadata) 保持静态，除非它们使用动态函数或动态配置选项。
 
-### Route Resolution
+### 路由解析
 
-You can consider a `route` the lowest level routing primitive.
+您可以将`route`视为最底层的路由基础。
 
-- They **do not** participate in layouts or client-side navigations like `page`.
-- There **cannot** be a `route.js` file at the same route as `page.js`.
+- 它们**不**参与布局或像`page.js`的客户端导航。
+- 同一个路由上**不能**有`route.js`文件和`page.js`.
 
-| Page                 | Route              | Result                       |
-| -------------------- | ------------------ | ---------------------------- |
-| `app/page.js`        | `app/route.js`     | <Cross size={18} /> Conflict |
-| `app/page.js`        | `app/api/route.js` | <Check size={18} /> Valid    |
-| `app/[user]/page.js` | `app/api/route.js` | <Check size={18} /> Valid    |
+| Page                 | Route              | Result      |
+| -------------------- | ------------------ | ----------- |
+| `app/page.js`        | `app/route.js`     | ❌ Conflict |
+| `app/page.js`        | `app/api/route.js` | ✔️ Valid    |
+| `app/[user]/page.js` | `app/api/route.js` | ✔️ Valid    |
 
-Each `route.js` or `page.js` file takes over all HTTP verbs for that route.
+每个`route.js` 或 `page.js` 文件都接管该路由的所有 HTTP verbs。
 
 ```jsx filename="app/page.js"
 export default function Page() {
@@ -109,13 +108,13 @@ export default function Page() {
 export async function POST(request) {}
 ```
 
-## Examples
+## 例子
 
-The following examples show how to combine Route Handlers with other Next.js APIs and features.
+下列例子展示如何将路由处理程序和其它的 Next.js APIs 和特色结合使用。
 
-### Revalidating Cached Data
+### 重新验证缓存数据
 
-You can [revalidate cached data](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data) using the [`next.revalidate`](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data) option:
+您可以使用[`next.revalidate`](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data)选项[重新验证缓存数据](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data):
 
 ```ts filename="app/items/route.ts" switcher
 export async function GET() {
@@ -139,7 +138,7 @@ export async function GET() {
 }
 ```
 
-Alternatively, you can use the [`revalidate` segment config option](/docs/content/app/api-reference/file-conventions/route-segment-config#revalidate):
+或者, 您可以使用[`revalidate`段配置选项](/docs/content/app/api-reference/file-conventions/route-segment-config#revalidate):
 
 ```ts
 export const revalidate = 60;
@@ -147,13 +146,13 @@ export const revalidate = 60;
 
 ### Dynamic Functions
 
-Route Handlers can be used with dynamic functions from Next.js, like [`cookies`](/docs/content/app/api-reference/functions/cookies) and [`headers`](/docs/content/app/api-reference/functions/headers).
+路由处理程序可以和 Next.js 的 dynamic functions 一起使用, 像 [`cookies`](/docs/content/app/api-reference/functions/cookies) 和 [`headers`](/docs/content/app/api-reference/functions/headers)。，
 
 #### Cookies
 
-You can read or set cookies with [`cookies`](/docs/content/app/api-reference/functions/cookies) from `next/headers`. This server function can be called directly in a Route Handler, or nested inside of another function.
+您能够读取或设置`next/headers`中的[`cookies`](/docs/content/app/api-reference/functions/cookies)。可以在路由处理程序中调用或在其它函数中嵌套这个服务器函数。
 
-Alternatively, you can return a new `Response` using the [`Set-Cookie`](https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie) header.
+或者, 您能够使用[`Set-Cookie`](https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie) header，返回一个新的 `Response`。
 
 ```ts filename="app/api/route.ts" switcher
 import { cookies } from "next/headers";

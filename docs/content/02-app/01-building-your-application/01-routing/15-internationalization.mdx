@@ -14,9 +14,9 @@ Next.js 使您能够配置路由和内容渲染来支持多种语言。使您的
 
 ## 路由概述
 
-It’s recommended to use the user’s language preferences in the browser to select which locale to use. Changing your preferred language will modify the incoming `Accept-Language` header to your application.
+建议使用用户在浏览器中的语言首选项来选择要使用的语言区域。更改首选语言将会修改传入到您应用程序的`Accept-Language` header。
 
-For example, using the following libraries, you can look at an incoming `Request` to determine which locale to select, based on the `Headers`, locales you plan to support, and the default locale.
+例如，使用下列库，您可以查看基于`Headers`传入的 `请求`决定了要选择的语言设置，设置您计划支持和默认的语言区域。
 
 ```js filename="middleware.js"
 import { match } from "@formatjs/intl-localematcher";
@@ -30,7 +30,7 @@ let defaultLocale = "en-US";
 match(languages, locales, defaultLocale); // -> 'en-US'
 ```
 
-Routing can be internationalized by either the sub-path (`/fr/products`) or domain (`my-site.fr/products`). With this information, you can now redirect the user based on the locale inside [Middleware](/docs/content/app/building-your-application/routing/middleware).
+路由可以通过子路径(`/fr/products`)或域(`my-site.fr/products`)进行国际化。有了这些信息，您现在可以根据[Middleware](/docs/content/app/building-your-application/routing/middleware)内部的区域设置来重定向用户。
 
 ```js filename="middleware.js"
 import { NextResponse } from "next/server";
@@ -67,7 +67,7 @@ export const config = {
 }
 ```
 
-Finally, ensure all special files inside `app/` are nested under `app/[lang]`. This enables the Next.js router to dynamically handle different locales in the route, and forward the `lang` parameter to every layout and page. For example:
+最后，请确保将`app/`内的所有特殊文件嵌套在 `app/[lang]`中。这使 Next.js 路由能够动态处理路由中的不同区域设置，将' lang '参数转发到每个布局和页面。例如：
 
 ```jsx filename="app/[lang]/page.js"
 // You now have access to the current locale
@@ -77,13 +77,13 @@ export default async function Page({ params: { lang } }) {
 }
 ```
 
-The root layout can also be nested in the new folder (e.g. `app/[lang]/layout.js`).
+也可以将根布局嵌套在新文件夹中（如：`app/[lang]/layout.js`）。
 
-## Localization
+## 本地化
 
-Changing displayed content based on the user’s preferred locale, or localization, is not something specific to Next.js. The patterns described below would work the same with any web application.
+基于用户首选区域设置或本地化来改变展示的内容不是 Next.js 特有的。下面描述的模式适用于任何 Web 应用程序。
 
-Let’s assume we want to support both English and Dutch content inside our application. We might maintain two different “dictionaries”, which are objects that give us a mapping from some key to a localized string. For example:
+假设我们想在应用程序中支持英文和荷兰语内容。我们可能会维护两种不同的“字典”，它们是为我们提供从某个键到本地化字符串的映射的对象。例如：
 
 ```json filename="dictionaries/en.json"
 {
@@ -101,7 +101,7 @@ Let’s assume we want to support both English and Dutch content inside our appl
 }
 ```
 
-We can then create a `getDictionary` function to load the translations for the requested locale:
+然后，我们创建一个`getDictionary` function 来加载所请求语言环境的翻译。
 
 ```jsx filename="app/[lang]/dictionaries.js"
 import "server-only";
@@ -114,7 +114,7 @@ const dictionaries = {
 export const getDictionary = async (locale) => dictionaries[locale]();
 ```
 
-Given the currently selected language, we can fetch the dictionary inside of a layout or page.
+鉴于当前选择的语言，我们可以在布局或页面内获取字典。
 
 ```jsx filename="app/[lang]/page.js"
 import { getDictionary } from "./dictionaries";
@@ -125,11 +125,11 @@ export default async function Page({ params: { lang } }) {
 }
 ```
 
-Because all layouts and pages in the `app/` directory default to [Server Components](/docs/content/app/building-your-application/rendering/server-components), we do not need to worry about the size of the translation files affecting our client-side JavaScript bundle size. This code will **only run on the server**, and only the resulting HTML will be sent to the browser.
+因为在`app/`目录中所有布局和页面默认是[服务器组件](/docs/content/app/building-your-application/rendering/server-components)，所以我们不需要担心翻译文件的大小会影响客户端 JavaScript 包大小。此代码**只会在服务器上运行**，并且只有生成的 HTML 会发送到浏览器。
 
-## Static Generation
+## 静态生成
 
-To generate static routes for a given set of locales, we can use `generateStaticParams` with any page or layout. This can be global, for example, in the root layout:
+为了给一组指定的区域设置生成静态路由，我们可以将任何页面或布局和`generateStaticParams`一起使用。这可以是全局的，例如，在根布局中：
 
 ```jsx filename="app/[lang]/layout.js"
 export async function generateStaticParams() {
@@ -145,9 +145,9 @@ export default function Root({ children, params }) {
 }
 ```
 
-## Resources
+## 资源
 
-- [Minimal i18n routing and translations](https://github.com/vercel/next.js/tree/canary/examples/app-dir-i18n-routing)
+- [最小的 i18n 路由和翻译](https://github.com/vercel/next.js/tree/canary/examples/app-dir-i18n-routing)
 - [`next-intl`](https://next-intl-docs.vercel.app/docs/next-13)
 - [`next-international`](https://github.com/QuiiBz/next-international)
 - [`next-i18n-router`](https://github.com/i18nexus/next-i18n-router)

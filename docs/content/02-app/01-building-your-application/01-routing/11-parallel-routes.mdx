@@ -1,36 +1,34 @@
 ---
-title: Parallel Routes
-description: Simultaneously render one or more pages in the same view that can be navigated independently. A pattern for highly dynamic applications.
+title: 平行路由
+description: 在可独立导航的同一视图中同时渲染一个或多个页面。用于高度动态的应用程序模式。
 related:
   links:
     - app/api-reference/file-conventions/default
 ---
 
-Parallel Routes allows you to simultaneously or conditionally render one or more pages within the same layout. They are useful for highly dynamic sections of an app, such as dashboards and feeds on social sites.
+平行路由允许您在同一布局中同时或有条件地渲染一个或多个页面。它们对于应用的高度动态部分非常有用，例如社交网站的网站主页和源。
 
-For example, considering a dashboard, you can use parallel routes to simultaneously render the `team` and `analytics` pages:
+例如，考虑到仪表板，您可以使用平行路由来同时渲染`团队`和`分析`页面:
 
 <img
   alt="Parallel Routes Diagram"
-  srcLight="/docs/light/parallel-routes.png"
-  srcDark="/docs/dark/parallel-routes.png"
-  width="1600"
-  height="942"
+  src="/parallel-routes.avif"
+  width="100%"
+  height="auto"
 />
 
-## Slots
+## 插槽
 
-Parallel routes are created using named **slots**. Slots are defined with the `@folder` convention. For example, the following file structure defines two slots: `@analytics` and `@team`:
+平行路由是使用命名的**插槽**创建的。插槽按`@folder`约定来定义。例如，下列文件结构定义了两个插槽 ：`@analytics` 和 `@team`:
 
 <img
   alt="Parallel Routes File-system Structure"
-  srcLight="/docs/light/parallel-routes-file-system.png"
-  srcDark="/docs/dark/parallel-routes-file-system.png"
-  width="1600"
-  height="687"
+  src="/parallel-routes-file-system.avif"
+  width="100%"
+  height="auto"
 />
 
-Slots are passed as props to the shared parent layout. For the example above, the component in `app/layout.js` now accepts the `@analytics` and `@team` slots props, and can render them in parallel alongside the `children` prop:
+插槽作为属性传递到共享的父布局。对于上面的示例，`app/layout.js`中的组件目前接收`@analytics` 和 `@team`插槽属性，并能够将它们与`children`属性进行平行渲染：
 
 ```tsx filename="app/layout.tsx" switcher
 export default function Layout({
@@ -64,46 +62,45 @@ export default function Layout({ children, team, analytics }) {
 }
 ```
 
-However, slots are **not** [route segments](/docs/content/app/building-your-application/routing#route-segments) and do not affect the URL structure. For example, for `/@analytics/views`, the URL will be `/views` since `@analytics` is a slot.
+然而, 插槽**不**是 [路由段](/docs/content/app/building-your-application/routing#route-segments)，也不会影响 URL 结构。例如，`/@analytics/views`的 URL 将是`/views`，因为`@analytics`是插槽。
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - The `children` prop is an implicit slot that does not need to be mapped to a folder. This means `app/page.js` is equivalent to `app/@children/page.js`.
+> - `children` 属性是不需要映射到文件夹的内置插槽。这意味着`app/page.js`等同于`app/@children/page.js`。
 
-## Active state and navigation
+## 活跃状态和导航
 
-By default, Next.js keeps track of the active _state_ (or subpage) for each slot. However, the content rendered within a slot will depend on the type of navigation:
+默认情况下, Next.js 跟踪每个插槽的活跃状态（或子页面）。然而, 插槽中渲染的内容取决于导航类型:
 
-- [**Soft Navigation**](/docs/content/app/building-your-application/routing/linking-and-navigating#5-soft-navigation): During client-side navigation, Next.js will perform a [partial render](/docs/content/app/building-your-application/routing/linking-and-navigating#4-partial-rendering), changing the subpage within the slot, while maintaining the other slot's active subpages, even if they don't match the current URL.
-- **Hard Navigation**: After a full-page load (browser refresh), Next.js cannot determine the active state for the slots that don't match the current URL. Instead, it will render a [`default.js`](#defaultjs) file for the unmatched slots, or `404` if `default.js` doesn't exist.
+- [**软导航**](/docs/content/app/building-your-application/routing/linking-and-navigating#5-软导航): 在客户端导航期间, Next.js 将执行[局部渲染](/docs/content/app/building-your-application/routing/linking-and-navigating#4-局部渲染), 更改槽内的子页面，同时保持另一个槽的活动子页面，即使它们与当前 URL 不匹配。
+- **硬导航**: 在整页加载后(浏览器刷新), Next.js 不能为不匹配当前 URL 的插槽确定活跃状态。相反, 它会为未匹配的插渲染[`default.js`](#defaultjs)文件, 如果`default.js`文件不存在会出现`404`。
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - The `404` for unmatched routes helps ensure that you don't accidentally render a parallel route on a page that it was not intended for.
+> - 对于不匹配的路由，`404`有助于确保您不会意外地在页面上渲染不打算渲染的平行路由。
 
 ### `default.js`
 
-You can define a `default.js` file to render as a fallback for unmatched slots during the initial load or full-page reload.
+您可以定义一个`default.js`文件，作为初始化加载或整页重新加载期间不匹配插槽的备用。
 
-Consider the following folder structure. The `@team` slot has a `/settings` page, but `@analytics` does not.
+请考虑以下文件结构，`@team`插槽有一个`/settings`页面,但是`@analytics`没有。
 
 <img
   alt="Parallel Routes unmatched routes"
-  srcLight="/docs/light/parallel-routes-unmatched-routes.png"
-  srcDark="/docs/dark/parallel-routes-unmatched-routes.png"
-  width="1600"
-  height="930"
+  src="/parallel-routes-unmatched-routes.avif"
+  width="100%"
+  height="auto"
 />
 
-When navigating to `/settings`, the `@team` slot will render the `/settings` page while maintaining the currently active page for the `@analytics` slot.
+当导航到`/settings`时, `@team`插槽会渲染`/settings`页面，同时保持`@analytics`插槽的当前活动页面。
 
-On refresh, Next.js will render a `default.js` for `@analytics`. If `default.js` doesn't exist, a `404` is rendered instead.
+刷新时, Next.js 将为`@analytics`渲染`default.js`。如果`default.js`不存在,页面会呈现`404`。
 
-Additionally, since `children` is an implicit slot, you also need to create a `default.js` file to render a fallback for `children` when Next.js cannot recover the active state of the parent page.
+此外, 因为 `children`是隐式插槽, 您也需要在 Next.js 无法恢复父页面的活动状态时，为`children`创建一个渲染备用的`default.js`文件。
 
 ### `useSelectedLayoutSegment(s)`
 
-Both [`useSelectedLayoutSegment`](/docs/content/app/api-reference/functions/use-selected-layout-segment) and [`useSelectedLayoutSegments`](/docs/content/app/api-reference/functions/use-selected-layout-segments) accept a `parallelRoutesKey` parameter, which allows you to read the active route segment within a slot.
+[`useSelectedLayoutSegment`](/docs/content/app/api-reference/functions/use-selected-layout-segment) 和 [`useSelectedLayoutSegments`](/docs/content/app/api-reference/functions/use-selected-layout-segments) 都接收一个 `parallelRoutesKey` 参数, 它允许您读取插槽中的活动路由段。
 
 ```tsx filename="app/layout.tsx" switcher
 "use client";
@@ -127,20 +124,19 @@ export default function Layout({ auth }) {
 }
 ```
 
-When a user navigates to `app/@auth/login` (or `/login` in the URL bar), `loginSegment` will be equal to the string `"login"`.
+当用户导航到`app/@auth/login` (或路由栏的`/login`)时，`loginSegment`将相当于字符串`"login"`。
 
-## Examples
+## 例子
 
-### Conditional Routes
+### 条件路由
 
-You can use Parallel Routes to conditionally render routes based on certain conditions, such as user role. For example, to render a different dashboard page for the `/admin` or `/user` roles:
+您能够使用平行路由根据某些条件来按条件渲染路由（比如用户角色）。例如，为`/admin` 或 `/user` 角色渲染不同的网站主页。
 
 <img
   alt="Conditional routes diagram"
-  srcLight="/docs/light/conditional-routes-ui.png"
-  srcDark="/docs/dark/conditional-routes-ui.png"
-  width="1600"
-  height="898"
+  src="/conditional-routes-ui.avif"
+  width="100%"
+  height="auto"
 />
 
 ```tsx filename="app/dashboard/layout.tsx" switcher
@@ -169,19 +165,18 @@ export default function Layout({ user, admin }) {
 
 ### Tab Groups
 
-You can add a `layout` inside a slot to allow users to navigate the slot independently. This is useful for creating tabs.
+您能够在插槽中添加`layout`，以允许用户用户独立导航插槽。这对于创建 tabs 非常有用。
 
-For example, the `@analytics` slot has two subpages: `/page-views` and `/visitors`.
+例如, `@analytics` 插槽有两个子页面: `/page-views` 和 `/visitors`。
 
 <img
   alt="Analytics slot with two subpages and a layout"
-  srcLight="/docs/light/parallel-routes-tab-groups.png"
-  srcDark="/docs/dark/parallel-routes-tab-groups.png"
-  width="1600"
-  height="768"
+  src="/parallel-routes-tab-groups.avif"
+  width="100%"
+  height="auto"
 />
 
-Within `@analytics`, create a [`layout`](/docs/content/app/building-your-application/routing/layouts-and-templates) file to share the tabs between the two pages:
+在 `@analytics`中, 创建一个[`layout`](/docs/content/app/building-your-application/routing/layouts-and-templates) 文件以在两个页面之间共享 tabs。
 
 ```tsx filename="app/@analytics/layout.tsx" switcher
 import Link from "next/link";
@@ -217,31 +212,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 ### Modals
 
-Parallel Routes can be used together with [Intercepting Routes](/docs/content/app/building-your-application/routing/intercepting-routes) to create modals that support deep linking. This allows you to solve common challenges when building modals, such as:
+平行路由可能与[拦截路由](/docs/content/app/building-your-application/routing/intercepting-routes)一起使用来创建支持深度链接的 modals。这允许您解决构建时的常见问题, 例如:
 
-- Making the modal content **shareable through a URL**.
-- **Preserving context** when the page is refreshed, instead of closing the modal.
-- **Closing the modal on backwards navigation** rather than going to the previous route.
-- **Reopening the modal on forwards navigation**.
+- 使模态内容可**通过 URL 共享**。
+- 在页面刷新时**保留上下文**, 而不是关闭 modal。
+- **回退导航时关闭 modal**，而不是返回到上一个路由。
+- **继续导航时重新打开 modal**.
 
-Consider the following UI pattern, where a user can open a login modal from a layout using client-side navigation, or access a separate `/login` page:
+请考虑以下的 UI 模式, 这里用户可以使用客户端导航打开 layout 的登录 modal， 或者访问单独的`/login`页面：
 
 <img
   alt="Parallel Routes Diagram"
-  srcLight="/docs/light/parallel-routes-auth-modal.png"
-  srcDark="/docs/dark/parallel-routes-auth-modal.png"
-  width="1600"
-  height="687"
+  src="/parallel-routes-auth-modal.avif"
+  width="100%"
+  height="auto"
 />
 
-To implement this pattern, start by creating a `/login` route that renders your **main** login page.
+要实施这个模式，首先创建一个渲染`主`登录页面的`/login`路由。
 
 <img
   alt="Parallel Routes Diagram"
-  srcLight="/docs/light/parallel-routes-modal-login-page.png"
-  srcDark="/docs/dark/parallel-routes-modal-login-page.png"
-  width="1600"
-  height="768"
+  src="/parallel-routes-modal-login-page.avif"
+  width="100%"
+  height="auto"
 />
 
 ```tsx filename="app/login/page.tsx" switcher
@@ -260,7 +253,7 @@ export default function Page() {
 }
 ```
 
-Then, inside the `@auth` slot, add [`default.js`](/docs/content/app/api-reference/file-conventions/default) file that returns `null`. This ensures that the modal is not rendered when it's not active.
+然后, 在`@auth`插槽内, 添加 returns `null`的[`default.js`](/docs/content/app/api-reference/file-conventions/default)文件。这会确保 modal 在不活跃的状态下不会渲染。
 
 ```tsx filename="app/@auth/default.tsx" switcher
 export default function Default() {
@@ -274,7 +267,7 @@ export default function Default() {
 }
 ```
 
-Inside your `@auth` slot, intercept the `/login` route by updating the `/(.)login` folder. Import the `<Modal>` component and its children into the `/(.)login/page.tsx` file:
+在 `@auth` 插槽内部, 通过更新`/(.)login`文件夹来拦截`/login`路由。在`/(.)login/page.tsx`中引入`<Modal>`组件及其 children：
 
 ```tsx filename="app/@auth/(.)login/page.tsx" switcher
 import { Modal } from "@/app/ui/modal";
@@ -302,16 +295,16 @@ export default function Page() {
 }
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - The convention used to intercept the route, e.g. `(.)`, depends on your file-system structure. See [Intercepting Routes convention](/docs/content/app/building-your-application/routing/intercepting-routes#convention).
-> - By separating the `<Modal>` functionality from the modal content (`<Login>`), you can ensure any content inside the modal, e.g. [forms](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations#forms), are Server Components. See [Interleaving Client and Server Components](/docs/content/app/building-your-application/rendering/composition-patterns#supported-pattern-passing-server-components-to-client-components-as-props) for more information.
+> - 用于拦截路由的约定, 例如`(.)`, 取决于您的文件系统结构。参阅[拦截路由约定](/docs/content/app/building-your-application/routing/intercepting-routes#公约)。
+> - 通过将`<Modal>`功能与 modal 内容(`<Login>`)分离, 您能够确保 modal 内的任何内容, 如[forms](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations#forms), 都是服务器组件。参阅[拦截客户端和服务器组件](/docs/content/app/building-your-application/rendering/composition-patterns#supported-pattern-passing-server-components-to-client-components-as-props)来获取更多信息。
 
-#### Opening the modal
+#### 打开 modal
 
-Now, you can leverage the Next.js router to open and close the modal. This ensures the URL is correctly updated when the modal is open, and when navigating backwards and forwards.
+现在, 您能够使用 Next.js 路由来开关 modal。这确保在 modal 打开时或导航前进或后退时，正确地更新 URL。
 
-To open the modal, pass the `@auth` slot as a prop to the parent layout and render it alongside the `children` prop.
+为了打开 modal，将`@auth` 插槽作为属性传递给父布局，将其与 `children`属性一起渲染。
 
 ```tsx filename="app/layout.tsx" switcher
 import Link from "next/link";
@@ -351,11 +344,11 @@ export default function Layout({ auth, children }) {
 }
 ```
 
-When the user clicks the `<Link>`, the modal will open instead of navigating to the `/login` page. However, on refresh or initial load, navigating to `/login` will take the user to the main login page.
+当用户点击`<Link>`时, modal 将会打开而不是导航到`/login`页面。不过，在刷新或初始加载时, 导航会将用户带到主登录页`/login`。
 
-#### Closing the modal
+#### 关闭 modal
 
-You can close the modal by calling `router.back()` or by using the `Link` component.
+您能够通过调用`router.back()` 或通过使用`Link`组件来关闭 modal。
 
 ```tsx filename="app/ui/modal.tsx" switcher
 "use client";
@@ -403,7 +396,7 @@ export function Modal({ children }) {
 }
 ```
 
-When using the `Link` component to navigate away from a page that shouldn't render the `@auth` slot anymore, we need to make sure the parallel route matches to a component that returns `null`. For example, when navigating back to the root page, we create a `@auth/page.tsx` component:
+当使用`Link`组件导航离开一个不应该再渲染`@auth`插槽的页面时，我们需要确保平行路由匹配 returns `null`的组件。例如, 导航回到根页面时, 创建一个`@auth/page.tsx`组件:
 
 ```tsx filename="app/ui/modal.tsx" switcher
 import Link from "next/link";
@@ -443,7 +436,7 @@ export default function Page() {
 }
 ```
 
-Or if navigating to any other page (such as `/foo`, `/foo/bar`, etc), you can use a catch-all slot:
+或者如果导航到其它页面时(例如 `/foo`, `/foo/bar`, 等), 你能够使用 catch-all 插槽:
 
 ```tsx filename="app/@auth/[...catchAll]/page.tsx" switcher
 export default function CatchAll() {
@@ -457,22 +450,20 @@ export default function CatchAll() {
 }
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - We use a catch-all route in our `@auth` slot to close the modal because of the behavior described in [Active state and navigation](#active-state-and-navigation). Since client-side navigations to a route that no longer match the slot will remain visible, we need to match the slot to a route that returns `null` to close the modal.
-> - Other examples could include opening a photo modal in a gallery while also having a dedicated `/photo/[id]` page, or opening a shopping cart in a side modal.
-> - [View an example](https://github.com/vercel-labs/nextgram) of modals with Intercepted and Parallel Routes.
+> - 由于[活跃状态和导航](#活跃状态和导航)中描述的行为，我们在`@auth`插槽中使用 catch-all 路由来关闭 modal。因为客户端导航到不再匹配插槽的路由仍然是可见的，我们需要将插槽匹配到返回' null '的路由来关闭 modal。
+> - 查看带有拦截和平行路由的 modals[示例](https://github.com/vercel-labs/nextgram)。
 
-### Loading and Error UI
+### Loading 和 Error UI
 
-Parallel Routes can be streamed independently, allowing you to define independent error and loading states for each route:
+平行路由可以独立流式传输, 允许您为每个路由定义 error and loading 状态:
 
 <img
   alt="Parallel routes enable custom error and loading states"
-  srcLight="/docs/light/parallel-routes-cinematic-universe.png"
-  srcDark="/docs/dark/parallel-routes-cinematic-universe.png"
-  width="1600"
-  height="1218"
+  src="/parallel-routes-cinematic-universe.avif"
+  width="100%"
+  height="auto"
 />
 
-See the [Loading UI](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) and [Error Handling](/docs/content/app/building-your-application/routing/error-handling) documentation for more information.
+参阅[Loading UI](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) 和 [错误处理](/docs/content/app/building-your-application/routing/error-handling) 文档获取更多信息。
