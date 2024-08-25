@@ -19,7 +19,7 @@ function reverseSidebarItems(items) {
 const config: Config = {
   title: "Next.js",
   tagline:
-    "此网站仅翻译了“APP Router-构建应用程序”下的79个文件。(官方推荐使用APP Router)",
+    "此网站仅翻译了“APP Router-构建应用程序”下的72个文件。(官方推荐使用APP Router)",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here

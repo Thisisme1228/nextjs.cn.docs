@@ -1,26 +1,26 @@
 ---
-title: Caching and Revalidating
+title: 缓存和重新验证
 nav_title: Caching and Revalidating
 description: Learn how to cache and revalidate data in your Next.js application.
 ---
 
 ## Caching
 
-Caching is the process of storing data to reduce the number of requests made to the server. Next.js provides a built-in [Data Cache](/docs/content/app/building-your-application/caching) for individual data requests, giving you granular control of caching behavior.
+缓存是存储数据以减少向服务器发出的请求数量的过程。Next.js 为个别数据请求提供了内置的[数据缓存](/docs/content/app/building-your-application/caching), 为您提供对缓存行为的精细控制。
 
-### `fetch` requests
+### `fetch` 请求
 
-`fetch` requests are not cached by default in Next.js 15.
+默认情况下，Next.js15 中`fetch`请求不被缓存。
 
-To cache an individual `fetch` request, you can use the `cache: 'force-cache'` option:
+为了缓存单个`fetch`请求, 您可以使用`cache: 'force-cache'`选项:
 
 ```js
 fetch("https://...", { cache: "force-cache" });
 ```
 
-### Data fetching libraries and ORMs
+### 数据请求库 和 ORMs
 
-To cache specific requests to your database or ORM, you can use the [`unstable_cache`](/docs/content/app/api-reference/functions/unstable_cache) API:
+为了将特定的请求缓存到数据库或 ORM, 您可以使用 [`unstable_cache`](/docs/content/app/api-reference/functions/unstable_cache) API:
 
 ```jsx
 import { getUser } from "./data";
@@ -37,42 +37,42 @@ export default async function Component({ userID }) {
 }
 ```
 
-## Revalidating data
+## 重新验证数据
 
-Revalidation is the process of purging the Data Cache and re-fetching the latest data. This is useful when your data changes and you want to ensure you show the latest information while still benefiting from the speed of static rendering.
+重新验证是清除数据缓存和重新获取最新数据的过程。当您的数据发生变化并且您想确保显示最新信息，同时，仍然获益于静态渲染速度时，这是非常有用的。
 
-Cached data can be revalidated in two ways:
+可以通过两种方式重新验证缓存数据：
 
-- **Time-based revalidation**: Automatically revalidate data after a certain amount of time has passed. This is useful for data that changes infrequently and freshness is not as critical.
-- **On-demand revalidation**: Manually revalidate data based on an event (e.g. form submission). On-demand revalidation can use a tag-based or path-based approach to revalidate groups of data at once. This is useful when you want to ensure the latest data is shown as soon as possible (e.g. when content from your headless CMS is updated).
+- **基于时间的重新验证**: 经过某段时间过后自动重新验证数据。这对于变化不频繁且新鲜度不那么重要的数据很有用。
+- **按需重新验证**: 根据事件（例如表单提交）来手动重新验证书。按需验证可以使用基于标签的或基于路径的方法一次性重新验证数据组。这对于您想要确保尽快展示最新数据非常有用。(例如：当您的无头 CMS 中内容更新时).
 
 ### Time-based revalidation
 
-To revalidate data at a timed interval, you can use the `next.revalidate` option of `fetch` to set the cache lifetime of a resource (in seconds).
+为了每个一段时间重新验证数据, 您可以使用`fetch`的`next.revalidate`选项来设置一个资源的缓存周期(以秒为单位)。
 
 ```js
 fetch("https://...", { next: { revalidate: 3600 } }); // revalidate at most every hour
 ```
 
-Alternatively, to revalidate all requests in a route segment, you can use the [Segment Config Options](/docs/content/app/api-reference/file-conventions/route-segment-config).
+或者, 为了重新验证路由段中的所有请求，您可以使用[段配置选项](/docs/content/app/api-reference/file-conventions/route-segment-config)。
 
 ```jsx filename="layout.js | page.js"
 export const revalidate = 3600; // revalidate at most every hour
 ```
 
-Learn [how time-based revalidation works](/docs/content/app/building-your-application/caching#revalidating-1)
+了解 [基于时间的重新验证的工作原理](/docs/content/app/building-your-application/caching#revalidating-1)
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - If you have multiple fetch requests in a statically rendered route, and each has a different revalidation frequency. The lowest time will be used for all requests.
-> - For dynamically rendered routes, each `fetch` request will be revalidated independently.
-> - To save server resources, we recommend setting a high revalidation time whenever possible. For instance, 1 hour instead of 1 second. If you need real-time data, consider switching to [dynamic rendering](/docs/content/app/building-your-application/rendering/server-components#dynamic-rendering) or client-side data fetching.
+> - 如果在一个静态渲染路由中您有多个 fetch 请求, 并且每个请求都有不同的重新验证频率。则将对所有请求使用时间最短的那个。
+> - 对于动态渲染的路由，每个`fetch`请求将会被单独重新验证。
+> - 为了节省服务器资源, 我们推荐尽可能设置较长的重新验证时间。例如，1 小时而不是 1 秒。如果您需要实时数据，请考虑选择[动态渲染](/docs/content/app/building-your-application/rendering/server-components#dynamic-rendering) 或客户端数据请求。
 
 ### On-demand revalidation
 
-Data can be revalidated on-demand with the [`revalidatePath`](/docs/content/app/api-reference/functions/revalidatePath) and [`revalidateTag`](/docs/content/app/api-reference/functions/revalidateTag) APIs.
+可以使用 [`revalidatePath`](/docs/content/app/api-reference/functions/revalidatePath) 和 [`revalidateTag`](/docs/content/app/api-reference/functions/revalidateTag) APIs 按需重新验证数据。
 
-Use `revalidatePath` in [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations) or [Route Handler](/docs/content/app/building-your-application/routing/route-handlers) to revalidate data for specific routes:
+在 [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations) 或 [Route Handler](/docs/content/app/building-your-application/routing/route-handlers)中使用 `revalidatePath`来为特定的路由重新验证数据:
 
 ```tsx filename="@/app/actions.tsx switcher
 import { revalidatePath } from "next/cache";
@@ -92,12 +92,12 @@ export async function createPost() {
 }
 ```
 
-Use `revalidateTag` to revalidate `fetch` requests across routes.
+使用`revalidateTag`来重新验证跨路由的`fetch`请求。
 
-1. When using `fetch`, you have the option to tag cache entries with one or more tags.
-2. Then, you can call `revalidateTag` to revalidate all entries associated with that tag.
+1. 当使用`fetch`时, 您可以选择使用一个或多个标签来标记缓存条目。
+2. 然后, 您可以调用`revalidateTag`来重新验证与该标签相关的所有条目。
 
-For example, the following `fetch` request adds the cache tag `collection`:
+例如,下列的`fetch`请求添加了缓存标签`collection`:
 
 ```tsx filename="app/page.tsx" switcher
 export default async function Page() {
@@ -115,7 +115,7 @@ export default async function Page() {
 }
 ```
 
-You can then revalidate this `fetch` call tagged with `collection` by calling `revalidateTag`:
+然后，您可以通过调用`revalidateTag`来重新验证标记为`collection`的`fetch` call :
 
 ```ts filename="@/app/actions.ts" switcher
 "use server";
@@ -137,8 +137,8 @@ export async function action() {
 }
 ```
 
-Learn [how on-demand revalidation works](/docs/content/app/building-your-application/caching#on-demand-revalidation).
+了解[按需重新验证的工作原理](/docs/content/app/building-your-application/caching#on-demand-revalidation)。
 
-### Error handling and revalidation
+### 错误处理和重新验证
 
-If an error is thrown while attempting to revalidate data, the last successfully generated data will continue to be served from the cache. On the next subsequent request, Next.js will retry revalidating the data.
+如果在尝试重新验证数据时抛出了错误，则上一次成功生成的数据将继续从缓存中提供。在下一个后续请求中，next .js 将重新验证数据。

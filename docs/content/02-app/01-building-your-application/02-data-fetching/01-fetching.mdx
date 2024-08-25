@@ -1,34 +1,35 @@
 ---
-title: Data Fetching
+title: 数据获取
 nav_title: Fetching
-description: Learn best practices for fetching data on the server or client in Next.js.
+description: 了解在Next.js中在服务器或客户端获取数据的最佳实践。
 ---
 
-Data fetching is a core part of any application. This page walks through best practices for fetching data using your preferred method.
+数据获取是一切应用程序的核心部分。本页详细演示了使用您喜欢的方法的数据演示的最佳实践。
 
-## Should I fetch data on the server or the client?
+## 我应该在服务器还是在客户端获取数据?
 
 Deciding whether to fetch data on the server or the client depends on the type of UI you're building.
+您正在构建的 UI 类型决定了在服务器还是在客户端获取数据。
 
-For most cases, where you don't need real-time data (e.g. polling), you can fetch data on the server with [Server Components](/docs/content/app/building-your-application/rendering/server-components). There are a few benefits to doing this:
+大多数情况下, 当您不需要实时数据(例如 polling)时, 您可以使用 [服务器组件](/docs/content/app/building-your-application/rendering/server-components)在服务器上获取数据。这样做有几个好处:
 
-- You can fetch data in a single server-round trip, reducing the number of network requests and client-server waterfalls.
-- Prevent sensitive information, such as access tokens and API keys, from being exposed to the client (which would require an intermediate API route).
-- Reduce latency by fetching data close to the source (if your application code and database are in the same region).
-- Data requests can be [cached](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#caching) and [revalidated](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data).
+- 您可以在单次服务器往返中获取数据，从而减少了网络请求和客户端-服务器瀑布的数量。
+- 防止敏感信息（例如 access tokens 和 API keys）暴露给客户端(这需要一个中间的 API 路由)。
+- 通过靠近源获取数据减少延迟 (如果您的应用程序代码和数据库在同一个区域)。
+- 数据请求可以被[缓存](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#caching) 和 [重新验证](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data)。
 
-However, server-side data fetching will cause the whole page to be re-rendered on the server. In cases where you need to mutate/revalidate smaller pieces of UI or continually fetch real-time data (e.g. live views), client-side data fetching might be better suited, as it'll allow you to re-render the specific piece of UI on the client.
+然而, 服务器端数据获取会导致整个页面在服务器上被重新渲染。 当您需要改变/重新验证较小的 UI 部分或持续获取实时数据时(例如实时视图), 客户端数据获取可能会更适合,因为它会让您在客户端重新渲染具体的 UI 部分。
 
-There are 4 ways you can fetch data in Next.js:
+Next.js 中数据获取方式有四种:
 
-- [`fetch` API](#fetch-api) on the server.
+- [`fetch` API](#fetch-api) on the server。
 - [ORMs or Database Clients](#orms-and-database-clients) on the server.
 - [Route Handlers](#route-handlers) on the server, via the client.
 - [Data Fetching Libraries](#data-fetching-libraries) on the client.
 
 ## `fetch` API
 
-Next.js extends the native [`fetch` Web API](https://developer.mozilla.org/docs/Web/API/Fetch_API) `fetch` to allow you to configure the [caching](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#fetch-requests) and [revalidating](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data) behavior for each fetch request on the server. You can use `fetch` in [Server Components](/docs/content/app/building-your-application/rendering/server-components), [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers), and [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations). For example:
+Next.js 扩展了原生的[`fetch` Web API](https://developer.mozilla.org/docs/Web/API/Fetch_API)， `fetch` 允许您为服务器上的每个 fetch 请求配置[缓存](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#fetch-requests) 和 [重新验证](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data)行为。您可以在[服务器组件](/docs/content/app/building-your-application/rendering/server-components), [路由处理程序](/docs/content/app/building-your-application/routing/route-handlers), 和 [服务器操作](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)中使用`fetch`。例如：
 
 ```tsx filename="app/page.tsx" switcher
 export default async function Page() {
@@ -50,15 +51,15 @@ export default async function Page() {
 }
 ```
 
-By default, `fetch` requests retrieve fresh data. Using it will cause a whole route to be [dynamically rendered](/docs/content/app/building-your-application/rendering/server-components#dynamic-rendering) and data will not be cached.
+默认情况下, `fetch`请求检索最新数据。使用它会导致整个路由[动态渲染](/docs/content/app/building-your-application/rendering/server-components#dynamic-rendering)并且不会缓存数据。
 
-You can cache `fetch` requests by setting the `cache` option to `force-cache`. This means data will be cached, and the component will be [statically rendered](/docs/content/app/building-your-application/rendering/server-components#static-rendering-default):
+您可以通过对`force-cache`设置`cache`来缓存`fetch`请求。这意味着数据会被缓存、组件会被[静态渲染](/docs/content/app/building-your-application/rendering/server-components#static-rendering-default):
 
 ```js
 fetch("https://...", { cache: "force-cache" });
 ```
 
-Alternatively, if using [PPR](/docs/content/app/building-your-application/rendering/partial-prerendering), we recommend wrapping components that use `fetch` requests in Suspense boundaries. This will ensure only the component that uses `fetch` is dynamically rendered and streamed in, rather than the entire page:
+或者, 如果使用[PPR](/docs/content/app/building-your-application/rendering/partial-prerendering), 我们推荐将使用`fetch`请求的组件包装在 Suspense 边界内。这会确保只有使用了`fetch`的组件会被动态渲染和流式传输, 而不是整个页面：
 
 ```tsx filename="@/app/ui/cart.tsx switcher
 import { Suspense } from 'react'
@@ -81,23 +82,23 @@ export default function Navigation() {
 }
 ```
 
-See the [caching and revalidating](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating) docs for more information.
+参阅[缓存和重新验证](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating)文档获得更多信息。
 
-> **Good to know:** In Next.js 14 and earlier, `fetch` requests were cached by default. See the [upgrade guide](/docs/content/app/building-your-application/upgrading/version-15) for more information.
+> **您需要知道:** 在 Next.js 14 及早起版本中, 默认情况下`fetch`会被缓存。参阅[升级指导](/docs/content/app/building-your-application/upgrading/version-15)获取更多信息。
 
 ### Request Memoization
 
-If you need to fetch the same data in multiple components in a tree, you do not have to fetch data globally and pass props down. Instead, you can fetch data in the components that need the data without worrying about the performance implications of making multiple requests for the same data.
+如果您需要在树中的多个组件内获取相同的数据，您不需要全局获取数据并向下传递 props。相反，您可以在需要数据的组件内获取数据，无需担心为获取同样的数据而发送多个请求带来的性能影响。
 
-This is possible because `fetch` requests with the same URL and options are automatically memoized during a React render pass.
+这是可行的，因为带有相同 URL 和选项的`fetch`请求在 React 渲染过程中被自动记住。
 
-Learn more about [request memoization](/docs/content/app/building-your-application/caching#request-memoization).
+了解更多关于[request memoization](/docs/content/app/building-your-application/caching#request-memoization).
 
-## ORMs and Database Clients
+## ORMs 和数据库客户端
 
-You can call your ORM or database client in [Server Components](/docs/content/app/building-your-application/rendering/server-components), [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers), and [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations).
+您可以在[服务器组件](/docs/content/app/building-your-application/rendering/server-components), [路由处理程序](/docs/content/app/building-your-application/routing/route-handlers), 和 [服务器操作](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)中调用 ORM 或数据库客户端。
 
-You can use [React `cache`](https://react.dev/reference/react/cache) to memoize data requests during a React render pass. For example, although the `getItem` function is called in both layout and page, only one query will be made to the database:
+您可以使用[React `cache`](https://react.dev/reference/react/cache)在 React 渲染过程中记忆数据请求。例如, 尽管在 layout 和 page 中都调用了`getItem` function, 但是只会对数据库进行一次查询：
 
 ```ts filename="app/utils.ts" switcher
 import { cache } from "react";
@@ -161,13 +162,13 @@ export default async function Page({ params: { id } }) {
 }
 ```
 
-You can also configure the caching and revalidating behavior of these requests using the experimental [`unstable_cache`](/docs/content/app/api-reference/functions/unstable_cache) and [`unstable_noStore`](/docs/content/app/api-reference/functions/unstable_noStore) APIs.
+您也可以使用 [`unstable_cache`](/docs/content/app/api-reference/functions/unstable_cache) 和 [`unstable_noStore`](/docs/content/app/api-reference/functions/unstable_noStore) APIs 来配置这些请求的缓存和重新验证行为。
 
 ## Data Fetching Libraries
 
-You can fetch data in Client Components using data fetching libraries such as [SWR](https://swr.vercel.app/) or [React Query](https://tanstack.com/query/latest). These libraries provide their own APIs for caching, revalidating, and mutating data.
+您可以在客户端组件中使用数据获取库(例如：[SWR](https://swr.vercel.app/) 或 [React Query](https://tanstack.com/query/latest))来获取数据。这些库为缓存、重新验证和改变数据提供了它们自己的 API。
 
-For example, using SWR to fetch data periodically on the client:
+例如, 使用 SWR 在客户端定期获取数据：
 
 ```tsx filename="app/page.tsx switcher
 "use client"
@@ -199,9 +200,9 @@ export default function PollingComponent {
 
 ## Route Handlers
 
-If you need to create API endpoints, Next.js supports [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers). Route Handlers execute on the server and prevent sensitive information from being exposed to the client (e.g. API credentials).
+如果您需要创建 API 端点, Next.js 提供[路由处理程序](/docs/content/app/building-your-application/routing/route-handlers)。路由处理程序在服务器上执行，并防止敏感信息暴露到客户端。 (例如 API credentials).
 
-For example, using SWR to call a Route Handler:
+例如, 使用 SWR 调用路由处理程序:
 
 ```tsx filename="app/ui/message.tsx" switcher
 "use client";
@@ -255,32 +256,31 @@ export async function GET() {
 }
 ```
 
-See the [Route Handler](/docs/content/app/building-your-application/routing/route-handlers) docs for more examples.
+参阅[路由处理程序](/docs/content/app/building-your-application/routing/route-handlers)文档获取更多信息。
 
-> **Good to know**: Since Server Components render on the server, you don't need to call a Route Handler from a Server Component. You can access your data directly.
+> **您需要知道**: 因为服务器组件在服务器上运行, 所以您不需要从服务器组件调用路由处理程序。您可以直接访问您的数据。
 
-## Patterns
+## 模式
 
-### Parallel and sequential data fetching
+### 平行和顺序获取数据
 
-When fetching data inside components, you need to be aware of two data fetching patterns: Parallel and Sequential.
+在组件内获取数据时, 您需要知道的两种数据获取模式：平行和顺序。
 
 <img
   alt="Sequential and Parallel Data Fetching"
-  srcLight="/docs/light/sequential-parallel-data-fetching.png"
-  srcDark="/docs/dark/sequential-parallel-data-fetching.png"
-  width="1600"
-  height="525"
+  src="/sequential-parallel-data-fetching.avif"
+  width="100%"
+  height="auto"
 />
 
-- **Sequential**: requests in a component tree are dependent on each other. This can lead to longer loading times.
-- **Parallel**: requests in a route are eagerly initiated and will load data at the same time. This reduces the total time it takes to load data.
+- **顺序**: 组件树内的请求是相互依赖的。这可能会导致较长的加载时间。
+- **平行**: 路由内的请求会立即发起，与此同时将会加载数据。这减少了数据加载所需要的总时间。
 
 #### Sequential data fetching
 
-If you have nested components, and each component fetches its own data, then data fetching will happen sequentially if those data requests are not [memoized](/docs/content/app/building-your-application/caching#request-memoization).
+如果您使用嵌套组件, 并且每个组件都会获取自身数据, 那么如果这些数据请求没有被[记忆](/docs/content/app/building-your-application/caching#request-memoization)，数据获取就会按顺序发生。
 
-There may be cases where you want this pattern because one fetch depends on the result of the other. For example, the `Playlists` component will only start fetching data once the `Artist` component has finished fetching data because `Playlists` depends on the `artistID` prop:
+在某些情况下，您可能需要这种模式，因为一个 fetch 依赖于另一个 fetch 的请求结果。例如，`Playlists`组件只会在`Artist`组件已经完成数据获取之后才开始获取数据，因为`Playlists`需要`artistID`属性：
 
 ```tsx filename="app/artist/[username]/page.tsx" switcher
 export default async function Page({
@@ -348,19 +348,19 @@ async function Playlists({ artistID }) {
 }
 ```
 
-You can use [`loading.js`](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) (for route segments) or [React `<Suspense>`](/docs/content/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense) (for nested components) to show an instant loading state while React streams in the result.
+您可以使用[`loading.js`](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) (用于路由段) 或者 [React `<Suspense>`](/docs/content/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense) (用于嵌套路由)来展示即时加载状态， while React streams in the result.
 
-This will prevent the whole route from being blocked by data requests, and the user will be able to interact with the parts of the page that are ready.
+这可以避免整个路由被数据请求阻塞，并且用户能够与页面中加载好的部分进行交互。
 
 #### Parallel Data Fetching
 
-By default, layout and page segments are rendered in parallel. This means requests will be initiated in parallel.
+默认情况下, layout 和 page 段平行渲染。这意味着请求将被并行发起。
 
-However, due to the nature of `async`/`await`, an awaited request inside the same segment or component will block any requests below it.
+然而, 由于`async`/`await`的特点, 同一个段或组件内等待的请求将会阻塞它后面的请求。
 
-To fetch data in parallel, you can eagerly initiate requests by defining them outside the components that use the data. This saves time by initiating both requests in parallel, however, the user won't see the rendered result until both promises are resolved.
+为了并行获取数据, 您可以通过在使用这个数据的组件外定义它们来主动发起请求。这通过并行地启动两个请求来节省时间, 然而, 直到两个 promises 都解析完，用户才会看到渲染结果。
 
-In the example below, the `getArtist` and `getAlbums` functions are defined outside the `Page` component and initiated inside the component using `Promise.all`:
+下列例子中, `getArtist` 和 `getAlbums` 函数在`Page`组件外被定义，并在组件内部使用`Promise.all`被发起：
 
 ```tsx filename="app/artist/[username]/page.tsx" switcher
 import Albums from "./albums";
@@ -424,13 +424,13 @@ export default async function Page({ params: { username } }) {
 }
 ```
 
-In addition, you can add a [Suspense Boundary](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) to break up the rendering work and show part of the result as soon as possible.
+此外, 您可以添加[Suspense 边界](/docs/content/app/building-your-application/routing/loading-ui-and-streaming)来分解渲染工作并快速显示部分结果。
 
-### Preloading Data
+### 预加载数据
 
-Another way to prevent waterfalls is to use the _preload_ pattern by creating an utility function that you eagerly call above blocking requests. For example, `checkIsAvailable()` blocks `<Item/>` from rendering, so you can call `preload()` before it to eagerly initiate `<Item/>` data dependencies. By the time `<Item/>` is rendered, its data has already been fetched.
+防止瀑布流的另一种方法是通过创建一个在阻塞请求之前就立即调用的实用函数，来使用预加载方式。 例如, `checkIsAvailable()` 阻塞 `<Item/>` 渲染, 因此您可以在它之前调用`preload()`来立即发起`<Item/>` 数据依赖。 到渲染`<Item/>`时, 其数据已被获取。
 
-Note that `preload` function doesn't block `checkIsAvailable()` from running.
+注意`preload` 函数不会阻塞`checkIsAvailable()`运行。
 
 ```tsx filename="components/Item.tsx" switcher
 import { getItem } from "@/utils/get-item";
@@ -490,11 +490,11 @@ export default async function Page({ params: { id } }) {
 }
 ```
 
-> **Good to know:** The "preload" function can also have any name as it's a pattern, not an API.
+> **您需要知道:** "preload" 函数也可以有任何名称，因为它是模式而不是 API。
 
-#### Using React `cache` and `server-only` with the Preload Pattern
+#### React`cache`、`server-only`和预加载模式一起使用
 
-You can combine the `cache` function, the `preload` pattern, and the `server-only` package to create a data fetching utility that can be used throughout your app.
+您可以结合使用`cache` 功能, 预加载模式, 和`server-only` 包来创建一个能够在整个应用程序中使用的数据获取程序。
 
 ```ts filename="utils/get-item.ts" switcher
 import { cache } from "react";
@@ -522,19 +522,19 @@ export const getItem = cache(async (id) => {
 });
 ```
 
-With this approach, you can eagerly fetch data, cache responses, and guarantee that this data fetching [only happens on the server](/docs/content/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment).
+通过这个方法, 您可以快速获取数据、缓存响应和保证数据获取[只发生在服务器上](/docs/content/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment)。
 
-The `utils/get-item` exports can be used by Layouts, Pages, or other components to give them control over when an item's data is fetched.
+Layouts、Pages 或其它组件能够使用导出的`utils/get-item`来获得何时一项数据被获取的控制。
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - We recommend using the [`server-only` package](/docs/content/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment) to make sure server data fetching functions are never used on the client.
+> - 我们推荐使用 [`server-only` 包](/docs/content/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment)来确保服务器数据获取功能从不会在客户端使用。
 
-### Preventing sensitive data from being exposed to the client
+### 防止敏感数据暴露给客户端
 
-We recommend using React's taint APIs, [`taintObjectReference`](https://react.dev/reference/react/experimental_taintObjectReference) and [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue), to prevent whole object instances or sensitive values from being passed to the client.
+我们推荐使用 React's taint APIs, [`taintObjectReference`](https://react.dev/reference/react/experimental_taintObjectReference) 和 [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue), 来防止整个对象实例或敏感值被传递给客户端。
 
-To enable tainting in your application, set the Next.js Config `experimental.taint` option to `true`:
+为了在应用程序中启动 tainting, 将 Next.js Config `experimental.taint`选项设置为`true`:
 
 ```js filename="next.config.js"
 module.exports = {
@@ -544,7 +544,7 @@ module.exports = {
 };
 ```
 
-Then pass the object or value you want to taint to the `experimental_taintObjectReference` or `experimental_taintUniqueValue` functions:
+然后将你要暴露的对象或值传递给`experimental_taintObjectReference` 或 `experimental_taintUniqueValue` 函数：
 
 ```ts filename="app/utils.ts" switcher
 import { queryDataFromDB } from "./api";
