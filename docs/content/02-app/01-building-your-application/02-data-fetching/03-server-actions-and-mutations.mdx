@@ -1,24 +1,24 @@
 ---
-title: Server Actions and Mutations
+title: 服务器操作和变更
 nav_title: Server Actions and Mutations
-description: Learn how to handle form submissions and data mutations with Next.js.
+description: 了解如何使用Next.js处理表单提交和数据变更。
 related:
-  description: Learn how to configure Server Actions in Next.js
+  description: 了解如何在Next.js中配置服务器操作
   links:
     - app/api-reference/next-config-js/serverActions
 ---
 
-[Server Actions](https://react.dev/reference/rsc/server-actions) are **asynchronous functions** that are executed on the server. They can be called in Server and Client Components to handle form submissions and data mutations in Next.js applications.
+[服务器操作](https://react.dev/reference/rsc/server-actions)是在服务器上执行的 **异步函数**。它们可以在服务器和客户端组件中调用，来处理 Next.js 应用程序中的表单提交和数据变更。
 
-> **🎥 Watch:** Learn more about mutations with Server Actions → [YouTube (10 minutes)](https://youtu.be/dDpZfOQBMaU?si=cJZHlUu_jFhCzHUg).
+> **🎥 观看:** 通过服务器操作了解关于变更的更多信息。→ [YouTube (10 分钟)](https://youtu.be/dDpZfOQBMaU?si=cJZHlUu_jFhCzHUg)。
 
-## Convention
+## 公约
 
-A Server Action can be defined with the React [`"use server"`](https://react.dev/reference/react/use-server) directive. You can place the directive at the top of an `async` function to mark the function as a Server Action, or at the top of a separate file to mark all exports of that file as Server Actions.
+可以使用 React [`"use server"`](https://react.dev/reference/react/use-server) 指令来定义服务器操作。您可以将这个指令放置在`async`函数顶部来将这个函数标记为服务器操作，或者放在单个文件的顶部来将该文件中的所有 export 标记为服务器操作。
 
-### Server Components
+### 服务器组件
 
-Server Components can use the inline function level or module level `"use server"` directive. To inline a Server Action, add `"use server"` to the top of the function body:
+服务器组件可以使用内联函数级别或模块级别`"use server"`指令。要内联服务器操作，请将`"use server"`添加到函数体顶部：
 
 ```tsx filename="app/page.tsx" switcher
 export default function Page() {
@@ -44,9 +44,9 @@ export default function Page() {
 }
 ```
 
-### Client Components
+### 客户端组件
 
-To call a Server Action in a Client Component, create a new file and add the `"use server"` directive at the top of it. All functions within the file will be marked as Server Actions that can be reused in both Client and Server Components:
+要在客户端组件中调用服务器组件，要创建一个文件并将 `"use server"`指令添加到该文件上方。该文件内的所有函数将会被标记为可以在客户端和服务器组件内重复使用的服务器操作：
 
 ```tsx filename="app/actions.ts" switcher
 "use server";
@@ -80,9 +80,9 @@ export function Button() {
 }
 ```
 
-### Passing actions as props
+### 将操作作为属性传递
 
-You can also pass a Server Action to a Client Component as a prop:
+您也可以将服务器操作作为属性传递给客户端组件：
 
 ```jsx
 <ClientComponent updateItemAction={updateItem} />
@@ -108,32 +108,32 @@ export default function ClientComponent({ updateItemAction }) {
 }
 ```
 
-Usually, the Next.js TypeScript plugin would flag `updateItemAction` in `client-component.tsx` since it is a function which generally can't be serialized across client-server boundaries.
-However, props named `action` or ending with `Action` are assumed to receive Server Actions.
-This is only a heuristic since the TypeScript plugin doesn't actually know if it receives a Server Action or an ordinary function.
-Runtime type-checking will still ensure you don't accidentally pass a function to a Client Component.
+通常，Next.js TypeScript 插件会在`client-component.tsx`中会标记`updateItemAction`，因为它是一个通常不无法跨客户端-服务端边界序列化的函数。
+不过，以`action`命名或以`Action`结尾 props 被假定为接收服务器操作。
+这只是一个启发因为 TypeScript 插件事实上并不知道它接收的是服务器操作还是普通函数。
+运行时类型检查将会仍然确保您不会意外将函数传递给客户端组件。
 
-## Behavior
+## 行为
 
-- Server actions can be invoked using the `action` attribute in a [`<form>` element](#forms):
-  - Server Components support progressive enhancement by default, meaning the form will be submitted even if JavaScript hasn't loaded yet or is disabled.
-  - In Client Components, forms invoking Server Actions will queue submissions if JavaScript isn't loaded yet, prioritizing client hydration.
-  - After hydration, the browser does not refresh on form submission.
-- Server Actions are not limited to `<form>` and can be invoked from event handlers, `useEffect`, third-party libraries, and other form elements like `<button>`.
-- Server Actions integrate with the Next.js [caching and revalidation](/docs/content/app/building-your-application/caching) architecture. When an action is invoked, Next.js can return both the updated UI and new data in a single server roundtrip.
-- Behind the scenes, actions use the `POST` method, and only this HTTP method can invoke them.
-- The arguments and return value of Server Actions must be serializable by React. See the React docs for a list of [serializable arguments and values](https://react.dev/reference/react/use-server#serializable-parameters-and-return-values).
-- Server Actions are functions. This means they can be reused anywhere in your application.
-- Server Actions inherit the [runtime](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes) from the page or layout they are used on.
-- Server Actions inherit the [Route Segment Config](/docs/content/app/api-reference/file-conventions/route-segment-config) from the page or layout they are used on, including fields like `maxDuration`.
+- 可以使用[`<form>` 元素](#forms)中的`action`属性来调用服务器操作：
+  - 默认情况下，服务器组件支持渐进式增强,这意味着即使 Javascript 尚未被加载或被禁用，表单仍然会被提交。
+  - 在客户端组件中，如果 Javascript 还没有被加载，调用服务器操作的表单将会进行排队提交 forms，优先处理客户端激活。
+  - 激活后, 浏览器不会在提交表单时进行刷新。
+- 服务器操作不限于`<form>`操作，也涉及时间处理程序、`useEffect`、第三方库和其它表单元素，如：`<button>`。
+- 服务器操作与 Next.js [缓存和重新验证](/docs/content/app/building-your-application/caching) 架构集成。调用操作时, Next.js 能够在一次服务器往返中返回更新后的 UI 和新数据。
+- 在后台, actions 使用`POST` 方法, 并且只有 HTTP 方法可以调用它们。
+- 服务器操作的参数和返回值必须可由 React 序列化. 参阅 React 文档以获得[可序列化的参数和值](https://react.dev/reference/react/use-server#serializable-parameters-and-return-values)的列表。
+- 服务器操作是函数。这意味着它们可以在应用程序中的任何地方重复使用。
+- 服务器操作从其所使用的页面或布局继承[运行时](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes)。
+- 服务器操作从其所使用的页面或布局继承[路由段配置](/docs/content/app/api-reference/file-conventions/route-segment-config)，包括字段，如`maxDuration`。
 
-## Examples
+## 例子
 
 ### Forms
 
-React extends the HTML [`<form>`](https://developer.mozilla.org/docs/Web/HTML/Element/form) element to allow Server Actions to be invoked with the `action` prop.
+React 扩展 HTML [`<form>`](https://developer.mozilla.org/docs/Web/HTML/Element/form) 元素，以便可以使用`action` 属性调用服务器操作。
 
-When invoked in a form, the action automatically receives the [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData/FormData) object. You don't need to use React `useState` to manage fields, instead, you can extract the data using the native [`FormData` methods](https://developer.mozilla.org/en-US/docs/Web/API/FormData#instance_methods):
+当在表单中调用时, 操作自动接收[`FormData`](https://developer.mozilla.org/docs/Web/API/FormData/FormData) 对象。您不需要使用 React `useState` 来管理字段, 反而, 您可以使用原生的[`FormData` 方法](https://developer.mozilla.org/en-US/docs/Web/API/FormData#instance_methods)来提取数据：
 
 ```tsx filename="app/invoices/page.tsx" switcher
 export default function Page() {
@@ -173,15 +173,15 @@ export default function Page() {
 }
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - Example: [Form with Loading & Error States](https://github.com/vercel/next.js/tree/canary/examples/next-forms)
-> - When working with forms that have many fields, you may want to consider using the [`entries()`](https://developer.mozilla.org/en-US/docs/Web/API/FormData/entries) method with JavaScript's [`Object.fromEntries()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries). For example: `const rawFormData = Object.fromEntries(formData)`. One thing to note is that the `formData` will include additional `$ACTION_` properties.
-> - See [React `<form>` documentation](https://react.dev/reference/react-dom/components/form#handle-form-submission-with-a-server-action) to learn more.
+> - 示例: [带有加载和错误状态的表单](https://github.com/vercel/next.js/tree/canary/examples/next-forms)
+> - 当处理包含许多字段的表单时，您可以考虑使用带有 JavaScript [`Object.fromEntries()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries) 的[`entries()`](https://developer.mozilla.org/en-US/docs/Web/API/FormData/entries) 方法。 例如: `const rawFormData = Object.fromEntries(formData)`。需要注意的一点是`formData`包含附加的`$ACTION_`属性。
+> - 参阅 [React `<form>` 文档](https://react.dev/reference/react-dom/components/form#handle-form-submission-with-a-server-action)了解更多信息。
 
-### Passing additional arguments
+### 传递附加参数
 
-You can pass additional arguments to a Server Action using the JavaScript `bind` method.
+您可以使用 JavaScript `bind`方法向服务器操作传递其它的参数。
 
 ```tsx filename="app/client-component.tsx" highlight={6} switcher
 "use client";
@@ -217,7 +217,7 @@ export function UserProfile({ userId }) {
 }
 ```
 
-The Server Action will receive the `userId` argument, in addition to the form data:
+除了表单数据，服务器操作会收到`userId`参数:
 
 ```js filename="app/actions.js"
 "use server";
@@ -225,20 +225,20 @@ The Server Action will receive the `userId` argument, in addition to the form da
 export async function updateUser(userId, formData) {}
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - An alternative is to pass arguments as hidden input fields in the form (e.g. `<input type="hidden" name="userId" value={userId} />`). However, the value will be part of the rendered HTML and will not be encoded.
-> - `.bind` works in both Server and Client Components. It also supports progressive enhancement.
+> - 另一种方法是将参数作为表单中隐藏的 input 字段进行传递 (例如 `<input type="hidden" name="userId" value={userId} />`)。不过, 该值将会成为渲染 HTML 的一部分，并且不会被编码。
+> - `.bind`适用于服务器和客户端组件。它也支持渐进增强。
 
-### Nested form elements
+### 嵌套表单元素
 
-You can also invoke a Server Action in elements nested inside `<form>` such as `<button>`, `<input type="submit">`, and `<input type="image">`. These elements accept the `formAction` prop or [event handlers](#event-handlers).
+您也可以在嵌套在`<form>`内的元素中调用服务器操作，如`<button>`、 `<input type="submit">`和 `<input type="image">`。这些元素接收`formAction`属性或者[事件处理程序](#event-handlers)。
 
-This is useful in cases where you want to call multiple server actions within a form. For example, you can create a specific `<button>` element for saving a post draft in addition to publishing it. See the [React `<form>` docs](https://react.dev/reference/react-dom/components/form#handling-multiple-submission-types) for more information.
+这在您想在一个表单中调用多个服务器操作时非常有用。例如，除了发布帖子草稿，您可以创建一个特定的`<button>`元素来保存帖子草稿。参阅[React `<form>` 文档](https://react.dev/reference/react-dom/components/form#handling-multiple-submission-types)来获得更多信息。
 
-### Programmatic form submission
+### 编程式表单提交
 
-You can trigger a form submission programmatically using the [`requestSubmit()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit) method. For example, when the user submits a form using the `⌘` + `Enter` keyboard shortcut, you can listen for the `onKeyDown` event:
+您可以使用[`requestSubmit()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit)方法来以编程式触发表单提交。例如，当用户使用`⌘` + `Enter`快捷键提交表单，您可以监听`onKeyDown`事件：
 
 ```tsx filename="app/entry.tsx" switcher
 "use client";
@@ -284,13 +284,13 @@ export function Entry() {
 }
 ```
 
-This will trigger the submission of the nearest `<form>` ancestor, which will invoke the Server Action.
+这将会触发最近的`<form>`原型提交，从而调用服务器操作。
 
-### Server-side form validation
+### 服务器端表单验证
 
-We recommend using HTML validation like `required` and `type="email"` for basic client-side form validation.
+对于基本的客户端表单验证，我们推荐使用像 `required` 和 `type="email"`进行 HTML 验证。
 
-For more advanced server-side validation, you can use a library like [zod](https://zod.dev/) to validate the form fields before mutating the data:
+对于更高级的服务器端验证, 在更改数据之前您可以使用库（如：[zod](https://zod.dev/)）验证表单字段：
 
 ```tsx filename="app/actions.ts" switcher
 "use server";
@@ -346,10 +346,10 @@ export default async function createsUser(formData) {
 }
 ```
 
-Once the fields have been validated on the server, you can return a serializable object in your action and use the React [`useActionState`](https://react.dev/reference/react/useActionState) hook to show a message to the user.
+一旦服务器上验证了字段，您可以在操作中返回一个可序列化的对象并使用 React [`useActionState`](https://react.dev/reference/react/useActionState) hook 向用户展示 message。
 
-- By passing the action to `useActionState`, the action's function signature changes to receive a new `prevState` or `initialState` parameter as its first argument.
-- `useActionState` is a React hook and therefore must be used in a Client Component.
+- 通过向`useActionState`传递操作, 该操作的函数签名会发生变化来接收一个新的`prevState` 或 `initialState`参数作为其第一个参数。
+- `useActionState` 是一个 React hook，因此必须在客户端组件中使用。
 
 ```tsx filename="app/actions.ts" switcher
 "use server";
@@ -385,7 +385,7 @@ export async function createUser(prevState, formData) {
 }
 ```
 
-Then, you can pass your action to the `useActionState` hook and use the returned `state` to display an error message.
+然后, 您能够向`useActionState` hook 传递操作并使用返回的`state`来展示错误消息。
 
 ```tsx filename="app/ui/signup.tsx" highlight={11,18-20} switcher
 "use client";
@@ -437,14 +437,14 @@ export function Signup() {
 }
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - Before mutating data, you should always ensure a user is also authorized to perform the action. See [Authentication and Authorization](#authentication-and-authorization).
-> - In earlier React Canary versions, this API was part of React DOM and called `useFormState`.
+> - 在改变数据之前,您应该始终确保用户也有权执行此操作。参阅[验证和授权](#authentication-and-authorization).
+> - 在早起的 React Canary 版本中, 该 API 是 React DOM 的一部分，被称为`useFormState`。
 
-### Pending states
+### 待定状态
 
-The [`useActionState`](https://react.dev/reference/react/useActionState) hook exposes a `pending` state that can be used to show a loading indicator while the action is being executed.
+[`useActionState`](https://react.dev/reference/react/useActionState) hook 暴露了`pending`状态，可用于执行操作时显示加载指示器。
 
 ```tsx filename="app/submit-button.tsx" highlight={11,21-23} switcher
 "use client";
@@ -504,11 +504,11 @@ export function Signup() {
 }
 ```
 
-> **Good to know:** Alternatively, you can also use the [`useFormStatus`](https://react.dev/reference/react-dom/hooks/useFormStatus) hook to show a pending state for a specific form.
+> **您需要知道:** 或者, 您也可以使用[`useFormStatus`](https://react.dev/reference/react-dom/hooks/useFormStatus) hook 为特定表单显示 pending 状态。
 
 ### Optimistic updates
 
-You can use the React [`useOptimistic`](https://react.dev/reference/react/useOptimistic) hook to optimistically update the UI before the Server Action finishes executing, rather than waiting for the response:
+您可以在服务器操作完成执行之前使用 React [`useOptimistic`](https://react.dev/reference/react/useOptimistic) hook 来乐观地更新 UI, 而不是等待响应：
 
 ```tsx filename="app/page.tsx" switcher
 "use client";
@@ -578,9 +578,9 @@ export function Thread({ messages }) {
 }
 ```
 
-### Event handlers
+### 事件处理程序
 
-While it's common to use Server Actions within `<form>` elements, they can also be invoked with event handlers such as `onClick`. For example, to increment a like count:
+尽管在`<form>`元素内使用服务器操作很常见，但也可以使用事件处理程序来调用它们（如：`onClick`）。例如，要增加点赞数量：
 
 ```tsx filename="app/like-button.tsx" switcher
 "use client";
@@ -632,7 +632,7 @@ export default function LikeButton({ initialLikes }) {
 }
 ```
 
-You can also add event handlers to form elements, for example, to save a form field `onChange`:
+您也可以向表单元素添加事件处理程序，例如，保存一个表单字段' onChange '：
 
 ```tsx filename="app/ui/edit-post.tsx"
 "use client";
@@ -654,11 +654,11 @@ export default function EditPost() {
 }
 ```
 
-For cases like this, where multiple events might be fired in quick succession, we recommend **debouncing** to prevent unnecessary Server Action invocations.
+对于这种可能快速连续触发多个事件的情况，我们推荐**消除抖动**来防止不必要的服务器操作调用。
 
 ### `useEffect`
 
-You can use the React [`useEffect`](https://react.dev/reference/react/useEffect) hook to invoke a Server Action when the component mounts or a dependency changes. This is useful for mutations that depend on global events or need to be triggered automatically. For example, `onKeyDown` for app shortcuts, an intersection observer hook for infinite scrolling, or when the component mounts to update a view count:
+当组件挂载或依赖发生变化时，您可以使用 React [`useEffect`](https://react.dev/reference/react/useEffect) hook 来调用服务器操作。这对于依赖于全局事件或需要被自动触发的 mutations 非常有用。例如，app 快捷键`onKeyDown`、用于无限滚动的交叉观察器钩子或当组件挂载以更新视图计数时:
 
 ```tsx filename="app/view-count.tsx" switcher
 "use client";
@@ -704,13 +704,13 @@ export default function ViewCount({ initialViews }: { initialViews: number }) {
 }
 ```
 
-Remember to consider the [behavior and caveats](https://react.dev/reference/react/useEffect#caveats) of `useEffect`.
+记住了解`useEffect`的[行为和注意事项](https://react.dev/reference/react/useEffect#caveats)。
 
-### Error Handling
+### 错误处理
 
-When an error is thrown, it'll be caught by the nearest [`error.js`](/docs/content/app/building-your-application/routing/error-handling) or `<Suspense>` boundary on the client. We recommend using `try/catch` to return errors to be handled by your UI.
+当抛出错误时, 它将会被客户端上最近的[`error.js`](/docs/content/app/building-your-application/routing/error-handling) 或 `<Suspense>` 边界捕获。我们推荐使用`try/catch`返回由 UI 处理的错误。
 
-For example, your Server Action might handle errors from creating a new item by returning a message:
+例如, 您的服务器操作可以通过返回一条消息来处理创建新项时出现的错误：
 
 ```ts filename="app/actions.ts" switcher
 "use server";
@@ -736,13 +736,13 @@ export async function createTodo(prevState, formData) {
 }
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - Aside from throwing the error, you can also return an object to be handled by `useActionState`. See [Server-side validation and error handling](#server-side-form-validation).
+> - 除了抛出错误, 您也可以返回一个由`useActionState`处理的对象。参阅 [服务器端验证和错误处理](#server-side-form-validation).
 
-### Revalidating data
+### 重新验证数据
 
-You can revalidate the [Next.js Cache](/docs/content/app/building-your-application/caching) inside your Server Actions with the [`revalidatePath`](/docs/content/app/api-reference/functions/revalidatePath) API:
+您可以在服务器操作中使用[`revalidatePath`](/docs/content/app/api-reference/functions/revalidatePath) API 重新验证[Next.js 缓存](/docs/content/app/building-your-application/caching):
 
 ```ts filename="app/actions.ts" switcher
 "use server";
@@ -776,7 +776,7 @@ export async function createPost() {
 }
 ```
 
-Or invalidate a specific data fetch with a cache tag using [`revalidateTag`](/docs/content/app/api-reference/functions/revalidateTag):
+或使用[`revalidateTag`](/docs/content/app/api-reference/functions/revalidateTag)来使带有缓存标签的特定数据获取无效：
 
 ```ts filename="app/actions.ts" switcher
 "use server";
@@ -810,9 +810,9 @@ export async function createPost() {
 }
 ```
 
-### Redirecting
+### 重定向
 
-If you would like to redirect the user to a different route after the completion of a Server Action, you can use [`redirect`](/docs/content/app/api-reference/functions/redirect) API. `redirect` needs to be called outside of the `try/catch` block:
+如果您想在服务器操作完成后将用户重定向到不同的路由, 您可以使用[`redirect`](/docs/content/app/api-reference/functions/redirect) API. `redirect` 需要在`try/catch`块外调用:
 
 ```ts filename="app/actions.ts" switcher
 "use server";
@@ -852,7 +852,7 @@ export async function createPost(id) {
 
 ### Cookies
 
-You can `get`, `set`, and `delete` cookies inside a Server Action using the [`cookies`](/docs/content/app/api-reference/functions/cookies) API:
+您可以在服务器操作中使用[`cookies`](/docs/content/app/api-reference/functions/cookies) API 来`get`、 `set`和`delete` cookies:
 
 ```ts filename="app/actions.ts" switcher
 "use server";
@@ -888,13 +888,13 @@ export async function exampleAction() {
 }
 ```
 
-See [additional examples](/docs/content/app/api-reference/functions/cookies#deleting-cookies) for deleting cookies from Server Actions.
+参阅从服务器操作中删除 cookies 的 [其它示例](/docs/content/app/api-reference/functions/cookies#deleting-cookies) 。
 
 ## Security
 
-### Authentication and authorization
+### 身份验证和授权
 
-You should treat Server Actions as you would public-facing API endpoints, and ensure that the user is authorized to perform the action. For example:
+您应该将服务器操作视为面向公众的 API 端点, 并确保用户有权执行操作。例如：
 
 ```tsx filename="app/actions.ts"
 "use server";
@@ -911,9 +911,9 @@ export function addItem() {
 }
 ```
 
-### Closures and encryption
+### 闭包和加密
 
-Defining a Server Action inside a component creates a [closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures) where the action has access to the outer function's scope. For example, the `publish` action has access to the `publishVersion` variable:
+在组件中定义服务器操作会创建一个[闭包](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)，操作可以访问外部函数的作用域。例如，`publish` 操作可以访问`publishVersion`变量：
 
 ```tsx filename="app/page.tsx" switcher
 export default async function Page() {
@@ -955,31 +955,31 @@ export default async function Page() {
 }
 ```
 
-Closures are useful when you need to capture a _snapshot_ of data (e.g. `publishVersion`) at the time of rendering so that it can be used later when the action is invoked.
+当您需要在渲染时捕获数据快照(例如：`publishVersion`)以便它能够在稍后调用操作时使用，闭包非常有用。
 
-However, for this to happen, the captured variables are sent to the client and back to the server when the action is invoked. To prevent sensitive data from being exposed to the client, Next.js automatically encrypts the closed-over variables. A new private key is generated for each action every time a Next.js application is built. This means actions can only be invoked for a specific build.
+不过，为了实现这一点，捕获的变量会在调用操作时被发送到客户端并返回到服务器。为了防止将敏感数据暴露到客户端，Next.js 自动加密封闭变量。每次构建 Next.js 应用程序时，会为每个操作生成一个秘密密钥。这意味着只能为指定的 build 调用操作。
 
-> **Good to know:** We don't recommend relying on encryption alone to prevent sensitive values from being exposed on the client. Instead, you should use the [React taint APIs](/docs/content/app/building-your-application/data-fetching/fetching#preventing-sensitive-data-from-being-exposed-to-the-client) to proactively prevent specific data from being sent to the client.
+> **您需要知道:** 我们不推荐仅依赖加密来预防将敏感值暴露到客户端。相反，您应该使用[React taint APIs](/docs/content/app/building-your-application/data-fetching/fetching#preventing-sensitive-data-from-being-exposed-to-the-client)来主动阻止特定数据发送到客户端。
 
-### Overwriting encryption keys (advanced)
+### 重写加密秘钥 (高级)
 
-When self-hosting your Next.js application across multiple servers, each server instance may end up with a different encryption key, leading to potential inconsistencies.
+跨多个服务器自托管 Next.js 应用程序时，每个服务器实例最终可能使用不同的加密密钥，从而导致潜在的不一致。
 
-To mitigate this, you can overwrite the encryption key using the `process.env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` environment variable. Specifying this variable ensures that your encryption keys are persistent across builds, and all server instances use the same key.
+为了缓解这种情况，您可以使用`process.env.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY`环境变量重写加密秘钥。指定此变量可确保您的加密密钥在各个构建中都是不变的，并且所有服务器实例都使用相同的密钥。
 
-This is an advanced use case where consistent encryption behavior across multiple deployments is critical for your application. You should consider standard security practices such key rotation and signing.
+这是一个高级用例，其中跨多个部署的一致加密行为对应用程序非常重要。您应该考虑标准的安全做法，例如密钥轮换和签名。
 
-> **Good to know:** Next.js applications deployed to Vercel automatically handle this.
+> **你需要知道:** 部署到 Vercel 的 Next.js 应用程序会自动处理这个问题。
 
-### Allowed origins (advanced)
+### Allowed origins (高级)
 
-Since Server Actions can be invoked in a `<form>` element, this opens them up to [CSRF attacks](https://developer.mozilla.org/en-US/docs/Glossary/CSRF).
+因为可以在`<form>`元素中调用服务器操作，这使它们容易受到[CSRF 攻击](https://developer.mozilla.org/en-US/docs/Glossary/CSRF)。
 
-Behind the scenes, Server Actions use the `POST` method, and only this HTTP method is allowed to invoke them. This prevents most CSRF vulnerabilities in modern browsers, particularly with [SameSite cookies](https://web.dev/articles/samesite-cookies-explained) being the default.
+在后台, 服务器操作使用`POST`方法, 并且仅允许此 HTTP 方法调用它们，这防止了现代浏览器中的大多数的 CSRF 漏洞, 尤其是[SameSite cookies](https://web.dev/articles/samesite-cookies-explained) 是默认设置。
 
-As an additional protection, Server Actions in Next.js also compare the [Origin header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin) to the [Host header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host) (or `X-Forwarded-Host`). If these don't match, the request will be aborted. In other words, Server Actions can only be invoked on the same host as the page that hosts it.
+作为额外的保护, Next.js 中的服务器操作也会也会比较[Origin header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin)和 [Host header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host) (或 `X-Forwarded-Host`)。如果这些不匹配, 请求将被终端。换句话说，服务器操作只能在托管它的页面相同的主机上调用。
 
-For large applications that use reverse proxies or multi-layered backend architectures (where the server API differs from the production domain), it's recommended to use the configuration option [`serverActions.allowedOrigins`](/docs/content/app/api-reference/next-config-js/serverActions) option to specify a list of safe origins. The option accepts an array of strings.
+对于使用反向代理或多层后端架构的大型应用程序（其中服务器 API 与生产域的不同），推荐使用配置选项[`serverActions.allowedOrigins`](/docs/content/app/api-reference/next-config-js/serverActions)选项来指定安全 origins 列表。该选项接收字符串数组。
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -992,11 +992,11 @@ module.exports = {
 };
 ```
 
-Learn more about [Security and Server Actions](https://nextjs.org/blog/security-nextjs-server-components-actions).
+了解有关[安全和服务器操作](https://nextjs.org/blog/security-nextjs-server-components-actions)的更多信息。
 
-## Additional resources
+## 其它资源
 
-For more information on Server Actions, check out the following React docs:
+有关 Server Actions 的更多信息，请查看以下 React 文档:
 
 - [Server Actions](https://react.dev/reference/rsc/server-actions)
 - [`"use server"`](https://react.dev/reference/react/use-server)
