@@ -1,37 +1,36 @@
 ---
-title: Partial Prerendering
-description: Learn how to combine the benefits of static and dynamic rendering with Partial Prerendering.
+title: 部分预渲染
+description: 了解如何将静态和动态渲染的优点与部分预渲染结合起来。
 ---
 
-Partial Prerendering (PPR) enables you to combine static and dynamic components together in the same route.
+部分预渲染(PPR) 使您能够在同一路由中将静态和动态组件组合。
 
-During the build, Next.js prerenders as much of the route as possible. If [dynamic](/docs/content/app/building-your-application/rendering/server-components#dynamic-rendering) code is detected, like reading from the incoming request, you can wrap the relevant component with a [React Suspense](https://react.dev/reference/react/Suspense) boundary. The Suspense boundary fallback will then be included in the prerendered HTML.
+在构建过程中，Next.js 会尽可能多地预渲染路由。如果检测到[动态](/docs/content/app/building-your-application/rendering/server-components#dynamic-rendering)代码（例如从传入的请求中读取的）,则可以使用[React Suspense](https://react.dev/reference/react/Suspense)边界包装相关的组件。然后，Suspense 边界备用将被包含在预渲染的 HTML 中。
 
-> **Note:** Partial Prerendering is an **experimental** feature and subject to change. It is not ready for production use.
+> **注意:** 部分预渲染是一项**实验性** 功能并且可能会改变。它还不能用于生产使用。
 
 <img
   alt="Partially Prerendered Product Page showing static nav and product information, and dynamic cart and recommended products"
-  srcLight="/learn/light/thinking-in-ppr.png"
-  srcDark="/learn/dark/thinking-in-ppr.png"
-  width="1600"
-  height="632"
+  src="/thinking-in-ppr.avif"
+  width="100%"
+  height="auto"
 />
 
-> **🎥 Watch:** Why PPR and how it works → [YouTube (10 minutes)](https://www.youtube.com/watch?v=MTcPrTIBkpA).
+> **🎥 观看:** 为什么使用 PPR 以及它的工作原理 → [YouTube (10 分钟)](https://www.youtube.com/watch?v=MTcPrTIBkpA).
 
-## Background
+## 背景
 
-PPR enables your Next.js server to immediately send prerendered content.
+PPR 使 Next.js 服务器能够立即发送预渲染的内容。
 
-To prevent client to server waterfalls, dynamic components begin streaming from the server in parallel while serving the initial prerender. This ensures dynamic components can begin rendering before client JavaScript has been loaded in the browser.
+为了防止客户端到服务器的瀑布流，动态组件在提供初始预渲染的同时开始并行的从服务器流式传输。这确保了在浏览器加载完客户端 JavaScript 之前动态组件就能够开始渲染。
 
-To prevent creating many HTTP requests for each dynamic component, PPR is able to combine the static prerender and dynamic components together into a single HTTP request. This ensures there are not multiple network roundtrips needed for each dynamic component.
+为了防止为每个动态组件创建许多 HTTP 请求，PPR 能够将静态预渲染和动态组件组合到单个 HTTP 请求中。这确保了每个动态组件不需要多次网络往返。
 
-## Using Partial Prerendering
+## 使用部分预渲染
 
-### Incremental Adoption (Version 15)
+### 逐步采用 (版本 15)
 
-In Next.js 15, you can incrementally adopt Partial Prerendering in [layouts](/docs/content/app/building-your-application/routing/layouts-and-templates) and [pages](/docs/content/app/building-your-application/routing/pages) by setting the [`ppr`](/docs/content/app/api-reference/next-config-js/ppr) option in `next.config.js` to `incremental`, and exporting the `experimental_ppr` [route config option](/docs/content/app/api-reference/file-conventions/route-segment-config) at the top of the file:
+在 Next.js 15 中, 您可以通过在`next.config.js`中将[`ppr`](/docs/content/app/api-reference/next-config-js/ppr)选项设置为`incremental`并且在文件顶部导出`experimental_ppr` [路由配置选项](/docs/content/app/api-reference/file-conventions/route-segment-config)以在[layouts](/docs/content/app/building-your-application/routing/layouts-and-templates) 和 [pages](/docs/content/app/building-your-application/routing/pages)中逐步采用部分预渲染。
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from "next";
@@ -92,15 +91,15 @@ export default function Page() {
 }
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - Routes that don't have `experimental_ppr` will default to `false` and will not be prerendered using PPR. You need to explicitly opt-in to PPR for each route.
-> - `experimental_ppr` will apply to all children of the route segment, including nested layouts and pages. You don't have to add it to every file, only the top segment of a route.
-> - To disable PPR for children segments, you can set `experimental_ppr` to `false` in the child segment.
+> - 没有`experimental_ppr`的路由将默认为`false`并且不能使用 PPR 预渲染。你需要明确地为每个路由选择加入 PPR。
+> - `experimental_ppr`将应用到路由段的所有子段, 包括嵌套的 layouts 和 pages。您不需要将它添加到每个文件，只需要在路由的顶部段添加即可。
+> - 要为子组件禁用 PPR, 您可以在字段中将 `experimental_ppr` 设置为 `false`。
 
-### Enabling PPR (Version 14)
+### 启用 PPR (版本 14)
 
-For version 14, you can enable it by adding the [`ppr`](/docs/content/app/api-reference/next-config-js/ppr) option to your `next.config.js` file. This will apply to all routes in your application:
+对于版本 14, 您可以通过在`next.config.js`文件中添加[`ppr`](/docs/content/app/api-reference/next-config-js/ppr)选项来启用它。这将应用于应用程序中的所有路由：
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from "next";
@@ -125,11 +124,11 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-## Dynamic Components
+## 动态组件
 
-When creating the prender for your route during `next build`, Next.js requires that dynamic functions are wrapped with React Suspense. The `fallback` is then included in the prerender.
+当在`next build`期间为路由创建预渲染时，Next.js 需要使用 React Suspense 包裹动态函数。然后`fallback`将包含在预渲染中。
 
-For example, using functions like `cookies()` or `headers()`:
+例如, 使用函数，例如：`cookies()` 或 `headers()`:
 
 ```jsx filename="app/user.js" switcher
 import { cookies } from "next/headers";
@@ -149,7 +148,7 @@ export function User() {
 }
 ```
 
-This component requires looking at the incoming request to read cookies. To use this with PPR, you should wrap the component with Suspense:
+该组件需要查看传入的请求以读取 cookie。要将其与 PPR 一起使用, 您应该使用 Suspense 包裹这个组件:
 
 ```tsx filename="app/page.tsx" switcher
 import { Suspense } from "react";
@@ -187,9 +186,9 @@ export default function Page() {
 }
 ```
 
-Components only opt into dynamic rendering when the value is accessed.
+组件只在访问值时才选择动态渲染。
 
-For example, if you are reading `searchParams` from a `page`, you can forward this value to another component as a prop:
+例如, 如果您正从一个`page`读取`searchParams`时, 您可以将该值作为属性传递给另一个组件:
 
 ```tsx filename="app/page.tsx" switcher
 import { Table } from "./table";
@@ -221,7 +220,7 @@ export default function Page({ searchParams }) {
 }
 ```
 
-Inside of the table component, accessing the value from `searchParams` will make the component run dynamically:
+在 table 组件内部, 访问`searchParams`中的值将使组件动态运行：
 
 ```tsx filename="app/table.tsx" switcher
 export function Table({ searchParams }: { searchParams: { sort: string } }) {

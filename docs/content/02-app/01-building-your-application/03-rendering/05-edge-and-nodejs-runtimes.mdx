@@ -1,6 +1,6 @@
 ---
-title: Runtimes
-description: Learn about the switchable runtimes (Edge and Node.js) in Next.js.
+title: 运行时
+description: 了解Next.js中可切换的运行时(Edge 和 Node.js)。
 related:
   description: View the Edge Runtime API reference.
   links:
@@ -9,18 +9,18 @@ related:
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js has two server runtimes you can use in your application:
+Next.js 有两种您可以在应用程序中使用的服务器运行时：
 
-- The **Node.js Runtime** (default) which has access to all Node.js APIs and compatible packages from the ecosystem.
-- The **Edge Runtime** which contains a more limited [set of APIs](/docs/content/app/api-reference/edge).
+- **Node.js Runtime** (默认) 可以访问生态系统中所有的 Node.js APIs 和 兼容的 packages。
+- **Edge Runtime** 包含一组更有限的[APIs](/docs/content/app/api-reference/edge)。
 
-## Use Cases
+## 案例
 
-- The Node.js runtime is used for rendering your application.
-- The Edge runtime is used for Middleware (routing rules like redirects, rewrites, and setting headers).
+- Node.js 运行时用于渲染应用程序
+- Edge 运行时用于 Middleware (路由规则，如 redirects、rewrites 和 setting headers)。
 
-## Caveats
+## 注意事项
 
-- The Edge runtime does not support all Node.js APIs. Some packages will not work. Learn more about the unsupported APIs in the [Edge Runtime](/docs/content/app/api-reference/edge#unsupported-apis).
-- The Edge runtime does not support Incremental Static Regeneration (ISR).
-- Both runtimes can support [streaming](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) depending on your deployment infrastructure.
+- Edge 运行时不支持所有的 Node.js APIs。因此某些 packages 将无法运行。了解更多关于[Edge Runtime](/docs/content/app/api-reference/edge#unsupported-apis)中不支持的 API。
+- Edge 运行时不支持 Incremental Static Regeneration (ISR)。
+- 根据您的部署基础架构，这两种运行时都能够支持[streaming](/docs/content/app/building-your-application/routing/loading-ui-and-streaming)。

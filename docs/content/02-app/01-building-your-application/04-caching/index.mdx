@@ -1,7 +1,7 @@
 ---
-title: Caching in Next.js
+title: Next.js中的缓存
 nav_title: Caching
-description: An overview of caching mechanisms in Next.js.
+description: 概述Next.js中的缓存机制。
 ---
 
 Next.js improves your application's performance and reduces costs by caching rendering work and data requests. This page provides an in-depth look at Next.js caching mechanisms, the APIs you can use to configure them, and how they interact with each other.
@@ -23,10 +23,9 @@ By default, Next.js will cache as much as possible to improve performance and re
 
 <img
   alt="Diagram showing the default caching behavior in Next.js for the four mechanisms, with HIT, MISS and SET at build time and when a route is first visited."
-  srcLight="/docs/light/caching-overview.png"
-  srcDark="/docs/dark/caching-overview.png"
-  width="1600"
-  height="1179"
+  srcDark="/caching-overview.avif"
+  width="100%"
+  height="auto"
 />
 
 Caching behavior changes depending on whether the route is statically or dynamically rendered, data is cached or uncached, and whether a request is part of an initial visit or a subsequent navigation. Depending on your use case, you can configure the caching behavior for individual routes and data requests.
@@ -37,10 +36,9 @@ Next.js extends the [`fetch` API](#fetch) to automatically **memoize** requests 
 
 <img
   alt="Deduplicated Fetch Requests"
-  srcLight="/docs/light/deduplicated-fetch-requests.png"
-  srcDark="/docs/dark/deduplicated-fetch-requests.png"
-  width="1600"
-  height="857"
+  srcDark="/deduplicated-fetch-requests.avif"
+  width="100%"
+  height="auto"
 />
 
 For example, if you need to use the same data across a route (e.g. in a Layout, Page, and multiple components), you do not have to fetch data at the top of the tree, and forward props between components. Instead, you can fetch data in the components that need it without worrying about the performance implications of making multiple requests across the network for the same data.
@@ -79,10 +77,9 @@ const item = await getItem(); // cache HIT
 
 <img
   alt="Diagram showing how fetch memoization works during React rendering."
-  srcLight="/docs/light/request-memoization.png"
-  srcDark="/docs/dark/request-memoization.png"
-  width="1600"
-  height="742"
+  srcDark="/request-memoization.avif"
+  width="100%"
+  height="auto"
 />
 
 - While rendering a route, the first time a particular request is called, its result will not be in memory and it'll be a cache `MISS`.
@@ -130,10 +127,9 @@ By default, data requests that use `fetch` are not **cached**. You can use the [
 
 <img
   alt="Diagram showing how cached and uncached fetch requests interact with the Data Cache. Cached requests are stored in the Data Cache, and memoized, uncached requests are fetched from the data source, not stored in the Data Cache, and memoized."
-  srcLight="/docs/light/data-cache.png"
-  srcDark="/docs/dark/data-cache.png"
-  width="1600"
-  height="661"
+  srcDark="/data-cache.avif"
+  width="100%"
+  height="auto"
 />
 
 - The first time a `fetch` request with the `'force-cache'` option is called during rendering, Next.js checks the Data Cache for a cached response.
@@ -174,10 +170,9 @@ Alternatively, you can use [Route Segment Config options](#segment-config-option
 
 <img
   alt="Diagram showing how time-based revalidation works, after the revalidation period, stale data is returned for the first request, then data is revalidated."
-  srcLight="/docs/light/time-based-revalidation.png"
-  srcDark="/docs/dark/time-based-revalidation.png"
-  width="1600"
-  height="1252"
+  srcDark="/time-based-revalidation.avif"
+  width="100%"
+  height="auto"
 />
 
 - The first time a fetch request with `revalidate` is called, the data will be fetched from the external data source and stored in the Data Cache.
@@ -197,10 +192,9 @@ Data can be revalidated on-demand by path ([`revalidatePath`](#revalidatepath)) 
 
 <img
   alt="Diagram showing how on-demand revalidation works, the Data Cache is updated with fresh data after a revalidation request."
-  srcLight="/docs/light/on-demand-revalidation.png"
-  srcDark="/docs/dark/on-demand-revalidation.png"
-  width="1600"
-  height="1082"
+  srcDark="/on-demand-revalidation.avif"
+  width="100%"
+  height="auto"
 />
 
 - The first time a `fetch` request is called, the data will be fetched from the external data source and stored in the Data Cache.
@@ -253,10 +247,9 @@ This means we don't have to wait for everything to render before caching the wor
 
 <img
   alt="Default behavior of the Full Route Cache, showing how the React Server Component Payload and HTML are cached on the server for statically rendered routes."
-  srcLight="/docs/light/full-route-cache.png"
-  srcDark="/docs/dark/full-route-cache.png"
-  width="1600"
-  height="888"
+  srcDark="/full-route-cache.avif"
+  width="100%"
+  height="auto"
 />
 
 The default behavior of Next.js is to cache the rendered result (React Server Component Payload and HTML) of a route on the server. This applies to statically rendered routes at build time, or during revalidation.
@@ -287,10 +280,9 @@ This diagram shows the difference between statically and dynamically rendered ro
 
 <img
   alt="How static and dynamic rendering affects the Full Route Cache. Static routes are cached at build time or after data revalidation, whereas dynamic routes are never cached"
-  srcLight="/docs/light/static-and-dynamic-routes.png"
-  srcDark="/docs/dark/static-and-dynamic-routes.png"
-  width="1600"
-  height="1314"
+  srcDark="/static-and-dynamic-routes.avif"
+  width="100%"
+  height="auto"
 />
 
 Learn more about [static and dynamic rendering](/docs/content/app/building-your-application/rendering/server-components#server-rendering-strategies).

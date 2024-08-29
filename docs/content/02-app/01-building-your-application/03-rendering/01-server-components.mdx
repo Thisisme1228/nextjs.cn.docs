@@ -1,92 +1,91 @@
 ---
-title: Server Components
-description: Learn how you can use React Server Components to render parts of your application on the server.
+title: 服务器组件
+description: 了解如何使用React服务器组件在服务器上渲染部分应用程序。
 related:
   description: Learn how Next.js caches data and the result of static rendering.
   links:
     - app/building-your-application/caching
 ---
 
-React Server Components allow you to write UI that can be rendered and optionally cached on the server. In Next.js, the rendering work is further split by route segments to enable streaming and partial rendering, and there are three different server rendering strategies:
+React 服务器组件允许您编写可以在服务器上渲染和可缓存的 UI。在 Next.js 中，渲染工作进一步按路由段进行拆分，以支持流式渲染和部分渲染，并且有三种不同的服务器渲染策略：
 
 - [Static Rendering](#static-rendering-default)
 - [Dynamic Rendering](#dynamic-rendering)
 - [Streaming](#streaming)
 
-This page will go through how Server Components work, when you might use them, and the different server rendering strategies.
+本页将介绍服务器组件的工作原理、何时可能使用它们以及不同的服务器渲染策略。
 
-## Benefits of Server Rendering
+## 服务器渲染的好处
 
-There are a couple of benefits to doing the rendering work on the server, including:
+在服务器上执行渲染工作有几个好处，包括:
 
-- **Data Fetching**: Server Components allow you to move data fetching to the server, closer to your data source. This can improve performance by reducing time it takes to fetch data needed for rendering, and the number of requests the client needs to make.
-- **Security**: Server Components allow you to keep sensitive data and logic on the server, such as tokens and API keys, without the risk of exposing them to the client.
-- **Caching**: By rendering on the server, the result can be cached and reused on subsequent requests and across users. This can improve performance and reduce cost by reducing the amount of rendering and data fetching done on each request.
-- **Performance**: Server Components give you additional tools to optimize performance from the baseline. For example, if you start with an app composed of entirely Client Components, moving non-interactive pieces of your UI to Server Components can reduce the amount of client-side JavaScript needed. This is beneficial for users with slower internet or less powerful devices, as the browser has less client-side JavaScript to download, parse, and execute.
-- **Initial Page Load and [First Contentful Paint (FCP)](https://web.dev/fcp/)**: On the server, we can generate HTML to allow users to view the page immediately, without waiting for the client to download, parse and execute the JavaScript needed to render the page.
-- **Search Engine Optimization and Social Network Shareability**: The rendered HTML can be used by search engine bots to index your pages and social network bots to generate social card previews for your pages.
-- **Streaming**: Server Components allow you to split the rendering work into chunks and stream them to the client as they become ready. This allows the user to see parts of the page earlier without having to wait for the entire page to be rendered on the server.
+- **数据获取**: 服务器组件允许您将数据获取移动到离数据源更近的服务器。这可以通过减少获取渲染所需数据的时间和客户端需要发出的请求数量来提高性能。
+- **安全性**: 服务器组件允许您将敏感数据和逻辑保存在服务器上，例如令牌和 API 密钥，而不会有将它们暴露给客户端的风险。
+- **缓存**: 通过在服务器上渲染, 结果可以被缓存并在后续请求和跨用户中重用。这可以通过减少每个请求渲染和数据获取的数量来提高性能和降低成本。
+- **性能**: 服务器组件为您提供了从基线开始优化性能的附加工具。例如, 如果您开始使用完全由客户端组件组成的应用，那么将 UI 的非交互部分移到服务器组件中可以减少客户端 JavaScript 所需的数量。这对于网速较慢或设备功能较弱的用户是有益的，因为浏览器需要下载、解析和执行的客户端 Javascript 更少。
+- **初始页面加载和[首次内容绘制(FCP)](https://web.dev/fcp/)**: 在服务器上，我们可以生成 HTML 以允许用户立即查看页面，而无需等待客户端下载、解析和执行渲染页面所需的 JavaScript。
+- **搜索引擎优化和社交网络可共享性**: 搜索引擎机器人可以使用渲染的 HTML 来索引您的页面，社交网络机器人可以使用呈现的 HTML 为您的页面生成社交卡预览。
+- **Streaming**: 服务器组件允许您将渲染工作分割成块，并在准备就绪时将它们流式传输到客户端。这使用户可以更早地看到页面的部分内容，而不必等待整个页面在服务器上呈现。
 
-## Using Server Components in Next.js
+## 在 Next.js 中使用服务器组件
 
-By default, Next.js uses Server Components. This allows you to automatically implement server rendering with no additional configuration, and you can opt into using Client Components when needed, see [Client Components](/docs/content/app/building-your-application/rendering/client-components).
+默认情况下，Next.js 使用服务器组件。这允许你在没有额外配置的情况下自动实现服务器渲染，并且你可以在需要的时候选择使用客户端组件，参见[客户端组件](/docs/content/app/building-your-application/rendering/client-components)。
 
-## How are Server Components rendered?
+## 服务器组件是如何渲染的?
 
-On the server, Next.js uses React's APIs to orchestrate rendering. The rendering work is split into chunks: by individual route segments and [Suspense Boundaries](https://react.dev/reference/react/Suspense).
+在服务器端，Next.js 使用 React 的 API 来协调渲染。渲染工作被分成 chunks：按单个路由段和[Suspense Boundaries](https://react.dev/reference/react/Suspense)。
 
-Each chunk is rendered in two steps:
+每个 chunk 分两步渲染:
 
-1. React renders Server Components into a special data format called the **React Server Component Payload (RSC Payload)**.
-2. Next.js uses the RSC Payload and Client Component JavaScript instructions to render **HTML** on the server.
+1. React 将服务器组件呈现为一种特殊的数据格式，称为**React 服务器组件负载(RSC Payload)。**.
+2. Next.js 使用 RSC Payload 和客户端组件 JavaScript 指示在服务器上渲染 **HTML**。
 
 {/* Rendering Diagram */}
 
-Then, on the client:
+然后，在客户端上:
 
-1. The HTML is used to immediately show a fast non-interactive preview of the route - this is for the initial page load only.
-2. The React Server Components Payload is used to reconcile the Client and Server Component trees, and update the DOM.
-3. The JavaScript instructions are used to [hydrate](https://react.dev/reference/react-dom/client/hydrateRoot) Client Components and make the application interactive.
+1. HTML 用于立即显示路由的快速非交互式预览-这只适用于初始页面加载。
+2. React 服务器组件 Payload 用于协调客户端和服务器组件树，并更新 DOM。
+3. JavaScript 指令用于[hydrate](https://react.dev/reference/react-dom/client/hydrateRoot)客户端组件并使应用程序具有交互性。
+   > #### 什么事 React 服务器组件 Payload(RSC)?
+   >
+   > RSC Payload 是呈现的 React 服务器组件树的紧凑二进制表示。React 在客户端使用它来更新浏览器的 DOM。RSC Payload 包含：
+   >
+   > - 服务器组件的渲染结果
+   > - 客户端组件应呈现的位置的占位符以及对其 Javascript 文件的引用
+   > - 从服务器组件传递给客户端组件的任何 props
 
-> #### What is the React Server Component Payload (RSC)?
->
-> The RSC Payload is a compact binary representation of the rendered React Server Components tree. It's used by React on the client to update the browser's DOM. The RSC Payload contains:
->
-> - The rendered result of Server Components
-> - Placeholders for where Client Components should be rendered and references to their JavaScript files
-> - Any props passed from a Server Component to a Client Component
+## 服务器渲染策略
 
-## Server Rendering Strategies
+服务器渲染有三个子集：静态、动态和流式。
 
-There are three subsets of server rendering: Static, Dynamic, and Streaming.
-
-### Static Rendering (Default)
+### Static Rendering (默认)
 
 {/* Static Rendering Diagram */}
 
-With Static Rendering, routes are rendered at **build time**, or in the background after [data revalidation](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data). The result is cached and can be pushed to a [Content Delivery Network (CDN)](https://developer.mozilla.org/docs/Glossary/CDN). This optimization allows you to share the result of the rendering work between users and server requests.
+使用静态渲染，路由在构建时渲染，或者在[数据重新验证](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating#revalidating-data)之后在后台渲染。 结果被缓存，并可以被推送到 [Content Delivery Network (CDN)](https://developer.mozilla.org/docs/Glossary/CDN)。这种优化可以让您在用户和服务器请求之间共享渲染工作的结果。
 
-Static rendering is useful when a route has data that is not personalized to the user and can be known at build time, such as a static blog post or a product page.
+当路由具有非用户个性化的数据，并且可以在构建时知道时，例如静态博客文章或产品页面，静态渲染非常有用。
 
 ### Dynamic Rendering
 
 {/* Dynamic Rendering Diagram */}
 
-With Dynamic Rendering, routes are rendered for each user at **request time**.
+通过动态渲染，可以在**请求时**为每个用户渲染路由。
 
-Dynamic rendering is useful when a route has data that is personalized to the user or has information that can only be known at request time, such as cookies or the URL's search params.
+当路由具有针对用户的个性化数据或具有只能在请求时才知道的信息(例如 cookie 或 URL 的搜索参数)时，动态渲染非常有用。
 
-> **Dynamic Routes with Cached Data**
+> **带缓存数据的动态路由**
 >
-> In most websites, routes are not fully static or fully dynamic - it's a spectrum. For example, you can have an e-commerce page that uses cached product data that's revalidated at an interval, but also has uncached, personalized customer data.
+> 在大多数网站中，路由不是完全静态的，也不是完全动态的 - 它是一个范围。例如，您可以拥有使用缓存的产品数据的电子商务页面（每隔一段时间重新验证一次），也可以有非缓存的个性化的客户数据。
 >
-> In Next.js, you can have dynamically rendered routes that have both cached and uncached data. This is because the RSC Payload and data are cached separately. This allows you to opt into dynamic rendering without worrying about the performance impact of fetching all the data at request time.
+> 在 Next.js 中, 您可以有动态渲染的路由，这些路由既包含缓存数据，又包含非缓存数据。这是因为 RSC Payload 和数据是分开缓存的。这使您可以选择动态渲染，而不必担心在请求时获取所有数据对性能的影响。
 >
-> Learn more about the [full-route cache](/docs/content/app/building-your-application/caching#full-route-cache) and [Data Cache](/docs/content/app/building-your-application/caching#data-cache).
+> 了解更多有关[完整路由缓存](/docs/content/app/building-your-application/caching#full-route-cache) 和 [数据缓存](/docs/content/app/building-your-application/caching#data-cache)。
 
-#### Switching to Dynamic Rendering
+#### 切换到动态渲染
 
-During rendering, if a [dynamic function](#dynamic-functions) or [uncached data request](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating) is discovered, Next.js will switch to dynamically rendering the whole route. This table summarizes how dynamic functions and data caching affect whether a route is statically or dynamically rendered:
+在渲染过程中, 如果发现[dynamic function](#dynamic-functions) 或 [uncached data request](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating), Next.js 会切换到动态渲染整个路由。下表总结了动态函数和数据缓存如何影响路由是静态渲染还是动态渲染：
 
 | Dynamic Functions | Data       | Route                |
 | ----------------- | ---------- | -------------------- |
@@ -95,13 +94,13 @@ During rendering, if a [dynamic function](#dynamic-functions) or [uncached data 
 | No                | Not Cached | Dynamically Rendered |
 | Yes               | Not Cached | Dynamically Rendered |
 
-In the table above, for a route to be fully static, all data must be cached. However, you can have a dynamically rendered route that uses both cached and uncached data fetches.
+在上表中，要使路由完全静态，必须缓存所有数据。不过，您可以有一个动态呈现的路由，它同时使用缓存和非缓存的数据获取。
 
-As a developer, you do not need to choose between static and dynamic rendering as Next.js will automatically choose the best rendering strategy for each route based on the features and APIs used. Instead, you choose when to [cache or revalidate specific data](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating), and you may choose to [stream](#streaming) parts of your UI.
+作为开发人员，您不需要在静态和动态渲染之间进行选择，因为 Next.js 会根据所使用的特性和 API 自动为每条路由选择最佳的渲染策略。相反, 您可以选择何时[缓存或重新验证特定数据](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating), 并且您可以选择[流式传输](#streaming) 部分 UI。
 
 #### Dynamic Functions
 
-Dynamic functions rely on information that can only be known at request time such as a user's cookies, current requests headers, or the URL's search params. In Next.js, these dynamic APIs are:
+动态函数依赖于只能在请求时才知道的信息，例如用户的 cookie、当前请求头或 URL 的搜索参数。在 Next.js 中，这些动态 API 是：
 
 - [`cookies()`](/docs/content/app/api-reference/functions/cookies)
 - [`headers()`](/docs/content/app/api-reference/functions/headers)
@@ -109,28 +108,26 @@ Dynamic functions rely on information that can only be known at request time suc
 - [`unstable_after()`](/docs/content/app/api-reference/functions/unstable_after):
 - [`searchParams` prop](/docs/content/app/api-reference/file-conventions/page#searchparams-optional)
 
-Using any of these functions will opt the whole route into dynamic rendering at request time.
+使用这些函数中的任何一个都会在请求时将整个路由选择为动态渲染。
 
 ### Streaming
 
 <img
   alt="Diagram showing parallelization of route segments during streaming, showing data fetching, rendering, and hydration of individual chunks."
-  srcLight="/docs/light/sequential-parallel-data-fetching.png"
-  srcDark="/docs/dark/sequential-parallel-data-fetching.png"
-  width="1600"
-  height="525"
+  src="/sequential-parallel-data-fetching.avif"
+  width="100%"
+  height="auto"
 />
 
-Streaming enables you to progressively render UI from the server. Work is split into chunks and streamed to the client as it becomes ready. This allows the user to see parts of the page immediately, before the entire content has finished rendering.
+流式传输使您能够从服务器逐步渲染 UI。工作被分割成块，并在准备就绪时流式传输到客户端。这允许用户在整个内容完成渲染之前立即看到页面的部分内容。
 
 <img
   alt="Diagram showing partially rendered page on the client, with loading UI for chunks that are being streamed."
-  srcLight="/docs/light/server-rendering-with-streaming.png"
-  srcDark="/docs/dark/server-rendering-with-streaming.png"
-  width="1600"
-  height="785"
+  src="/server-rendering-with-streaming.avif"
+  width="100%"
+  height="auto"
 />
 
-Streaming is built into the Next.js App Router by default. This helps improve both the initial page loading performance, as well as UI that depends on slower data fetches that would block rendering the whole route. For example, reviews on a product page.
+默认情况下，流是内置在 Next.js 应用路由器中的。这有助于提高初始页面加载性能，以及依赖于较慢的会阻碍整个路由呈现的数据获取的 UI。例如，产品页面上的评论。
 
-You can start streaming route segments using `loading.js` and UI components with [React Suspense](/docs/content/app/building-your-application/routing/loading-ui-and-streaming). See the [Loading UI and Streaming](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) section for more information.
+您可以使用`loading.js`和使用[React Suspense](/docs/content/app/building-your-application/routing/loading-ui-and-streaming)的 UI 组件开始流式传输路由段。参阅[Loading UI and Streaming](/docs/content/app/building-your-application/routing/loading-ui-and-streaming)章节获取更多信息。
