@@ -6,18 +6,7 @@ description: Style your Next.js Application with CSS Modules, Global Styles, and
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-<PagesOnly>
-
-<details open>
-  <summary>Examples</summary>
-
-- [Basic CSS Example](https://github.com/vercel/next.js/tree/canary/examples/basic-css)
-
-</details>
-
-</PagesOnly>
-
-Next.js supports multiple ways of handling CSS, including:
+Next.js 支持多种处理 CSS 的方式，包括：
 
 - [CSS Modules](#css-modules)
 - [Global Styles](#global-styles)
@@ -31,7 +20,6 @@ CSS Modules locally scope CSS by automatically creating a unique class name. Thi
 
 ### Example
 
-<AppOnly>
 CSS Modules can be imported into any file inside the `app` directory:
 
 ```tsx filename="app/dashboard/layout.tsx" switcher
@@ -60,46 +48,6 @@ export default function DashboardLayout({ children }) {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-For example, consider a reusable `Button` component in the `components/` folder:
-
-First, create `components/Button.module.css` with the following content:
-
-```css filename="Button.module.css"
-/*
-You do not need to worry about .error {} colliding with any other `.css` or
-`.module.css` files!
-*/
-.error {
-  color: white;
-  background-color: red;
-}
-```
-
-Then, create `components/Button.js`, importing and using the above CSS file:
-
-```jsx filename="components/Button.js"
-import styles from "./Button.module.css";
-
-export function Button() {
-  return (
-    <button
-      type="button"
-      // Note how the "error" class is accessed as a property on the imported
-      // `styles` object.
-      className={styles.error}
-    >
-      Destroy
-    </button>
-  );
-}
-```
-
-</PagesOnly>
-
 CSS Modules are **only enabled for files with the `.module.css` and `.module.sass` extensions**.
 
 In production, all CSS Module files will be automatically concatenated into **many minified and code-split** `.css` files.
@@ -107,7 +55,6 @@ These `.css` files represent hot execution paths in your application, ensuring t
 
 ## Global Styles
 
-<AppOnly>
 Global styles can be imported into any layout, page, or component inside the `app` directory.
 
 > **Good to know**:
@@ -157,63 +104,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-To add a stylesheet to your application, import the CSS file within `pages/_app.js`.
-
-For example, consider the following stylesheet named `styles.css`:
-
-```css filename="styles.css"
-body {
-  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
-    "Arial", sans-serif;
-  padding: 20px 20px 60px;
-  max-width: 680px;
-  margin: 0 auto;
-}
-```
-
-Create a [`pages/_app.js` file](/docs/content/pages/building-your-application/routing/custom-app) if not already present.
-Then, [`import`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import) the `styles.css` file.
-
-```jsx filename="pages/_app.js"
-import "../styles.css";
-
-// This default export is required in a new `pages/_app.js` file.
-export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
-}
-```
-
-These styles (`styles.css`) will apply to all pages and components in your application.
-Due to the global nature of stylesheets, and to avoid conflicts, you may **only import them inside [`pages/_app.js`](/docs/content/pages/building-your-application/routing/custom-app)**.
-
-In development, expressing stylesheets this way allows your styles to be hot reloaded as you edit them—meaning you can keep application state.
-
-In production, all CSS files will be automatically concatenated into a single minified `.css` file. The order that the CSS is concatenated will match the order the CSS is imported into the `_app.js` file. Pay special attention to imported JS modules that include their own CSS; the JS module's CSS will be concatenated following the same ordering rules as imported CSS files. For example:
-
-```jsx
-import "../styles.css";
-// The CSS in ErrorBoundary depends on the global CSS in styles.css,
-// so we import it after styles.css.
-import ErrorBoundary from "../components/ErrorBoundary";
-
-export default function MyApp({ Component, pageProps }) {
-  return (
-    <ErrorBoundary>
-      <Component {...pageProps} />
-    </ErrorBoundary>
-  );
-}
-```
-
-</PagesOnly>
-
 ## External Stylesheets
-
-<AppOnly>
 
 Stylesheets published by external packages can be imported anywhere in the `app` directory, including colocated components:
 
@@ -246,60 +137,6 @@ export default function RootLayout({ children }) {
 ```
 
 > **Good to know**: External stylesheets must be directly imported from an npm package or downloaded and colocated with your codebase. You cannot use `<link rel="stylesheet" />`.
-
-</AppOnly>
-
-<PagesOnly>
-
-Next.js allows you to import CSS files from a JavaScript file.
-This is possible because Next.js extends the concept of [`import`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import) beyond JavaScript.
-
-### Import styles from `node_modules`
-
-Since Next.js **9.5.4**, importing a CSS file from `node_modules` is permitted anywhere in your application.
-
-For global stylesheets, like `bootstrap` or `nprogress`, you should import the file inside `pages/_app.js`.
-For example:
-
-```jsx filename="pages/_app.js"
-import "bootstrap/dist/css/bootstrap.css";
-
-export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
-}
-```
-
-For importing CSS required by a third-party component, you can do so in your component. For example:
-
-```jsx filename="components/example-dialog.js"
-import { useState } from "react";
-import { Dialog } from "@reach/dialog";
-import VisuallyHidden from "@reach/visually-hidden";
-import "@reach/dialog/styles.css";
-
-function ExampleDialog(props) {
-  const [showDialog, setShowDialog] = useState(false);
-  const open = () => setShowDialog(true);
-  const close = () => setShowDialog(false);
-
-  return (
-    <div>
-      <button onClick={open}>Open Dialog</button>
-      <Dialog isOpen={showDialog} onDismiss={close}>
-        <button className="close-button" onClick={close}>
-          <VisuallyHidden>Close</VisuallyHidden>
-          <span aria-hidden>×</span>
-        </button>
-        <p>Hello there. I am a dialog</p>
-      </Dialog>
-    </div>
-  );
-}
-```
-
-</PagesOnly>
-
-<AppOnly>
 
 ## Ordering and Merging
 
@@ -355,8 +192,6 @@ To maintain a predictable order, we recommend the following:
 >
 > - CSS ordering can behave differently in development mode, always ensure to check the build (`next build`) to verify the final CSS order.
 > - You can use the [`cssChunking`](/docs/content/app/api-reference/next-config-js/cssChunking) option in `next.config.js` to control how CSS is chunked.
-
-</AppOnly>
 
 ## Additional Features
 
