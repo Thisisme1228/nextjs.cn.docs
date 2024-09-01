@@ -14,13 +14,13 @@ Next.js 支持多种处理 CSS 的方式，包括：
 
 ## CSS Modules
 
-Next.js has built-in support for CSS Modules using the `.module.css` extension.
+Next.js 内置支持使用 .module.css 扩展名的 CSS 模块。
 
-CSS Modules locally scope CSS by automatically creating a unique class name. This allows you to use the same class name in different files without worrying about collisions. This behavior makes CSS Modules the ideal way to include component-level CSS.
+CSS 模块通过自动创建唯一的类名来局部作用域 CSS。这允许您在不同文件中使用相同的类名而无需担心冲突。这种行为使 CSS 模块成为包含组件级 CSS 的理想方式。
 
-### Example
+### 例子
 
-CSS Modules can be imported into any file inside the `app` directory:
+CSS 模块可以导入到`app`目录内的任何文件中：
 
 ```tsx filename="app/dashboard/layout.tsx" switcher
 import styles from "./styles.module.css";
@@ -48,21 +48,21 @@ export default function DashboardLayout({ children }) {
 }
 ```
 
-CSS Modules are **only enabled for files with the `.module.css` and `.module.sass` extensions**.
+CSS 模块仅对具有`.module.css` 和 `.module.sass`扩展名的文件启用。
 
-In production, all CSS Module files will be automatically concatenated into **many minified and code-split** `.css` files.
-These `.css` files represent hot execution paths in your application, ensuring the minimal amount of CSS is loaded for your application to paint.
+在生产环境中，所有 CSS 模块文件将自动连接成 **多个压缩和代码拆分**的`.css`文件。
+这些`.css`文件代表了应用程序中的热执行路径，确保加载最少量的 CSS 以便应用程序进行渲染。
 
 ## Global Styles
 
-Global styles can be imported into any layout, page, or component inside the `app` directory.
+全局样式可以导入到`app`目录内的任何布局、页面或组件中。
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - This is different from the `pages` directory, where you can only import global styles inside the `_app.js` file.
-> - Next.js does not support usage of global styles unless they are actually global, meaning they can apply to all pages and can live for the lifetime of the application. This is because Next.js uses React's built-in support for stylesheets to integrate with Suspense. This built-in support currently does not remove stylesheets as you navigate between routes. Because of this, we recommend using CSS Modules over global styles.
+> - 这与`pages`目录不同，在`pages`目录中，您只能在`_app.js`文件中导入全局样式。
+> - Next.js 不支持使用全局样式，除非它们是真正的全局样式，意味着它们可以应用于所有页面并在应用程序的生命周期内存在。这是因为 Next.js 使用 React 内置的样式表支持与 Suspense 集成。目前，这种内置支持在您在路由之间导航时不会移除样式表。因此，我们建议使用 CSS 模块而不是全局样式。
 
-For example, consider a stylesheet named `app/global.css`:
+例如，请思考一个名为`app/global.css`的样式表：
 
 ```css filename="app/global.css"
 body {
@@ -72,7 +72,7 @@ body {
 }
 ```
 
-Inside the root layout (`app/layout.js`), import the `global.css` stylesheet to apply the styles to every route in your application:
+在根布局文件(`app/layout.js`)中，导入`global.css`样式表，以将样式应用于应用程序中的每个路由：
 
 ```tsx filename="app/layout.tsx" switcher
 // These styles apply to every route in the application
@@ -104,9 +104,9 @@ export default function RootLayout({ children }) {
 }
 ```
 
-## External Stylesheets
+## 外部样式表
 
-Stylesheets published by external packages can be imported anywhere in the `app` directory, including colocated components:
+外部包发布的样式表可以导入到`app`目录中的任何位置，包括同位置的组件：
 
 ```tsx filename="app/layout.tsx" switcher
 import "bootstrap/dist/css/bootstrap.css";
@@ -136,13 +136,13 @@ export default function RootLayout({ children }) {
 }
 ```
 
-> **Good to know**: External stylesheets must be directly imported from an npm package or downloaded and colocated with your codebase. You cannot use `<link rel="stylesheet" />`.
+> **你需要知道**: 外部样式表必须直接从 npm 包导入或下载并与您的代码库放置在一起。您不能使用`<link rel="stylesheet" />`。
 
-## Ordering and Merging
+## 排序和合并
 
-Next.js optimizes CSS during production builds by automatically chunking (merging) stylesheets. The CSS order is _determined by the order in which you import the stylesheets into your application code_.
+Next.js 在生产构建期间通过自动分块（合并）样式表来优化 CSS。CSS 的顺序是由您在应用程序代码中导入样式表的顺序决定的。
 
-For example, `base-button.module.css` will be ordered before `page.module.css` since `<BaseButton>` is imported first in `<Page>`:
+例如, 由于`<BaseButton>`在`<Page>`中首先被导入，因此`base-button.module.css` 的顺序将排在`page.module.css`之前：
 
 ```tsx filename="base-button.tsx" switcher
 import styles from "./base-button.module.css";
@@ -178,25 +178,25 @@ export function Page() {
 }
 ```
 
-To maintain a predictable order, we recommend the following:
+为了保持可预测的顺序，我们建议如下：
 
-- Only import a CSS file in a single JS/TS file.
-  - If using global class names, import the global styles in the same file in the order you want them to be applied.
-- Prefer CSS Modules over global styles.
-  - Use a consistent naming convention for your CSS modules. For example, using `<name>.module.css` over `<name>.tsx`.
-- Extract shared styles into a separate shared component.
-- If using [Tailwind](/docs/content/app/building-your-application/styling/tailwind-css), import the stylesheet at the top of the file, preferably in the [Root Layout](/docs/content/app/building-your-application/routing/layouts-and-templates#root-layout-required).
-- Turn off any linters/formatters (e.g., ESLint's [`sort-import`](https://eslint.org/docs/latest/rules/sort-imports)) that automatically sort your imports. This can inadvertently affect your CSS since CSS import order _matters_.
+- 仅在单个 JS/TS 文件中导入一个 CSS 文件。
+  - 如果使用全局类名，请在同一个文件中按希望应用的顺序导入全局样式。
+- 优先使用 CSS 模块而不是全局样式。
+  - 为您的 CSS 模块使用一致的命名约定。例如，使用`<name>.module.css` 而不是 `<name>.tsx`。
+- 将共享样式提取到一个单独的共享组件中。
+- 如果使用[Tailwind](/docs/content/app/building-your-application/styling/tailwind-css), 请在文件顶层导入样式表, 最好在[ 根布局 ](/docs/content/app/building-your-application/routing/layouts-and-templates#root-layout-required)中。
+- 关闭任何自动排序导入 linters/formatters (例如, ESLint 的 [`sort-import`](https://eslint.org/docs/latest/rules/sort-imports))。这可能会无意中影响您的 CSS，因为 CSS 导入顺序很重要。
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - CSS ordering can behave differently in development mode, always ensure to check the build (`next build`) to verify the final CSS order.
-> - You can use the [`cssChunking`](/docs/content/app/api-reference/next-config-js/cssChunking) option in `next.config.js` to control how CSS is chunked.
+> - CSS 排序在开发模式下的行为可能会有所不同，请务必检查构建(`next build`)以验证最终的 CSS 顺序。
+> - 您可以在`next.config.js`中使用[`cssChunking`](/docs/content/app/api-reference/next-config-js/cssChunking)选项来控制 CSS 的分块方式。
 
-## Additional Features
+## 附加功能
 
-Next.js includes additional features to improve the authoring experience of adding styles:
+Next.js 包含附加功能，以改善添加样式的编写体验：
 
-- When running locally with `next dev`, local stylesheets (either global or CSS modules) will take advantage of [Fast Refresh](/docs/architecture/fast-refresh) to instantly reflect changes as edits are saved.
-- When building for production with `next build`, CSS files will be bundled into fewer minified `.css` files to reduce the number of network requests needed to retrieve styles.
-- If you disable JavaScript, styles will still be loaded in the production build (`next start`). However, JavaScript is still required for `next dev` to enable [Fast Refresh](/docs/architecture/fast-refresh).
+- 当使用`next dev`本地运行时, 本地样式表(无论是全局样式还是 CSS 模块) 将利用[快速刷新](/docs/architecture/fast-refresh)功能，在保存编辑时立即反映更改。
+- 在使用`next build`构建生产环境时，CSS 文件将被打包成更少的压缩`.css`文件，以减少检索样式所需的网络请求数量。
+- 如果禁用了 JavaScript，样式仍将在生产构建中加载。(`next start`).然而，`next dev`仍然需要 JavaScript 来启用[快速刷新](/docs/architecture/fast-refresh)。

@@ -1,30 +1,30 @@
 ---
 title: Sass
-description: Style your Next.js application using Sass.
+description: 使用 Sass 为您的 Next.js 应用程序设置样式。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js has built-in support for integrating with Sass after the package is installed using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss`or `.module.sass` extension.
+在安装包后，Next.js 内置支持了使用`.scss` 和 `.sass`扩展名集成的 Sass。您可以通过 CSS 模块和`.module.scss`或`.module.sass`扩展名使用组件级 Sass。
 
-First, install [`sass`](https://github.com/sass/sass):
+首先, 安装[`sass`](https://github.com/sass/sass):
 
 ```bash filename="Terminal"
 npm install --save-dev sass
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> Sass supports [two different syntaxes](https://sass-lang.com/documentation/syntax), each with their own extension.
-> The `.scss` extension requires you use the [SCSS syntax](https://sass-lang.com/documentation/syntax#scss),
-> while the `.sass` extension requires you use the [Indented Syntax ("Sass")](https://sass-lang.com/documentation/syntax#the-indented-syntax).
+> Sass 支持[两种不同的语法](https://sass-lang.com/documentation/syntax)，每种语法都有自己的扩展名。
+> `.scss` 扩展名要求您使用[SCSS 语法](https://sass-lang.com/documentation/syntax#scss),
+> 然而`.sass`扩展名要求您使用[缩进的语法 Syntax ("Sass")](https://sass-lang.com/documentation/syntax#the-indented-syntax).
 >
-> If you're not sure which to choose, start with the `.scss` extension which is a superset of CSS, and doesn't require you learn the
-> Indented Syntax ("Sass").
+> 如果您不确定选择哪种语法，请从`.scss`扩展名开始，它是 CSS 的超集，不需要您学习
+> 缩进的语法("Sass").
 
-### Customizing Sass Options
+### 自定义 Sass 选项
 
-If you want to configure the Sass compiler, use `sassOptions` in `next.config.js`.
+如果您想配置 Sass 编译器，请在`next.config.js`中使用`sassOptions`。
 
 ```js filename="next.config.js"
 const path = require("path");
@@ -36,11 +36,11 @@ module.exports = {
 };
 ```
 
-### Sass Variables
+### Sass 变量
 
-Next.js supports Sass variables exported from CSS Module files.
+Next.js 支持从 CSS 模块文件导出的 Sass 变量。
 
-For example, using the exported `primaryColor` Sass variable:
+例如，使用导出的`primaryColor` Sass 变量：
 
 ```scss filename="app/variables.module.scss"
 $primary-color: #64ff00;
