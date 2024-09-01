@@ -33,17 +33,7 @@ To get started, install the following packages:
 npm install @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation
 ```
 
-<AppOnly>
-
 Next, create a custom [`instrumentation.ts`](/docs/content/app/building-your-application/optimizing/instrumentation) (or `.js`) file in the **root directory** of the project (or inside `src` folder if using one):
-
-</AppOnly>
-
-<PagesOnly>
-
-Next, create a custom [`instrumentation.ts`](/docs/content/pages/building-your-application/optimizing/instrumentation) (or `.js`) file in the **root directory** of the project (or inside `src` folder if using one):
-
-</PagesOnly>
 
 ```ts filename="your-project/instrumentation.ts" switcher
 import { registerOTel } from "@vercel/otel";
@@ -63,25 +53,11 @@ export function register() {
 
 See the [`@vercel/otel` documentation](https://www.npmjs.com/package/@vercel/otel) for additional configuration options.
 
-<AppOnly>
-
 > **Good to know**
 >
 > - The `instrumentation` file should be in the root of your project and not inside the `app` or `pages` directory. If you're using the `src` folder, then place the file inside `src` alongside `pages` and `app`.
 > - If you use the [`pageExtensions` config option](/docs/content/app/api-reference/next-config-js/pageExtensions) to add a suffix, you will also need to update the `instrumentation` filename to match.
 > - We have created a basic [with-opentelemetry](https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry) example that you can use.
-
-</AppOnly>
-
-<PagesOnly>
-
-> **Good to know**
->
-> - The `instrumentation` file should be in the root of your project and not inside the `app` or `pages` directory. If you're using the `src` folder, then place the file inside `src` alongside `pages` and `app`.
-> - If you use the [`pageExtensions` config option](/docs/content/pages/api-reference/next-config-js/pageExtensions) to add a suffix, you will also need to update the `instrumentation` filename to match.
-> - We have created a basic [with-opentelemetry](https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry) example that you can use.
-
-</PagesOnly>
 
 ### Manual OpenTelemetry configuration
 

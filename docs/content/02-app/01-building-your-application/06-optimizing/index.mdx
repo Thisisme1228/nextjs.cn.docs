@@ -20,8 +20,6 @@ Built-in components abstract away the complexity of implementing common UI optim
 
 Metadata helps search engines understand your content better (which can result in better SEO), and allows you to customize how your content is presented on social media, helping you create a more engaging and consistent user experience across various platforms.
 
-<AppOnly>
-
 The Metadata API in Next.js allows you to modify the `<head>` element of a page. You can configure metadata in two ways:
 
 - **Config-based Metadata**: Export a [static `metadata` object](/docs/content/app/api-reference/functions/generate-metadata#metadata-object) or a dynamic [`generateMetadata` function](/docs/content/app/api-reference/functions/generate-metadata#generatemetadata-function) in a `layout.js` or `page.js` file.
@@ -29,18 +27,10 @@ The Metadata API in Next.js allows you to modify the `<head>` element of a page.
 
 Additionally, you can create dynamic Open Graph Images using JSX and CSS with [imageResponse](/docs/content/app/api-reference/functions/image-response) constructor.
 
-</AppOnly>
-
-<PagesOnly>
-
-The Head Component in Next.js allows you to modify the `<head>` of a page. Learn more in the [Head Component](/docs/content/pages/api-reference/components/head) documentation.
-
-</PagesOnly>
-
 ## Static Assets
 
 Next.js `/public` folder can be used to serve static assets like images, fonts, and other files. Files inside `/public` can also be cached by CDN providers so that they are delivered efficiently.
 
 ## Analytics and Monitoring
 
-For large applications, Next.js integrates with popular analytics and monitoring tools to help you understand how your application is performing. Learn more in the <PagesOnly>[Analytics](/docs/content/app/building-your-application/optimizing/analytics), </PagesOnly> [OpenTelemetry](/docs/content/pages/building-your-application/optimizing/open-telemetry)<PagesOnly>,</PagesOnly> and [Instrumentation](/docs/content/pages/building-your-application/optimizing/instrumentation) guides.
+For large applications, Next.js integrates with popular analytics and monitoring tools to help you understand how your application is performing. Learn more in the [OpenTelemetry](/docs/content/pages/building-your-application/optimizing/open-telemetry) and [Instrumentation](/docs/content/pages/building-your-application/optimizing/instrumentation) guides.
