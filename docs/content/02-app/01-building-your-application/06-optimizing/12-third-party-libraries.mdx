@@ -1,17 +1,17 @@
 ---
-title: Third Party Libraries
-description: Optimize the performance of third-party libraries in your application with the `@next/third-parties` package.
+title: 第三方库
+description: 使用`@next/third-parties`包优化应用程序中第三方库的性能。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-**`@next/third-parties`** is a library that provides a collection of components and utilities that improve the performance and developer experience of loading popular third-party libraries in your Next.js application.
+**`@next/third-parties`**是一个库，它提供了一系列组件和工具，以提高在 Next.js 应用程序中加载流行第三方库的性能和开发者体验。
 
-All third-party integrations provided by `@next/third-parties` have been optimized for performance and ease of use.
+所有由`@next/third-parties`提供的第三方集成都已针对性能和易用性进行了优化。
 
-## Getting Started
+## 开始
 
-To get started, install the `@next/third-parties` library:
+要开始使用，请安装`@next/third-parties`库：
 
 ```bash filename="Terminal"
 npm install @next/third-parties@latest next@latest
@@ -19,17 +19,17 @@ npm install @next/third-parties@latest next@latest
 
 {/* To do: Remove this paragraph once package becomes stable */}
 
-`@next/third-parties` is currently an **experimental** library under active development. We recommend installing it with the **latest** or **canary** flags while we work on adding more third-party integrations.
+`@next/third-parties`目前是一个** 实验性** 库，正在积极开发中。我们建议在安装时使用**latest**或**canary**标志，同时我们正在努力添加更多第三方集成。
 
-## Google Third-Parties
+## Google 第三方
 
-All supported third-party libraries from Google can be imported from `@next/third-parties/google`.
+所有 Google 支持的第三方库都可从`@next/third-parties/google`导入。
 
 ### Google Tag Manager
 
-The `GoogleTagManager` component can be used to instantiate a [Google Tag Manager](https://developers.google.com/tag-platform/tag-manager) container to your page. By default, it fetches the original inline script after hydration occurs on the page.
+`GoogleTagManager`组件可用于将[Google Tag Manager](https://developers.google.com/tag-platform/tag-manager)容器实例化到您的页面。默认情况下，它会在页面水合后获取原始内联脚本。
 
-To load Google Tag Manager for all routes, include the component directly in your root layout and pass in your GTM container ID:
+要为所有路由加载 Google Tag Manager, 请将组件直接包含在根布局中，并传入您的 GTM 容器 ID：
 
 ```tsx filename="app/layout.tsx" switcher
 import { GoogleTagManager } from "@next/third-parties/google";
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-To load Google Tag Manager for a single route, include the component in your page file:
+要为单个路由加载 Google Tag Manager，请在页面文件中包含该组件：
 
 ```jsx filename="app/page.js"
 import { GoogleTagManager } from "@next/third-parties/google";
@@ -71,11 +71,9 @@ export default function Page() {
 }
 ```
 
-#### Sending Events
+#### 发送时间
 
-The `sendGTMEvent` function can be used to track user interactions on your page by sending events
-using the `dataLayer` object. For this function to work, the `<GoogleTagManager />` component must be
-included in either a parent layout, page, or component, or directly in the same file.
+`sendGTMEvent`函数可用于通过使用`dataLayer`对象发送事件来跟踪页面上的用户交互。要使此函数正常工作，必须在父布局、页面或组件中，或直接在同一文件中包含 `<GoogleTagManager />`组件。
 
 ```jsx filename="app/page.js"
 "use client";
@@ -95,14 +93,11 @@ export function EventButton() {
 }
 ```
 
-Refer to the Tag Manager [developer
-documentation](https://developers.google.com/tag-platform/tag-manager/datalayer) to learn about the
-different variables and events that can be passed into the function.
+请参阅 Tag Manager[开发者文档](https://developers.google.com/tag-platform/tag-manager/datalayer)以了解可以传递给该函数的不同变量和事件。
 
-#### Options
+#### 选项
 
-Options to pass to the Google Tag Manager. For a full list of options, read the [Google Tag Manager
-docs](https://developers.google.com/tag-platform/tag-manager/datalayer).
+传递给 Google Tag Manager 的选项。有关选项的完整列表，请阅读[Google Tag Manager 文档](https://developers.google.com/tag-platform/tag-manager/datalayer)。
 
 | Name            | Type     | Description                                                              |
 | --------------- | -------- | ------------------------------------------------------------------------ |
@@ -112,20 +107,15 @@ docs](https://developers.google.com/tag-platform/tag-manager/datalayer).
 | `auth`          | Optional | Value of authentication parameter (`gtm_auth`) for environment snippets. |
 | `preview`       | Optional | Value of preview parameter (`gtm_preview`) for environment snippets.     |
 
-### Google Analytics
+### 谷歌分析
 
-The `GoogleAnalytics` component can be used to include [Google Analytics
-4](https://developers.google.com/analytics/devguides/collection/ga4) to your page via the Google tag
-(`gtag.js`). By default, it fetches the original scripts after hydration occurs on the page.
+`GoogleAnalytics`组件可用于通过 Google 标签(`gtag.js`) 将[Google Analytics
+4](https://developers.google.com/analytics/devguides/collection/ga4) 包含到您的页面中。默认情况下，它会在页面水合后获取原始脚本。
 
-> **Recommendation**: If Google Tag Manager is already included in your application, you can
-> configure Google Analytics directly using it, rather than including Google Analytics as a separate
-> component. Refer to the
-> [documentation](https://developers.google.com/analytics/devguides/collection/ga4/tag-options#what-is-gtm)
-> to learn more about the differences between Tag Manager and `gtag.js`.
+> **建议**: 如果您的应用程序中已经包含了 Google Tag Manager，您可以直接使用它来配置 Google Analytics，而不是将 Google Analytics 作为单独的组件部分。请参阅 [文档](https://developers.google.com/analytics/devguides/collection/ga4/tag-options#what-is-gtm)
+> 以了解有关 Tag Manager 和`gtag.js`不同之处的更多信息。
 
-To load Google Analytics for all routes, include the component directly in your root layout and pass
-in your measurement ID:
+要为所有路由加载 Google Analytics，请将组件直接包含在根布局中，并传入您的测量 ID：
 
 ```tsx filename="app/layout.tsx" switcher
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -157,7 +147,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-To load Google Analytics for a single route, include the component in your page file:
+要为单个路由加载 Google Analytics，请在页面文件中包含该组件：
 
 ```jsx filename="app/page.js"
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -167,11 +157,9 @@ export default function Page() {
 }
 ```
 
-#### Sending Events
+#### 发送事件
 
-The `sendGAEvent` function can be used to measure user interactions on your page by sending events
-using the `dataLayer` object. For this function to work, the `<GoogleAnalytics />` component must be
-included in either a parent layout, page, or component, or directly in the same file.
+`sendGAEvent`函数可用于通过`dataLayer`对象发送事件来测量页面上的用户交互。要使此函数正常工作，必须在父布局、页面或组件中，或直接在同一文件中包含`<GoogleAnalytics />` 组件。
 
 ```jsx filename="app/page.js"
 "use client";
@@ -191,39 +179,29 @@ export function EventButton() {
 }
 ```
 
-Refer to the Google Analytics [developer
-documentation](https://developers.google.com/analytics/devguides/collection/ga4/event-parameters) to learn
-more about event parameters.
+请参阅 Google Analytics[开发者文档](https://developers.google.com/analytics/devguides/collection/ga4/event-parameters) 以了解更多关于事件参数的信息。
 
-#### Tracking Pageviews
+#### 跟踪页面访问量
 
-Google Analytics automatically tracks pageviews when the browser history state changes. This means
-that client-side navigations between Next.js routes will send pageview data without any configuration.
+Google Analytics 会在浏览器历史状态更改时自动跟踪页面浏览量。这意味着在 Next.js 路由之间进行客户端导航时，无需任何配置即可发送页面浏览数据。
 
-To ensure that client-side navigations are being measured correctly, verify that the [_“Enhanced
-Measurement”_](https://support.google.com/analytics/answer/9216061#enable_disable) property is
-enabled in your Admin panel and the _“Page changes based on browser history events”_ checkbox is
-selected.
+要确保正确测量客户端导航，请在管理面板中验证 [_“Enhanced
+Measurement”_](https://support.google.com/analytics/answer/9216061#enable_disable)性已启用，并选中 _“Page changes based on browser history events”_ 复选框。
 
-> **Note**: If you decide to manually send pageview events, make sure to disable the default
-> pageview measurement to avoid having duplicate data. Refer to the Google Analytics [developer
-> documentation](https://developers.google.com/analytics/devguides/collection/ga4/views?client_type=gtag#manual_pageviews)
-> to learn more.
+> **注意**: 如果您决定手动发送页面浏览事件，请确保禁用默认的页面浏览测量，以避免重复数据。请参阅 Google Analytics [开发者文档](https://developers.google.com/analytics/devguides/collection/ga4/views?client_type=gtag#manual_pageviews)以了解更多信息。
 
-#### Options
+#### 选项
 
-Options to pass to the `<GoogleAnalytics>` component.
+传递给`<GoogleAnalytics>` 组件的选项。
 
 | Name            | Type     | Description                                                                                            |
 | --------------- | -------- | ------------------------------------------------------------------------------------------------------ |
 | `gaId`          | Required | Your [measurement ID](https://support.google.com/analytics/answer/12270356). Usually starts with `G-`. |
 | `dataLayerName` | Optional | Name of the data layer. Defaults to `dataLayer`.                                                       |
 
-### Google Maps Embed
+### 嵌入谷歌地图
 
-The `GoogleMapsEmbed` component can be used to add a [Google Maps
-Embed](https://developers.google.com/maps/documentation/embed/embedding-map) to your page. By
-default, it uses the `loading` attribute to lazy-load the embed below the fold.
+`GoogleMapsEmbed`组件可用于将[Google Maps Embed](https://developers.google.com/maps/documentation/embed/embedding-map)添加到您的页面中。默认情况下，它使用`loading`属性来延迟加载折叠以下的嵌入内容。
 
 ```jsx filename="app/page.js"
 import { GoogleMapsEmbed } from "@next/third-parties/google";
@@ -241,9 +219,9 @@ export default function Page() {
 }
 ```
 
-#### Options
+#### 选项
 
-Options to pass to the Google Maps Embed. For a full list of options, read the [Google Map Embed
+传递给 Google Maps Embed 的选项。有关选项的完整列表，请阅读[Google Map Embed
 docs](https://developers.google.com/maps/documentation/embed/embedding-map).
 
 | Name              | Type     | Description                                                                                         |
@@ -262,11 +240,9 @@ docs](https://developers.google.com/maps/documentation/embed/embedding-map).
 | `language`        | Optional | Defines the language to use for UI elements and for the display of labels on map tiles.             |
 | `region`          | Optional | Defines the appropriate borders and labels to display, based on geo-political sensitivities.        |
 
-### YouTube Embed
+### YouTube 嵌入
 
-The `YouTubeEmbed` component can be used to load and display a YouTube embed. This component loads
-faster by using [`lite-youtube-embed`](https://github.com/paulirish/lite-youtube-embed) under the
-hood.
+`YouTubeEmbed`组件可用于加载和显示 YouTube 嵌入。此组件通过在底层使用[`lite-youtube-embed`](https://github.com/paulirish/lite-youtube-embed)使其加载得更快。
 
 ```jsx filename="app/page.js"
 import { YouTubeEmbed } from "@next/third-parties/google";

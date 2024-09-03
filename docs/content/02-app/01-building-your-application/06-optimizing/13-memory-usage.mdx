@@ -1,75 +1,74 @@
 ---
-title: Memory Usage
-description: Optimize memory used by your application in development and production.
+title: 内存使用
+description: 优化您的应用程序在开发和生产环境中使用的内存。
 ---
 
-As applications grow and become more feature rich, they can demand more resources when developing locally or creating production builds.
+随着应用程序的增长和功能的丰富，它们在本地开发或创建生产构建时可能需要更多的资源。
 
-Let's explore some strategies and techniques to optimize memory and address common memory issues in Next.js.
+让我们探讨一些优化内存和解决 Next.js 中常见内存问题的策略和技术。
 
-## Reduce number of dependencies
+## 减少依赖项的数量
 
-Applications with a large amount of dependencies will use more memory.
+依赖项较多的应用程序将使用更多的内存。
 
-The [Bundle Analyzer](/docs/content/app/building-your-application/optimizing/package-bundling) can help you investigate large dependencies in your application that may be able to be removed to improve performance and memory usage.
+[Bundle Analyzer](/docs/content/app/building-your-application/optimizing/package-bundling)可以帮助您调查应用程序中的大型依赖项，这些依赖项可能能够被移除，以提高性能和内存使用效率。
 
-## Try `experimental.webpackMemoryOptimizations`
+## 尝试 `experimental.webpackMemoryOptimizations`
 
-Starting in `v15.0.0`, you can add `experimental.webpackMemoryOptimizations: true` to your `next.config.js` file to change behavior in Webpack that reduces max memory usage but may increase compilation times by a slight amount.
+从`v15.0.0`开始，您可以在`next.config.js`文件中添加`experimental.webpackMemoryOptimizations: true`，以更改 Webpack 的行为，从而减少最大内存使用量，但可能会略微增加编译时间。
 
-> **Good to know**: This feature is currently experimental to test on more projects first, but it is considered to be low-risk.
+> **您需要知道**: 此功能目前是实验性的，首先在更多的项目上进行测试，但它被认为是低风险的。
 
-## Run `next build` with `--experimental-debug-memory-usage`
+## 运行`next build`并带上`--experimental-debug-memory-usage`
 
-Starting in `14.2.0`, you can run `next build --experimental-debug-memory-usage` to run the build in a mode where Next.js will print out information about memory usage continuously throughout the build, such as heap usage and garbage collection statistics. Heap snapshots will also be taken automatically when memory usage gets close to the configured limit.
+从`14.2.0`开始，您可以运行`next build --experimental-debug-memory-usage`，以在一种模式下运行构建，在该模式下 Next.js 将在整个构建过程中持续打印内存使用信息，例如堆使用情况和垃圾回收统计信息。当内存使用接近配置的限制时，也会自动拍摄堆快照。
 
-> **Good to know**: This feature is not compatible with the Webpack build worker option which is auto-enabled unless you have custom webpack config.
+> **您需要知道**: 此功能与 Webpack 构建工作器选项不兼容，，除非您有自定义的 webpack 配置，否则该选项会自动启用。
 
-## Record a heap profile
+## 记录 heap profile
 
-To look for memory issues, you can record a heap profile from Node.js and load it in Chrome DevTools to identify potential sources of memory leaks.
+要查找内存问题，您可以从 Node.js 中记录 heap profile，并将其加载到 Chrome DevTools 中，以识别潜在的内存泄漏来源。
 
-In your terminal, pass the `--heap-prof` flag to Node.js when starting your Next.js build:
+在终端中，当启动 Next.js 构建时，将`--heap-prof`标志传递给 Node.js：
 
 ```sh
 node --heap-prof node_modules/next/dist/bin/next build
 ```
 
-At the end of the build, a `.heapprofile` file will be created by Node.js.
+在构建结束时，Node.js 将创建一个`.heapprofile`文件。
 
-In Chrome DevTools, you can open the Memory tab and click on the "Load Profile" button to visualize the file.
+在 Chrome DevTools 中，您可以打开 Memory 选项卡并点击 "Load Profile" 按钮来可视化该文件。
 
-## Analyze a snapshot of the heap
+## 分析堆快照
 
-You can use an inspector tool to analyze the memory usage of the application.
+您可以使用检查工具来分析应用程序的内存使用情况。
 
-When running the `next build` or `next dev` command, add `NODE_OPTIONS=--inspect` to the beginning of the command. This will expose the inspector agent on the default port.
-If you wish to break before any user code starts, you can pass `--inspect-brk` instead. While the process is running, you can use a tool such as Chrome DevTools to connect to the debugging port to record and analyze a snapshot of the heap to see what memory is being retained.
+当运行`next build` 或 `next dev` 命令时, 将`NODE_OPTIONS=--inspect`添加到命令的开头。这将会在默认端口上暴露检查代理。
+如果您希望在任何用户代码开始之前中断，可以传递`--inspect-brk`。在进程运行时，您可以使用 Chrome DevTools 等工具连接到调试端口，以记录和分析堆快照，查看哪些内存被保留。
 
-Starting in `14.2.0`, you can also run `next build` with the `--experimental-debug-memory-usage` flag to make it easier to take heap snapshots.
+从`14.2.0`开始, 您还可以使用`--experimental-debug-memory-usage`标志运行 `next build`，以更轻松地拍摄堆快照。
 
-While running in this mode, you can send a `SIGUSR2` signal to the process at any point, and the process will take a heap snapshot.
+在这种模式下运行时，您可以随时向进程发送 `SIGUSR2`信号，进程将拍摄堆快照。
 
-The heap snapshot will be saved to the project root of the Next.js application and can be loaded in any heap analyzer, such as Chrome DevTools, to see what memory is retained. This mode is not yet compatible with Webpack build workers.
+堆快照将保存到 Next.js 应用程序的项目根目录，并且可以在任何堆分析器（如 Chrome DevTools）中加载，以查看哪些内存被保留。此模式尚不兼容 Webpack 构建工作器
 
-See [how to record and analyze heap snapshots](https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots) for more information.
+请参阅[如何记录和分析堆快照](https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots)以获取更多信息。
 
-## Webpack build worker
+## Webpack 构建工作器
 
-The Webpack build worker allows you to run Webpack compilations inside a separate Node.js worker which will decrease memory usage of your application during builds.
+Webpack 构建工作器允许您在单独的 Node.js 工作器中运行 Webpack 编译，这将减少应用程序在构建期间的内存使用。
 
-This option is enabled by default if your application does not have a custom Webpack configuration starting in `v14.1.0`.
+从`v14.1.0`开始，如果您的应用程序没有自定义 Webpack 配置，则此选项默认启用。
 
-If you are using an older version of Next.js or you have a custom Webpack configuration, you can enable this option by setting `experimental.webpackBuildWorker: true` inside your `next.config.js`.
+如果您使用的是旧版本的 Next.js 或者有自定义的 Webpack 配置，您可以通过在`next.config.js`中设置`experimental.webpackBuildWorker: true`来启用此选项。
 
-> **Good to know**: This feature may not be compatible with all custom Webpack plugins.
+> **您需要知道**: 此功能可能与所有自定义 Webpack 插件不兼容。
 
-## Disable Webpack cache
+## 禁用 Webpack 缓存
 
-The [Webpack cache](https://webpack.js.org/configuration/cache/) saves generated Webpack modules in memory and/or to disk to improve the speed of builds. This can
-help with performance, but it will also increase the memory usage of your application to store the cached data.
+[Webpack 缓存](https://webpack.js.org/configuration/cache/)将生成的 Webpack 模块保存在内存和/或磁盘中，以提高构建速度。这可以帮助提高性能，但也会增加应用程序的内存使用量来存储缓存数据。
 
-You can disable this behavior by adding a [custom Webpack configuration](/docs/content/app/api-reference/next-config-js/webpack) to your application:
+您可以通过向应用程序添加[自定义 Webpack 配置](/docs/content/app/api-reference/next-config-js/webpack)来禁用此行为：
 
 ```js filename="next.config.mjs"
 /** @type {import('next').NextConfig} */
@@ -91,14 +90,14 @@ const nextConfig = {
 export default nextConfig;
 ```
 
-## Disable source maps
+## 禁用源映射
 
-Generating source maps consumes extra memory during the build process.
+生成源映射会在构建过程中消耗额外的内存。
 
-You can disable source map generation by adding `productionBrowserSourceMaps: false` and `experimental.serverSourceMaps: false` to your Next.js configuration.
+您可以通过在 Next.js 配置中添加`productionBrowserSourceMaps: false`和`experimental.serverSourceMaps: false`来禁用源映射生成。
 
-> **Good to know**: Some plugins may turn on source maps and may require custom configuration to disable.
+> **您需要知道**: 某些插件可能启用了源映射，并且可能需要自定义配置来禁用。
 
-## Edge memory issues
+## Edge 内存问题
 
-Next.js `v14.1.3` fixed a memory issue when using the Edge runtime. Please update to this version (or later) to see if it addresses your issue.
+Next.js `v14.1.3`修复了使用 Edge 运行时的内存问题。请更新到此版本（或更高版本）以查看是否解决了您的问题。

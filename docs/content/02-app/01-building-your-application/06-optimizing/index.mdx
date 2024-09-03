@@ -1,36 +1,36 @@
 ---
-title: Optimizations
+title: 优化
 nav_title: Optimizing
-description: Optimize your Next.js application for best performance and user experience.
+description: 优化您的 Next.js 应用程序以获得最佳性能和用户体验。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js comes with a variety of built-in optimizations designed to improve your application's speed and [Core Web Vitals](https://web.dev/vitals/). This guide will cover the optimizations you can leverage to enhance your user experience.
+Next.js 具有多种内置优化，旨在提高应用程序的速度和 [核心 Web 体验](https://web.dev/vitals/)。本指南将为您介绍可以利用的优化，以增强用户体验。
 
-## Built-in Components
+## 内置组件
 
-Built-in components abstract away the complexity of implementing common UI optimizations. These components are:
+内置组件抽象了实现常见 UI 优化的复杂性。这些组件包括：
 
-- **Images**: Built on the native `<img>` element. The Image Component optimizes images for performance by lazy loading and automatically resizing images based on device size.
-- **Link**: Built on the native `<a>` tags. The Link Component prefetches pages in the background, for faster and smoother page transitions.
-- **Scripts**: Built on the native `<script>` tags. The Script Component gives you control over loading and execution of third-party scripts.
+- **Images**: 基于原生`<img>`元素。Image 组件通过懒加载和根据设备大小自动调整图像大小来优化图像性能。
+- **Link**: 基于原生`<a>`标签。Link 组件在后台预取页面，以实现更快、更流畅的页面过渡。
+- **Scripts**: 基于原生`<script>` 标签。Script 组件让您可以控制第三方脚本的加载和执行。
 
 ## Metadata
 
-Metadata helps search engines understand your content better (which can result in better SEO), and allows you to customize how your content is presented on social media, helping you create a more engaging and consistent user experience across various platforms.
+Metadata 有助于搜索引擎更好地理解您的内容（这可以带来更好的 SEO），并允许您自定义内容在社交媒体上的呈现方式， 帮助您在各种平台上创建更具吸引力和一致性的用户体验。
 
-The Metadata API in Next.js allows you to modify the `<head>` element of a page. You can configure metadata in two ways:
+Next.js 中的 Metadata API 允许您修改页面的 `<head>`元素。您可以通过两种方式配置 metadata:
 
-- **Config-based Metadata**: Export a [static `metadata` object](/docs/content/app/api-reference/functions/generate-metadata#metadata-object) or a dynamic [`generateMetadata` function](/docs/content/app/api-reference/functions/generate-metadata#generatemetadata-function) in a `layout.js` or `page.js` file.
-- **File-based Metadata**: Add static or dynamically generated special files to route segments.
+- **基于配置的 Metadata**: 在`layout.js` 或 `page.js`文件中，导出一个[ 静态 `metadata` 对象](/docs/content/app/api-reference/functions/generate-metadata#metadata-object)或一个动态[`generateMetadata` 函数](/docs/content/app/api-reference/functions/generate-metadata#generatemetadata-function)。
+- **基于文件的 Metadata**: 将静态或动态生成的特殊文件添加到路由段。
 
-Additionally, you can create dynamic Open Graph Images using JSX and CSS with [imageResponse](/docs/content/app/api-reference/functions/image-response) constructor.
+此外, 您可以使用 JSX 和 CSS 以及[imageResponse](/docs/content/app/api-reference/functions/image-response)构造函数创建动态 Open Graph 图像。
 
-## Static Assets
+## 静态资源
 
-Next.js `/public` folder can be used to serve static assets like images, fonts, and other files. Files inside `/public` can also be cached by CDN providers so that they are delivered efficiently.
+Next.js 的`/public`文件夹可用于提供静态资源，如图像、字体和其他文件。`/public`文件夹中的文件也可以由 CDN 提供商缓存，以便高效地传递。
 
-## Analytics and Monitoring
+## 分析和监控
 
-For large applications, Next.js integrates with popular analytics and monitoring tools to help you understand how your application is performing. Learn more in the [OpenTelemetry](/docs/content/pages/building-your-application/optimizing/open-telemetry) and [Instrumentation](/docs/content/pages/building-your-application/optimizing/instrumentation) guides.
+对于大型应用程序，Next.js 集成了流行的分析和监控工具，帮助您了解应用程序的运行情况。了解更多信息，请参阅[OpenTelemetry](/docs/content/pages/building-your-application/optimizing/open-telemetry) 和 [Instrumentation](/docs/content/pages/building-your-application/optimizing/instrumentation) 指南。

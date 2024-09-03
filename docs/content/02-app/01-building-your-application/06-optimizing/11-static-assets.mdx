@@ -1,14 +1,14 @@
 ---
-title: Static Assets in `public`
-nav_title: Static Assets
-description: Next.js allows you to serve static files, like images, in the public directory. You can learn how it works here.
+title: public文件夹中的静态资源
+nav_title: 静态资源
+description: js允许您在public目录中提供静态文件，如图像。你可以在这里了解它的工作原理。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js can serve static files, like images, under a folder called `public` in the root directory. Files inside `public` can then be referenced by your code starting from the base URL (`/`).
+Next.js 可以在根目录下的`public`文件夹中提供静态文件，如图像。然后，从以根路径(`/`)开始的代码引用`public`文件夹中的文件。
 
-For example, the file `public/avatars/me.png` can be viewed by visiting the `/avatars/me.png` path. The code to display that image might look like:
+例如, 访问`/avatars/me.png`路径可以查看`public/avatars/me.png`文件。显示该图像的代码可能如下所示:
 
 ```jsx filename="avatar.js"
 import Image from "next/image";
@@ -22,19 +22,19 @@ export function AvatarOfMe() {
 }
 ```
 
-## Caching
+## 缓存
 
-Next.js cannot safely cache assets in the `public` folder because they may change. The default caching headers applied are:
+Next.js 无法安全地缓存 `public`文件夹中的资产，因为它们可能会更改。默认应用的缓存头是：
 
 ```jsx
 Cache-Control: public, max-age=0
 ```
 
-## Robots, Favicons, and others
+## Robots、Favicons 等
 
-For static metadata files, such as `robots.txt`, `favicon.ico`, etc, you should use [special metadata files](/docs/content/app/api-reference/file-conventions/metadata) inside the `app` folder.
+对于静态 metadata 文件，如`robots.txt`、 `favicon.ico`等，您应该在`app`文件夹中使用[特殊的 metadata 文件](/docs/content/app/api-reference/file-conventions/metadata)。
 
-> Good to know:
+> 您需要知道:
 >
-> - The directory must be named `public`. The name cannot be changed and it's the only directory used to serve static assets.
-> - Only assets that are in the `public` directory at [build time](/docs/content/app/api-reference/next-cli#build) will be served by Next.js. Files added at request time won't be available. We recommend using a third-party service like [Vercel Blob](https://vercel.com/docs/storage/vercel-blob?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) for persistent file storage.
+> - 目录必须命名为 `public`。名称不能更改，并且它是唯一用于提供静态资源的目录。
+> - 只有在[构建时](/docs/content/app/api-reference/next-cli#build) 位于`public`目录中的资产才会由 Next.js 提供。在请求时添加的文件将不可用。我们建议使用第三方服务，如[Vercel Blob](https://vercel.com/docs/storage/vercel-blob?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)进行持久文件存储。

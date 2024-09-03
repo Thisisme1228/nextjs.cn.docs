@@ -1,39 +1,39 @@
 ---
 title: OpenTelemetry
-description: Learn how to instrument your Next.js app with OpenTelemetry.
+description: 了解如何使用 OpenTelemetry 对您的 Next.js 应用进行检测。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-> **Good to know**: This feature is **experimental**, you need to explicitly opt-in by providing `experimental.instrumentationHook = true;` in your `next.config.js`.
+> **您需要知道**: 此功能是**实验性的**，您需要通过在`next.config.js`中提供`experimental.instrumentationHook = true;`来明确选择加入。
 
-Observability is crucial for understanding and optimizing the behavior and performance of your Next.js app.
+可观察性对于理解和优化您的 Next.js 应用的行为和性能至关重要。
 
-As applications become more complex, it becomes increasingly difficult to identify and diagnose issues that may arise. By leveraging observability tools, such as logging and metrics, developers can gain insights into their application's behavior and identify areas for optimization. With observability, developers can proactively address issues before they become major problems and provide a better user experience. Therefore, it is highly recommended to use observability in your Next.js applications to improve performance, optimize resources, and enhance user experience.
+随着应用程序变得越来越复杂，识别和诊断可能出现的问题变得越来越困难。通过利用可观察性工具（如日志记录和指标），开发人员可以深入了解其应用程序的行为并识别优化的领域。通过可观察性，开发人员可以主动解决问题，防止其成为重大问题，并提供更好的用户体验。因此，强烈建议在您的 Next.js 应用程序中使用可观察性，以提高性能、优化资源并增强用户体验。
 
-We recommend using OpenTelemetry for instrumenting your apps.
-It's a platform-agnostic way to instrument apps that allows you to change your observability provider without changing your code.
-Read [Official OpenTelemetry docs](https://opentelemetry.io/docs/) for more information about OpenTelemetry and how it works.
+我们建议使用 OpenTelemetry 来检测您的应用程序。
+这是一种与平台无关的方式来检测应用，允许你在不改变代码的情况下改变你的可观察性提供者。
+阅读[官方 OpenTelemetry 文档](https://opentelemetry.io/docs/)以了解有关 OpenTelemetry 及其工作原理的更多信息。
 
-This documentation uses terms like _Span_, _Trace_ or _Exporter_ throughout this doc, all of which can be found in [the OpenTelemetry Observability Primer](https://opentelemetry.io/docs/concepts/observability-primer/).
+本文档使用了诸如 _Span_、 _Trace_ 或 _Exporter_ 等术语，所有这些术语都可以在[the OpenTelemetry Observability Primer](https://opentelemetry.io/docs/concepts/observability-primer/)中找到。
 
-Next.js supports OpenTelemetry instrumentation out of the box, which means that we already instrumented Next.js itself.
-When you enable OpenTelemetry we will automatically wrap all your code like `getStaticProps` in _spans_ with helpful attributes.
+Next.js 开箱即支持 OpenTelemetry 检测，这意味着我们已经对 Next.js 本身进行了检测。
+当您启用 OpenTelemetry 时，我们会自动将所有代码（如`getStaticProps`）包装在带有有用属性的 spans 中。
 
-## Getting Started
+## 开始
 
-OpenTelemetry is extensible but setting it up properly can be quite verbose.
-That's why we prepared a package `@vercel/otel` that helps you get started quickly.
+OpenTelemetry 是可扩展的，但正确设置它可能会非常冗长。
+这就是为什么我们准备了一个包`@vercel/otel`，它可以帮助您快速入门。
 
-### Using `@vercel/otel`
+### 使用 `@vercel/otel`
 
-To get started, install the following packages:
+要开始使用，请安装以下包：
 
 ```bash filename="Terminal"
 npm install @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation
 ```
 
-Next, create a custom [`instrumentation.ts`](/docs/content/app/building-your-application/optimizing/instrumentation) (or `.js`) file in the **root directory** of the project (or inside `src` folder if using one):
+接下来, 在项目的中创建一个自定义的[`instrumentation.ts`](/docs/content/app/building-your-application/optimizing/instrumentation) (或 `.js`) 文件(如果使用 `src`文件夹，则在其中创建):
 
 ```ts filename="your-project/instrumentation.ts" switcher
 import { registerOTel } from "@vercel/otel";
@@ -51,26 +51,26 @@ export function register() {
 }
 ```
 
-See the [`@vercel/otel` documentation](https://www.npmjs.com/package/@vercel/otel) for additional configuration options.
+参阅[`@vercel/otel` 文档](https://www.npmjs.com/package/@vercel/otel)以获取其他配置选项。
 
-> **Good to know**
+> **您需要知道**
 >
-> - The `instrumentation` file should be in the root of your project and not inside the `app` or `pages` directory. If you're using the `src` folder, then place the file inside `src` alongside `pages` and `app`.
-> - If you use the [`pageExtensions` config option](/docs/content/app/api-reference/next-config-js/pageExtensions) to add a suffix, you will also need to update the `instrumentation` filename to match.
-> - We have created a basic [with-opentelemetry](https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry) example that you can use.
+> - `instrumentation`文件应位于项目的根目录中，而不是在`app`或 `pages` 目录中。如果您使用`src`文件夹, 那么请将文件放在与`pages` 和 `app`同级的`src`文件夹中。
+> - 如果您使用[`pageExtensions`配置选项](/docs/content/app/api-reference/next-config-js/pageExtensions)添加后缀，则还需要更新`instrumentation`文件名以匹配。
+> - 我们创建了一个基础的[with-opentelemetry](https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry) 示例，您可以使用它。
 
-### Manual OpenTelemetry configuration
+### 手动配置 OpenTelemetry
 
-The `@vercel/otel` package provides many configuration options and should serve most of common use cases. But if it doesn't suit your needs, you can configure OpenTelemetry manually.
+`@vercel/otel`包提供了许多配置选项，应该可以满足大多数常见的使用场景。但如果它不适合您的需求，您可以手动配置 OpenTelemetry。
 
-Firstly you need to install OpenTelemetry packages:
+首先，您需要安装 OpenTelemetry 包：
 
 ```bash filename="Terminal"
 npm install @opentelemetry/sdk-node @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/sdk-trace-node @opentelemetry/exporter-trace-otlp-http
 ```
 
-Now you can initialize `NodeSDK` in your `instrumentation.ts`.
-Unlike `@vercel/otel`, `NodeSDK` is not compatible with edge runtime, so you need to make sure that you are importing them only when `process.env.NEXT_RUNTIME === 'nodejs'`. We recommend creating a new file `instrumentation.node.ts` which you conditionally import only when using node:
+现在，您可以在您的`instrumentation.ts`文件中初始化`NodeSDK`。
+与 `@vercel/otel`不同, `NodeSDK`不兼容 Edge 运行时，因此您需要确保仅在`process.env.NEXT_RUNTIME === 'nodejs'`时导入它们。我们建议创建一个新的文件`instrumentation.node.ts`，并仅在使用 Node.js 时有条件地导入它：
 
 ```ts filename="instrumentation.ts" switcher
 export async function register() {
@@ -120,53 +120,53 @@ const sdk = new NodeSDK({
 sdk.start();
 ```
 
-Doing this is equivalent to using `@vercel/otel`, but it's possible to modify and extend some features that are not exposed by the `@vercel/otel`. If edge runtime support is necessary, you will have to use `@vercel/otel`.
+这样做相当于使用`@vercel/otel`, ，但可以修改和扩展一些 `@vercel/otel`未公开的功能。如果需要 Edge 运行时支持，您将不得不使用`@vercel/otel`.
 
-## Testing your instrumentation
+## 测试您的检测
 
-You need an OpenTelemetry collector with a compatible backend to test OpenTelemetry traces locally.
-We recommend using our [OpenTelemetry dev environment](https://github.com/vercel/opentelemetry-collector-dev-setup).
+您需要一个兼容后端的 OpenTelemetry 收集器来本地测试 OpenTelemetry traces。
+我们建议使用我们的[OpenTelemetry 开发环境](https://github.com/vercel/opentelemetry-collector-dev-setup)。
 
-If everything works well you should be able to see the root server span labeled as `GET /requested/pathname`.
-All other spans from that particular trace will be nested under it.
+如果一切正常，您应该能够看到标记为`GET /requested/pathname`的根服务器 span。
+所有来自该特定 trace 的其他 spans 都将嵌套在其下。
 
-Next.js traces more spans than are emitted by default.
-To see more spans, you must set `NEXT_OTEL_VERBOSE=1`.
+Next.js 追踪的 spans 比默认情况下发出的更多。
+要查看更多 spans，您必须设置`NEXT_OTEL_VERBOSE=1`。
 
-## Deployment
+## 部署
 
-### Using OpenTelemetry Collector
+### 使用 OpenTelemetry Collector
 
-When you are deploying with OpenTelemetry Collector, you can use `@vercel/otel`.
-It will work both on Vercel and when self-hosted.
+当您使用 OpenTelemetry Collector 部署时，您可以使用`@vercel/otel`。
+它在 Vercel 和自托管时都能正常工作。
 
-#### Deploying on Vercel
+#### 在 Vercel 上部署
 
-We made sure that OpenTelemetry works out of the box on Vercel.
+我们确保 OpenTelemetry 在 Vercel 上开箱即用。
 
-Follow [Vercel documentation](https://vercel.com/docs/concepts/observability/otel-overview/quickstart) to connect your project to an observability provider.
+请参阅 [Vercel 文档](https://vercel.com/docs/concepts/observability/otel-overview/quickstart)以将您的项目连接到可观察性提供商。
 
-#### Self-hosting
+#### 自托管
 
-Deploying to other platforms is also straightforward. You will need to spin up your own OpenTelemetry Collector to receive and process the telemetry data from your Next.js app.
+部署到其他平台也很简单。您需要启动自己的 OpenTelemetry 收集器来接收和处理来自您的 Next.js 应用的遥测数据。
 
-To do this, follow the [OpenTelemetry Collector Getting Started guide](https://opentelemetry.io/docs/collector/getting-started/), which will walk you through setting up the collector and configuring it to receive data from your Next.js app.
+要做到这一点，请按照[OpenTelemetry Collector 入门指南](https://opentelemetry.io/docs/collector/getting-started/) 操作，该指南将引导您设置收集器并配置它以接收来自您的 Next.js 应用的数据。
 
-Once you have your collector up and running, you can deploy your Next.js app to your chosen platform following their respective deployment guides.
+一旦您的收集器启动并运行，您可以按照各自的平台部署指南将您的 Next.js 应用部署到您选择的平台。
 
-### Custom Exporters
+### 自定义导出器
 
-OpenTelemetry Collector is not necessary. You can use a custom OpenTelemetry exporter with [`@vercel/otel`](#using-vercelotel) or [manual OpenTelemetry configuration](#manual-opentelemetry-configuration).
+OpenTelemetry Collector 不是必需的。您可以使用[`@vercel/otel`](#using-vercelotel) 或 [手动配置 OpenTelemetry ](#manual-opentelemetry-configuration)来使用自定义的 OpenTelemetry 导出器。
 
-## Custom Spans
+## 自定义 Spans
 
-You can add a custom span with [OpenTelemetry APIs](https://opentelemetry.io/docs/instrumentation/js/instrumentation).
+您可以使用[OpenTelemetry APIs](https://opentelemetry.io/docs/instrumentation/js/instrumentation)添加自定义 span。
 
 ```bash filename="Terminal"
 npm install @opentelemetry/api
 ```
 
-The following example demonstrates a function that fetches GitHub stars and adds a custom `fetchGithubStars` span to track the fetch request's result:
+以下示例演示了一个获取 GitHub stars 的函数，并添加了一个自定义的`fetchGithubStars` span 来跟踪 fetch 请求的结果：
 
 ```ts
 import { trace } from "@opentelemetry/api";
@@ -184,14 +184,14 @@ export async function fetchGithubStars() {
 }
 ```
 
-The `register` function will execute before your code runs in a new environment.
-You can start creating new spans, and they should be correctly added to the exported trace.
+`register`函数将在您的代码在新环境中运行之前执行。
+您可以开始创建新的 spans，它们应该被正确地添加到导出的 trace 中。
 
-## Default Spans in Next.js
+## Next.js 中默认的 Spans
 
-Next.js automatically instruments several spans for you to provide useful insights into your application's performance.
+Next.js 会自动为您检测服务器 spans，以提供有关应用性能的有用见解。
 
-Attributes on spans follow [OpenTelemetry semantic conventions](https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/). We also add some custom attributes under the `next` namespace:
+spans 上的属性遵循[OpenTelemetry 语义约定](https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/)。我们还在 `next`命名空间下添加了一些自定义属性：
 
 - `next.span_name` - duplicates span name
 - `next.span_type` - each span type has a unique identifier

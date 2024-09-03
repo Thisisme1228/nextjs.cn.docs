@@ -1,13 +1,13 @@
 ---
-title: Analytics
-description: Measure and track page performance using Next.js Speed Insights
+title: 分析
+description: 使用 Next.js Speed Insights 测量和跟踪页面性能。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js has built-in support for measuring and reporting performance metrics. You can either use the `useReportWebVitals` hook to manage reporting yourself, or alternatively, Vercel provides a [managed service](https://vercel.com/analytics?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) to automatically collect and visualize metrics for you.
+Next.js 内置支持测量和报告性能指标。您可以使用`useReportWebVitals` hook 自行管理报告，或者，Vercel 提供了一个可以自动为您收集和可视化指标的[托管服务](https://vercel.com/analytics?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)。
 
-## Build Your Own
+## 构建您自己的分析工具
 
 ```jsx filename="app/_components/web-vitals.js"
 "use client";
@@ -36,14 +36,13 @@ export default function Layout({ children }) {
 }
 ```
 
-> Since the `useReportWebVitals` hook requires the `"use client"` directive, the most performant approach is to create a separate component that the root layout imports. This confines the client boundary exclusively to the `WebVitals` component.
+> 由于`useReportWebVitals` hook 需要`"use client"`指令，最有效的方法是创建一个单独的组件，由根布局导入。这将客户端边界仅限制在`WebVitals`组件内。
 
-View the [API Reference](/docs/content/app/api-reference/functions/use-report-web-vitals) for more information.
+参阅[API Reference](/docs/content/app/api-reference/functions/use-report-web-vitals)获取更多信息。
 
 ## Web Vitals
 
-[Web Vitals](https://web.dev/vitals/) are a set of useful metrics that aim to capture the user
-experience of a web page. The following web vitals are all included:
+[Web Vitals](https://web.dev/vitals/)是一组有用的指标，旨在捕捉网页的用户体验。以下 web vitals 都包括在内:
 
 - [Time to First Byte](https://developer.mozilla.org/docs/Glossary/Time_to_first_byte) (TTFB)
 - [First Contentful Paint](https://developer.mozilla.org/docs/Glossary/First_contentful_paint) (FCP)
@@ -52,7 +51,7 @@ experience of a web page. The following web vitals are all included:
 - [Cumulative Layout Shift](https://web.dev/cls/) (CLS)
 - [Interaction to Next Paint](https://web.dev/inp/) (INP)
 
-You can handle all the results of these metrics using the `name` property.
+您可以使用`name`属性处理这些指标的所有结果。
 
 ```tsx filename="app/_components/web-vitals.tsx" switcher
 "use client";
@@ -94,10 +93,9 @@ export function WebVitals() {
 }
 ```
 
-## Sending results to external systems
+## 将结果发送到外部系统
 
-You can send results to any endpoint to measure and track
-real user performance on your site. For example:
+您可以将结果发送到任何端点，以测量和跟踪您网站上的真实用户性能。例如：
 
 ```js
 useReportWebVitals((metric) => {
@@ -113,9 +111,7 @@ useReportWebVitals((metric) => {
 });
 ```
 
-> **Good to know**: If you use [Google Analytics](https://analytics.google.com/analytics/web/), using the
-> `id` value can allow you to construct metric distributions manually (to calculate percentiles,
-> etc.)
+> **您需要知道**: 如果您使用[Google Analytics](https://analytics.google.com/analytics/web/), 使用`id`值可以让您手动构建指标分布(以计算百分位数等)
 
 > ```js
 > useReportWebVitals((metric) => {
@@ -131,4 +127,4 @@ useReportWebVitals((metric) => {
 > });
 > ```
 >
-> Read more about [sending results to Google Analytics](https://github.com/GoogleChrome/web-vitals#send-the-results-to-google-analytics).
+> 了解更多关于[ 将结果发送到 Google Analytics](https://github.com/GoogleChrome/web-vitals#send-the-results-to-google-analytics)的信息。

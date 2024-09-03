@@ -1,7 +1,7 @@
 ---
-title: Script Optimization
+title: 脚本优化
 nav_title: Scripts
-description: Optimize 3rd party scripts with the built-in Script component.
+description: 使用内置的脚本组件优化第三方脚本。
 related:
   title: API Reference
   description: Learn more about the next/script API.
@@ -11,9 +11,9 @@ related:
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-### Layout Scripts
+### Layout 脚本
 
-To load a third-party script for multiple routes, import `next/script` and include the script directly in your layout component:
+要为多个路由加载第三方脚本，请导入`next/script`并将脚本直接包含在您的布局组件中:
 
 ```tsx filename="app/dashboard/layout.tsx" switcher
 import Script from "next/script";
@@ -45,11 +45,11 @@ export default function DashboardLayout({ children }) {
 }
 ```
 
-The third-party script is fetched when the folder route (e.g. `dashboard/page.js`) or any nested route (e.g. `dashboard/settings/page.js`) is accessed by the user. Next.js will ensure the script will **only load once**, even if a user navigates between multiple routes in the same layout.
+当用户访问文件夹路由(例如`dashboard/page.js`)或任何嵌套路由（例如`dashboard/settings/page.js`）时，将获取第三方脚本。Next.js 将确保脚本**只加载一次**，即使用户在同一布局中的多个路由之间导航。
 
-### Application Scripts
+### 应用程序脚本
 
-To load a third-party script for all routes, import `next/script` and include the script directly in your root layout:
+要为所有路由加载第三方脚本，请导入`next/script`并将脚本直接包含在您的根布局中：
 
 ```tsx filename="app/layout.tsx" switcher
 import Script from "next/script";
@@ -81,28 +81,28 @@ export default function RootLayout({ children }) {
 }
 ```
 
-This script will load and execute when _any_ route in your application is accessed. Next.js will ensure the script will **only load once**, even if a user navigates between multiple pages.
+此脚本将在访问应用程序中的任何路由时加载和执行。Next.js 将确保脚本**只加载一次**，即使用户在多个页面之间导航。
 
-> **Recommendation**: We recommend only including third-party scripts in specific pages or layouts in order to minimize any unnecessary impact to performance.
+> **建议**: 我们建议仅在特定页面或布局中包含第三方脚本，以尽量减少对性能的不必要影响。
 
-### Strategy
+### strategy
 
-Although the default behavior of `next/script` allows you to load third-party scripts in any page or layout, you can fine-tune its loading behavior by using the `strategy` property:
+尽管`next/script`的默认行为允许您在任何页面或布局中加载第三方脚本，但您可以使用`strategy`属性微调其加载行为：
 
-- `beforeInteractive`: Load the script before any Next.js code and before any page hydration occurs.
-- `afterInteractive`: (**default**) Load the script early but after some hydration on the page occurs.
-- `lazyOnload`: Load the script later during browser idle time.
-- `worker`: (experimental) Load the script in a web worker.
+- `beforeInteractive`: 在任何 Next.js 代码和页面水合发生之前加载脚本。
+- `afterInteractive`: (**默认**)提前加载脚本，但在页面上发生一些水合反应之后。
+- `lazyOnload`: 在浏览器空闲时间稍后加载脚本。
+- `worker`: (实验性的) 在 Web Worker 中加载脚本。
 
-Refer to the [`next/script`](/docs/content/app/api-reference/components/script#strategy) API reference documentation to learn more about each strategy and their use cases.
+请参阅[`next/script`](/docs/content/app/api-reference/components/script#strategy) API 参考文档，了解每种策略及其使用场景。
 
-### Offloading Scripts To A Web Worker (experimental)
+### 将脚本卸载到 Web Worker（实验性的）
 
-> **Warning:** The `worker` strategy is not yet stable and does not yet work with the [`app`](/docs/content/app/building-your-application/routing/defining-routes) directory. Use with caution.
+> **警告:**`worker`策略尚不稳定，且还不能与[`app`](/docs/content/app/building-your-application/routing/defining-routes) 目录配合使用。请谨慎使用。
 
-Scripts that use the `worker` strategy are offloaded and executed in a web worker with [Partytown](https://partytown.builder.io/). This can improve the performance of your site by dedicating the main thread to the rest of your application code.
+使用`worker`策略的脚本被卸载并在 web worker 中使用[Partytown](https://partytown.builder.io/)执行。这可以通过将主线程专用于应用程序代码的其余部分来提高网站的性能。
 
-This strategy is still experimental and can only be used if the `nextScriptWorkers` flag is enabled in `next.config.js`:
+此策略仍处于实验阶段，并且仅在`next.config.js` 中启用`nextScriptWorkers`标志时才能使用：
 
 ```js filename="next.config.js"
 module.exports = {
@@ -112,15 +112,15 @@ module.exports = {
 };
 ```
 
-Then, run `next` (normally `npm run dev` or `yarn dev`) and Next.js will guide you through the installation of the required packages to finish the setup:
+运行 `next` (通常是 `npm run dev` 或 `yarn dev`)，Next.js 将引导您完成所需包的安装以完成设置：
 
 ```bash filename="Terminal"
 npm run dev
 ```
 
-You'll see instructions like these: Please install Partytown by running `npm install @builder.io/partytown`
+您将看到如下说明：Please install Partytown by running `npm install @builder.io/partytown`
 
-Once setup is complete, defining `strategy="worker"` will automatically instantiate Partytown in your application and offload the script to a web worker.
+安装完成后, 定义`strategy="worker"`将自动在您的应用程序中实例化，并将脚本卸载到 Web Worker。
 
 ```tsx filename="pages/home.tsx" switcher
 import Script from "next/script";
@@ -146,11 +146,11 @@ export default function Home() {
 }
 ```
 
-There are a number of trade-offs that need to be considered when loading a third-party script in a web worker. Please see Partytown's [tradeoffs](https://partytown.builder.io/trade-offs) documentation for more information.
+在 Web Worker 中加载第三方脚本时需要考虑许多权衡。请参阅 Partytown [权衡](https://partytown.builder.io/trade-offs)文档以获取更多信息。
 
-### Inline Scripts
+### 内联脚本
 
-Inline scripts, or scripts not loaded from an external file, are also supported by the Script component. They can be written by placing the JavaScript within curly braces:
+内联脚本, 或者未从外部文件加载的脚本也受 Script 组件支持。它们可以通过将 JavaScript 放在大括号内来编写：
 
 ```jsx
 <Script id="show-banner">
@@ -158,7 +158,7 @@ Inline scripts, or scripts not loaded from an external file, are also supported 
 </Script>
 ```
 
-Or by using the `dangerouslySetInnerHTML` property:
+或者通过使用`dangerouslySetInnerHTML`属性：
 
 ```jsx
 <Script
@@ -169,17 +169,17 @@ Or by using the `dangerouslySetInnerHTML` property:
 />
 ```
 
-> **Warning**: An `id` property must be assigned for inline scripts in order for Next.js to track and optimize the script.
+> **警告**: 必须为内联脚本分配一个`id`属性，以便 Next.js 跟踪和优化脚本。
 
-### Executing Additional Code
+### 执行附加代码
 
-Event handlers can be used with the Script component to execute additional code after a certain event occurs:
+事件处理程序可以与 Script 组件一起使用，以在某个事件发生后执行附加代码：
 
-- `onLoad`: Execute code after the script has finished loading.
-- `onReady`: Execute code after the script has finished loading and every time the component is mounted.
-- `onError`: Execute code if the script fails to load.
+- `onLoad`: 在脚本加载完成后执行代码。
+- `onReady`: 在脚本加载完成后以及每次组件挂载时执行代码。
+- `onError`: 在脚本加载失败时执行代码：
 
-These handlers will only work when `next/script` is imported and used inside of a [Client Component](/docs/content/app/building-your-application/rendering/client-components) where `"use client"` is defined as the first line of code:
+这些处理程序仅在`next/script`被导入并在[客户端组件 ](/docs/content/app/building-your-application/rendering/client-components)内使用时才有效，其中`"use client"`被定义为代码的第一行：
 
 ```tsx filename="app/page.tsx" switcher
 "use client";
@@ -219,11 +219,11 @@ export default function Page() {
 }
 ```
 
-Refer to the [`next/script`](/docs/content/app/api-reference/components/script#onload) API reference to learn more about each event handler and view examples.
+请参阅[`next/script`](/docs/content/app/api-reference/components/script#onload) API 参考文档，以了解每个事件处理程序并查看示例。
 
-### Additional Attributes
+### 附加属性
 
-There are many DOM attributes that can be assigned to a `<script>` element that are not used by the Script component, like [`nonce`](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/nonce) or [custom data attributes](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/data-*). Including any additional attributes will automatically forward it to the final, optimized `<script>` element that is included in the HTML.
+有许多 DOM 属性可以分配给`<script>`元素，这些属性不被 Script 组件使用，例如[`nonce`](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/nonce) 或 [自定义数据属性](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/data-*)。包含任何附加属性将自动将其转发到最终优化的 HTML 中包含的`<script>`元素。
 
 ```tsx filename="app/page.tsx" switcher
 import Script from "next/script";
