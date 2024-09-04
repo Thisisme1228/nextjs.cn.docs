@@ -99,23 +99,3 @@ The above `next` import is a function that receives an object with the following
 | `httpServer`   | `node:http#Server` | (_Optional_) The HTTP Server that Next.js is running behind                         |
 
 The returned `app` can then be used to let Next.js handle requests as required.
-
-<PagesOnly>
-
-## Disabling file-system routing
-
-By default, `Next` will serve each file in the `pages` folder under a pathname matching the filename. If your project uses a custom server, this behavior may result in the same content being served from multiple paths, which can present problems with SEO and UX.
-
-To disable this behavior and prevent routing based on files in `pages`, open `next.config.js` and disable the `useFileSystemPublicRoutes` config:
-
-```js filename="next.config.js"
-module.exports = {
-  useFileSystemPublicRoutes: false,
-};
-```
-
-> Note that `useFileSystemPublicRoutes` disables filename routes from SSR; client-side routing may still access those paths. When using this option, you should guard against navigation to routes you do not want programmatically.
-
-> You may also wish to configure the client-side router to disallow client-side redirects to filename routes; for that refer to [`router.beforePopState`](/docs/content/pages/api-reference/functions/use-router#routerbeforepopstate).
-
-</PagesOnly>

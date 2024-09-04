@@ -1,39 +1,39 @@
 ---
-title: Deploying
-description: Learn how to deploy your Next.js app to production, either managed or self-hosted.
+title: 部署
+description: 了解如何将您的 Next.js 应用程序部署到生产环境，无论是托管还是自托管。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Congratulations, it's time to ship to production.
+恭喜，您可以将应用程序部署到生产环境了。
 
-You can deploy [managed Next.js with Vercel](#managed-nextjs-with-vercel), or self-host on a Node.js server, Docker image, or even static HTML files. When deploying using `next start`, all Next.js features are supported.
+您可以使用 Vercel 部署[托管的 Next.js](#managed-nextjs-with-vercel), 或在 Node.js 服务器、Docker 镜像，甚至静态 HTML 文件上自托管。使用`next start`部署时，所有 Next.js 功能都受支持。
 
-## Production Builds
+## 生产构建
 
-Running `next build` generates an optimized version of your application for production. HTML, CSS, and JavaScript files are created based on your pages. JavaScript is **compiled** and browser bundles are **minified** using the [Next.js Compiler](/docs/architecture/nextjs-compiler) to help achieve the best performance and support [all modern browsers](/docs/architecture/supported-browsers).
+运行`next build`会为生产环境生成优化版本的应用程序。基于您的页面创建 HTML、CSS 和 JavaScript 文件。[Next.js 编译器](/docs/architecture/nextjs-compiler) **compiled**JavaScript 并 **压缩** 浏览器包，以帮助实现最佳性能并支持[所有现代浏览器](/docs/architecture/supported-browsers)。
 
-Next.js produces a standard deployment output used by managed and self-hosted Next.js. This ensures all features are supported across both methods of deployment. In the next major version, we will be transforming this output into our [Build Output API specification](https://vercel.com/docs/build-output-api/v3?utm_source=next-site&utm_medium=docs&utm_campaign=next-website).
+Next.js 生成一个标准的部署输出，可用于托管和自托管的 Next.js。这确保了所有功能在两种部署方法中都受支持。在下一个主要版本中，我们将把此输出转换为我们的[构建输出 API 规范](https://vercel.com/docs/build-output-api/v3?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)。
 
-## Managed Next.js with Vercel
+## 使用 Vercel 托管 Next.js
 
-[Vercel](https://vercel.com/docs/frameworks/nextjs?utm_source=next-site&utm_medium=docs&utm_campaign=next-website), the creators and maintainers of Next.js, provide managed infrastructure and a developer experience platform for your Next.js applications.
+[Vercel](https://vercel.com/docs/frameworks/nextjs?utm_source=next-site&utm_medium=docs&utm_campaign=next-website), Next.js 的创建者和维护者，您的 Next.js 应用程序提供托管基础设施和开发者体验平台。
 
-Deploying to Vercel is zero-configuration and provides additional enhancements for scalability, availability, and performance globally. However, all Next.js features are still supported when self-hosted.
+部署到 Vercel 是零配置的，并提供了全球范围内的可扩展性、可用性和性能的额外增强。然而，所有 Next.js 功能在自托管时仍然受支持。
 
-Learn more about [Next.js on Vercel](https://vercel.com/docs/frameworks/nextjs?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) or [deploy a template for free](https://vercel.com/templates/next.js?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) to try it out.
+[在 Vercel 上](https://vercel.com/docs/frameworks/nextjs?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)了解有关 Next.js 的更多信息或[免费部署一个模板](https://vercel.com/templates/next.js?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)来试用。
 
-## Self-Hosting
+## 自托管
 
-You can self-host Next.js in three different ways:
+您可以通过三种不同的方式自托管 Next.js：
 
-- [A Node.js server](#nodejs-server)
-- [A Docker container](#docker-image)
-- [A static export](#static-html-export)
+- [Node.js 服务器](#nodejs-server)
+- [Node.js 服务器](#docker-image)
+- [静态导出](#static-html-export)
 
 ### Node.js Server
 
-Next.js can be deployed to any hosting provider that supports Node.js. Ensure your `package.json` has the `"build"` and `"start"` scripts:
+Next.js 可以部署到任何支持 Node.js 的托管提供商。请确保您的`package.json`文件中包含`"build"`和`"start"`脚本：
 
 ```json filename="package.json"
 {
@@ -45,11 +45,11 @@ Next.js can be deployed to any hosting provider that supports Node.js. Ensure yo
 }
 ```
 
-Then, run `npm run build` to build your application. Finally, run `npm run start` to start the Node.js server. This server supports all Next.js features.
+然后，运行`npm run build`来构建您的应用程序。最后，运行`npm run start`来启动 Node.js 服务器。此服务器支持所有 Next.js 功能。
 
 ### Docker Image
 
-Next.js can be deployed to any hosting provider that supports [Docker](https://www.docker.com/) containers. You can use this approach when deploying to container orchestrators such as [Kubernetes](https://kubernetes.io/) or when running inside a container in any cloud provider.
+Next.js 可以部署到任何支持[Docker](https://www.docker.com/)容器的托管提供商。You can use this approach when deploying to container orchestrators such as [Kubernetes](https://kubernetes.io/) or when running inside a container in any cloud provider.
 
 1. [Install Docker](https://docs.docker.com/get-docker/) on your machine
 2. [Clone our example](https://github.com/vercel/next.js/tree/canary/examples/with-docker) (or the [multi-environment example](https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env))

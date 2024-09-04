@@ -59,17 +59,7 @@ If either of the two configuration options are selected, Next.js will automatica
 
 You can now run `next lint` every time you want to run ESLint to catch errors. Once ESLint has been set up, it will also automatically run during every build (`next build`). Errors will fail the build, while warnings will not.
 
-<AppOnly>
-
 > If you do not want ESLint to run during `next build`, refer to the documentation for [Ignoring ESLint](/docs/content/app/api-reference/next-config-js/eslint).
-
-</AppOnly>
-
-<PagesOnly>
-
-> If you do not want ESLint to run during `next build`, refer to the documentation for [Ignoring ESLint](/docs/content/pages/api-reference/next-config-js/eslint).
-
-</PagesOnly>
 
 We recommend using an appropriate [integration](https://eslint.org/docs/user-guide/integrations#editors) to view warnings and errors directly in your code editor during development.
 
@@ -158,17 +148,7 @@ next lint --dir pages --dir utils --file bar.js
 
 ## Caching
 
-<AppOnly>
-
 To improve performance, information of files processed by ESLint are cached by default. This is stored in `.next/cache` or in your defined [build directory](/docs/content/app/api-reference/next-config-js/distDir). If you include any ESLint rules that depend on more than the contents of a single source file and need to disable the cache, use the `--no-cache` flag with `next lint`.
-
-</AppOnly>
-
-<PagesOnly>
-
-To improve performance, information of files processed by ESLint are cached by default. This is stored in `.next/cache` or in your defined [build directory](/docs/content/pages/api-reference/next-config-js/distDir). If you include any ESLint rules that depend on more than the contents of a single source file and need to disable the cache, use the `--no-cache` flag with `next lint`.
-
-</PagesOnly>
 
 ```bash filename="Terminal"
 next lint --no-cache

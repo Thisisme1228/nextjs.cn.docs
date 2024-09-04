@@ -9,13 +9,9 @@ Next.js provides a TypeScript-first development experience for building your Rea
 
 It comes with built-in TypeScript support for automatically installing the necessary packages and configuring the proper settings.
 
-<AppOnly>
-
 As well as a [TypeScript Plugin](#typescript-plugin) for your editor.
 
 > **🎥 Watch:** Learn about the built-in TypeScript plugin → [YouTube (3 minutes)](https://www.youtube.com/watch?v=pqMqn9fKEf8)
-
-</AppOnly>
 
 ## New Projects
 
@@ -32,8 +28,6 @@ Add TypeScript to your project by renaming a file to `.ts` / `.tsx`. Run `next d
 If you already had a `jsconfig.json` file, copy the `paths` compiler option from the old `jsconfig.json` into the new `tsconfig.json` file, and delete the old `jsconfig.json` file.
 
 We also recommend you to use [`next.config.ts`](#type-checking-nextconfigts) over `next.config.js` for better type inference.
-
-<AppOnly>
 
 ## TypeScript Plugin
 
@@ -65,8 +59,6 @@ The TypeScript plugin can help with:
 - Ensuring client hooks (like `useState`) are only used in Client Components.
 
 > **Good to know**: More features will be added in the future.
-
-</AppOnly>
 
 ## Minimum TypeScript Version
 
@@ -104,8 +96,6 @@ export default nextConfig;
 ```
 
 > **Good to know**: You can import Native ESM modules in `next.config.ts` without any additional configuration. Supports importing extensions like `.cjs`, `.cts`, `.mjs`, and `.mts`.
-
-<AppOnly>
 
 ## Statically Typed Links
 
@@ -202,90 +192,11 @@ When passing data between a Server and Client Component through props, the data 
 
 Further, there is less code to be serialized, as un-rendered data does not cross between the server and client (it remains on the server). This is only now possible through support for Server Components.
 
-</AppOnly>
-
-<PagesOnly>
-
-## Static Generation and Server-side Rendering
-
-For [`getStaticProps`](/docs/content/pages/api-reference/functions/get-static-props), [`getStaticPaths`](/docs/content/pages/api-reference/functions/get-static-paths), and [`getServerSideProps`](/docs/content/pages/api-reference/functions/get-server-side-props), you can use the `GetStaticProps`, `GetStaticPaths`, and `GetServerSideProps` types respectively:
-
-```tsx filename="pages/blog/[slug].tsx"
-import type { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
-
-export const getStaticProps = (async (context) => {
-  // ...
-}) satisfies GetStaticProps;
-
-export const getStaticPaths = (async () => {
-  // ...
-}) satisfies GetStaticPaths;
-
-export const getServerSideProps = (async (context) => {
-  // ...
-}) satisfies GetServerSideProps;
-```
-
-> **Good to know:** `satisfies` was added to TypeScript in [4.9](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html). We recommend upgrading to the latest version of TypeScript.
-
-## API Routes
-
-The following is an example of how to use the built-in types for API routes:
-
-```ts
-import type { NextApiRequest, NextApiResponse } from "next";
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json({ name: "John Doe" });
-}
-```
-
-You can also type the response data:
-
-```ts
-import type { NextApiRequest, NextApiResponse } from "next";
-
-type Data = {
-  name: string;
-};
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: "John Doe" });
-}
-```
-
-## Custom `App`
-
-If you have a [custom `App`](/docs/content/pages/building-your-application/routing/custom-app), you can use the built-in type `AppProps` and change file name to `./pages/_app.tsx` like so:
-
-```ts
-import type { AppProps } from "next/app";
-
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
-```
-
-</PagesOnly>
-
 ## Path aliases and baseUrl
 
 Next.js automatically supports the `tsconfig.json` `"paths"` and `"baseUrl"` options.
 
-<AppOnly>
-
 You can learn more about this feature on the [Module Path aliases documentation](/docs/content/app/building-your-application/configuring/absolute-imports-and-module-aliases).
-
-</AppOnly>
-
-<PagesOnly>
-
-You can learn more about this feature on the [Module Path aliases documentation](/docs/content/pages/building-your-application/configuring/absolute-imports-and-module-aliases).
-
-</PagesOnly>
 
 ## Incremental type checking
 

@@ -27,27 +27,6 @@ DB_USER=myuser
 DB_PASS=mypassword
 ```
 
-<PagesOnly>
-
-This loads `process.env.DB_HOST`, `process.env.DB_USER`, and `process.env.DB_PASS` into the Node.js environment automatically allowing you to use them in [Next.js data fetching methods](/docs/content/pages/building-your-application/data-fetching) and [API routes](/docs/content/pages/building-your-application/routing/api-routes).
-
-For example, using [`getStaticProps`](/docs/content/pages/building-your-application/data-fetching/get-static-props):
-
-```js filename="pages/index.js"
-export async function getStaticProps() {
-  const db = await myDB.connect({
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-  });
-  // ...
-}
-```
-
-</PagesOnly>
-
-<AppOnly>
-
 > **Note**: Next.js also supports multiline variables inside of your `.env*` files:
 >
 > ```bash
@@ -79,8 +58,6 @@ export async function GET() {
   // ...
 }
 ```
-
-</AppOnly>
 
 ### Loading Environment Variables with `@next/env`
 
