@@ -1,19 +1,19 @@
 ---
-title: Static Exports
-description: Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
+title: 静态导出
+description: 允许您从静态站点或单页应用程序 (SPA) 开始，然后可以选择升级以使用需要服务器的功能。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
+Next.js 支持以静态站点或单页应用程序（SPA）启动，然后稍后可选择升级以使用需要服务器的功能。
 
-When running `next build`, Next.js generates an HTML file per route. By breaking a strict SPA into individual HTML files, Next.js can avoid loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads.
+当运行`next build`, Next.js 为每个路由生成一个 HTML 文件。通过将严格的单页应用程序 (SPA) 分解为单独的 HTML 文件，Next.js 可以避免在客户端加载不必要的 JavaScript 代码，从而减少包的大小并加快页面加载速度。
 
-Since Next.js supports this static export, it can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets.
+由于 Next.js 支持这种静态导出，它可以部署并托管在任何可以提供 HTML/CSS/JS 静态资源的 Web 服务器上。
 
-## Configuration
+## 配置
 
-To enable a static export, change the output mode inside `next.config.js`:
+要启用静态导出，请在`next.config.js`中更改输出模式：
 
 ```js filename="next.config.js" highlight={5}
 /**
@@ -35,17 +35,17 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-After running `next build`, Next.js will produce an `out` folder which contains the HTML/CSS/JS assets for your application.
+运行`next build`, Next.js 将生成一个`out`件夹，其中包含您的应用程序的 HTML/CSS/JS 资源。
 
-## Supported Features
+## 支持的功能
 
-The core of Next.js has been designed to support static exports.
+Next.js 的核心设计支持静态导出。
 
-### Server Components
+### 服务器组件
 
-When you run `next build` to generate a static export, Server Components consumed inside the `app` directory will run during the build, similar to traditional static-site generation.
+当您运行`next build`生成静态导出时，`app`目录内使用的服务器组件将在构建期间运行，类似于传统的静态站点生成。
 
-The resulting component will be rendered into static HTML for the initial page load and a static payload for client navigation between routes. No changes are required for your Server Components when using the static export, unless they consume [dynamic server functions](#unsupported-features).
+生成的组件将被渲染为初始页面加载的静态 HTML 和用于路由之间客户端导航的静态负载。使用静态导出时，无需对服务器组件进行更改，除非它们使用[动态服务器函数](#unsupported-features)。
 
 ```tsx filename="app/page.tsx" switcher
 export default async function Page() {
@@ -57,9 +57,9 @@ export default async function Page() {
 }
 ```
 
-### Client Components
+### 客户端组件
 
-If you want to perform data fetching on the client, you can use a Client Component with [SWR](https://github.com/vercel/swr) to memoize requests.
+如果您想在客户端执行数据获取，可以使用带有[SWR](https://github.com/vercel/swr)的客户端组件来缓存请求。
 
 ```tsx filename="app/other/page.tsx" switcher
 "use client";
@@ -99,7 +99,7 @@ export default function Page() {
 }
 ```
 
-Since route transitions happen client-side, this behaves like a traditional SPA. For example, the following index route allows you to navigate to different posts on the client:
+由于路由过渡发生在客户端，这表现得像一个传统的单页应用程序 (SPA)。例如，以下索引路由允许您在客户端导航到不同的帖子：
 
 ```tsx filename="app/page.tsx" switcher
 import Link from "next/link";
@@ -137,9 +137,9 @@ export default function Page() {
 }
 ```
 
-### Image Optimization
+### 图像优化
 
-[Image Optimization](/docs/content/app/building-your-application/optimizing/images) through `next/image` can be used with a static export by defining a custom image loader in `next.config.js`. For example, you can optimize images with a service like Cloudinary:
+通过在`next.config.js`中自定义图像加载器，可以将可以将静态导出与通过`next/image`进行的图像优化一起使用。例如，您可以使用 Cloudinary 优化图像：
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -154,7 +154,7 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-This custom loader will define how to fetch images from a remote source. For example, the following loader will construct the URL for Cloudinary:
+此自定义加载器将定义如何从远程源获取图像。例如，以下加载器将构建 Cloudinary 的 URL：
 
 ```ts filename="my-loader.ts" switcher
 export default function cloudinaryLoader({
@@ -182,7 +182,7 @@ export default function cloudinaryLoader({ src, width, quality }) {
 }
 ```
 
-You can then use `next/image` in your application, defining relative paths to the image in Cloudinary:
+然后，您可以在应用程序中使用`next/image`, 定义 Cloudinary 中图像的相对路径：
 
 ```tsx filename="app/page.tsx" switcher
 import Image from "next/image";
@@ -200,9 +200,9 @@ export default function Page() {
 }
 ```
 
-### Route Handlers
+### 路由处理程序
 
-Route Handlers will render a static response when running `next build`. Only the `GET` HTTP verb is supported. This can be used to generate static HTML, JSON, TXT, or other files from cached or uncached data. For example:
+在运行`next build`时，路由处理程序将渲染静态响应。仅 GET 请求 支持 HTTP 动词。这可以用于从缓存或未缓存的数据生成静态 HTML、JSON、TXT 或其他文件。例如：
 
 ```ts filename="app/data.json/route.ts" switcher
 export async function GET() {
@@ -216,13 +216,13 @@ export async function GET() {
 }
 ```
 
-The above file `app/data.json/route.ts` will render to a static file during `next build`, producing `data.json` containing `{ name: 'Lee' }`.
+上述文件`app/data.json/route.ts`将在`next build`期间渲染为静态文件，生成包含`{ name: 'Lee' }` 的`data.json`。
 
-If you need to read dynamic values from the incoming request, you cannot use a static export.
+如果您需要从传入请求中读取动态值，则不能使用静态导出。
 
-### Browser APIs
+### 浏览器 APIs
 
-Client Components are pre-rendered to HTML during `next build`. Because [Web APIs](https://developer.mozilla.org/docs/Web/API) like `window`, `localStorage`, and `navigator` are not available on the server, you need to safely access these APIs only when running in the browser. For example:
+客户端组件在`next build`期间预渲染为 HTML。由于[Web APIs](https://developer.mozilla.org/docs/Web/API)（如 `window`、`localStorage`和`navigator`）在服务器上不可用，您需要仅在浏览器中运行时安全地访问这些 API。例如：
 
 ```jsx
 'use client';
@@ -239,9 +239,9 @@ export default function ClientComponent() {
 }
 ```
 
-## Unsupported Features
+## 不支持的功能
 
-Features that require a Node.js server, or dynamic logic that cannot be computed during the build process, are **not** supported:
+需要 Node.js 服务器的功能或在构建过程中无法计算的动态逻辑**不**受支持：
 
 - [Dynamic Routes](/docs/content/app/building-your-application/routing/dynamic-routes) with `dynamicParams: true`
 - [Dynamic Routes](/docs/content/app/building-your-application/routing/dynamic-routes) without `generateStaticParams()`
@@ -256,29 +256,29 @@ Features that require a Node.js server, or dynamic logic that cannot be computed
 - [Draft Mode](/docs/content/app/building-your-application/configuring/draft-mode)
 - [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)
 
-Attempting to use any of these features with `next dev` will result in an error, similar to setting the [`dynamic`](/docs/content/app/api-reference/file-conventions/route-segment-config#dynamic) option to `error` in the root layout.
+尝试将`next dev`与这些功能中的任何一个一起使用都将导致错误，类似于在根布局中将[`dynamic`](/docs/content/app/api-reference/file-conventions/route-segment-config#dynamic)选项设置为`error`。
 
 ```jsx
 export const dynamic = "error";
 ```
 
-## Deploying
+## 部署
 
-With a static export, Next.js can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets.
+使用静态导出，Next.js 可以部署并托管在任何可以提供 HTML/CSS/JS 静态资源的 Web 服务器上。
 
-When running `next build`, Next.js generates the static export into the `out` folder. For example, let's say you have the following routes:
+当运行`next build`时，Next.js 将静态导出生成到`out`文件夹中。例如，假设您有以下路由：
 
 - `/`
 - `/blog/[id]`
 
-After running `next build`, Next.js will generate the following files:
+运行`next build`后，Next.js 将生成以下文件：
 
 - `/out/index.html`
 - `/out/404.html`
 - `/out/blog/post-1.html`
 - `/out/blog/post-2.html`
 
-If you are using a static host like Nginx, you can configure rewrites from incoming requests to the correct files:
+如果您使用的是像 Nginx 这样的静态主机，您可以配置将传入请求到正确文件的 rewrite：
 
 ```nginx filename="nginx.conf"
 server {
@@ -304,10 +304,10 @@ server {
 }
 ```
 
-## Version History
+## 版本历史
 
-| Version   | Changes                                                                                                              |
-| --------- | -------------------------------------------------------------------------------------------------------------------- |
-| `v14.0.0` | `next export` has been removed in favor of `"output": "export"`                                                      |
-| `v13.4.0` | App Router (Stable) adds enhanced static export support, including using React Server Components and Route Handlers. |
-| `v13.3.0` | `next export` is deprecated and replaced with `"output": "export"`                                                   |
+| Version   | Changes                                                                                 |
+| --------- | --------------------------------------------------------------------------------------- |
+| `v14.0.0` | `next export`已被删除，取而代之的是`"output": "export"`                                 |
+| `v13.4.0` | App Router（稳定版）增加了增强的静态导出支持，包括使用 React 服务器组件和路由处理程序。 |
+| `v13.3.0` | `next export`已被弃用，取而代之的是 `"output": "export"`                                |

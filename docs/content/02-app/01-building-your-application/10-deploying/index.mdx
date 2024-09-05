@@ -49,56 +49,56 @@ Next.js 可以部署到任何支持 Node.js 的托管提供商。请确保您的
 
 ### Docker Image
 
-Next.js 可以部署到任何支持[Docker](https://www.docker.com/)容器的托管提供商。You can use this approach when deploying to container orchestrators such as [Kubernetes](https://kubernetes.io/) or when running inside a container in any cloud provider.
+Next.js 可以部署到任何支持[Docker](https://www.docker.com/)容器的托管提供商。在部署到 container orchestrators 时（例如 [Kubernetes](https://kubernetes.io/)）或者在任何云提供商的容器内运行时可以使用此方法。
 
-1. [Install Docker](https://docs.docker.com/get-docker/) on your machine
-2. [Clone our example](https://github.com/vercel/next.js/tree/canary/examples/with-docker) (or the [multi-environment example](https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env))
-3. Build your container: `docker build -t nextjs-docker .`
-4. Run your container: `docker run -p 3000:3000 nextjs-docker`
+1. 在您的机器上[安装 Docker](https://docs.docker.com/get-docker/)。
+2. [克隆我们的例子](https://github.com/vercel/next.js/tree/canary/examples/with-docker) (或者[多环境的例子](https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env))
+3. 构建您的容器: `docker build -t nextjs-docker .`
+4. 运行您的容器: `docker run -p 3000:3000 nextjs-docker`
 
-Next.js through Docker supports all Next.js features.
+Next.js 通过 Docker 支持所有的 Next.js 功能。
 
-### Static HTML Export
+### 静态 HTML 导出
 
-Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
+Next.js 允许您以静态站点或单页应用程序 (SPA) 开始，然后可以选择升级以使用需要服务器的功能。
 
-Since Next.js supports this [static export](/docs/content/app/building-your-application/deploying/static-exports), it can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets. This includes tools like AWS S3, Nginx, or Apache.
+因为 Next.js 支持[静态导出](/docs/content/app/building-your-application/deploying/static-exports), 它可以部署并托管在任何能够提供 HTML/CSS/JS 静态资源的 Web 服务器上。这包括 AWS S3、Nginx 或 Apache 等工具。
 
-Running as a [static export](/docs/content/app/building-your-application/deploying/static-exports) does not support Next.js features that require a server. [Learn more](/docs/content/app/building-your-application/deploying/static-exports#unsupported-features).
+以[静态导出](/docs/content/app/building-your-application/deploying/static-exports)运行不支持需要服务器的 Next.js 功能。[了解更多](/docs/content/app/building-your-application/deploying/static-exports#unsupported-features)。
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - [Server Components](/docs/content/app/building-your-application/rendering/server-components) are supported with static exports.
+> - 静态导出支持[服务器组件](/docs/content/app/building-your-application/rendering/server-components)。
 
-## Features
+## 特征
 
-### Image Optimization
+### 图像优化
 
-[Image Optimization](/docs/content/app/building-your-application/optimizing/images) through `next/image` works self-hosted with zero configuration when deploying using `next start`. If you would prefer to have a separate service to optimize images, you can [configure an image loader](/docs/content/app/building-your-application/optimizing/images#loaders).
+在使用`next start`部署时，[图像优化](/docs/content/app/building-your-application/optimizing/images)通过`next/image`进行自托管时无需任何配置。如果您希望有一个单独的服务来优化图像，您可以[配置图像加载器](/docs/content/app/building-your-application/optimizing/images#loaders)。
 
-Image Optimization can be used with a [static export](/docs/content/app/building-your-application/deploying/static-exports#image-optimization) by defining a custom image loader in `next.config.js`. Note that images are optimized at runtime, not during the build.
+图像优化可以通过在`next.config.js`中定义自定义图像加载器与[静态导出](/docs/content/app/building-your-application/deploying/static-exports#image-optimization)一起使用。请注意，图像是在运行时而不是在构建时进行优化。
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - On glibc-based Linux systems, Image Optimization may require [additional configuration](https://sharp.pixelplumbing.com/install#linux-memory-allocator) to prevent excessive memory usage.
-> - Learn more about the [caching behavior of optimized images](/docs/content/app/api-reference/components/image#caching-behavior) and how to configure the TTL.
-> - You can also [disable Image Optimization](/docs/content/app/api-reference/components/image#unoptimized) and still retain other benefits of using `next/image` if you prefer. For example, if you are optimizing images yourself separately.
+> - 在基于 glibc 的 Linux 系统上，图像优化可能需要[额外配置](https://sharp.pixelplumbing.com/install#linux-memory-allocator)以防止过度的内存使用。
+> - 了解更多关于[优化图像的缓存行为](/docs/content/app/api-reference/components/image#caching-behavior)以及如何配置 TTL.
+> - 如果您愿意，您也可以[禁用图像优化](/docs/content/app/api-reference/components/image#unoptimized)，并仍然可以保留使用`next/image`的其他好处。例如，如果您单独优化图像。
 
 ### Middleware
 
-[Middleware](/docs/content/app/building-your-application/routing/middleware) works self-hosted with zero configuration when deploying using `next start`. Since it requires access to the incoming request, it is not supported when using a [static export](/docs/content/app/building-your-application/deploying/static-exports).
+当使用`next start`部署，[Middleware](/docs/content/app/building-your-application/routing/middleware)在自托管时无需配置即可工作。由于它需要访问传入的请求，因此在使用[静态导出](/docs/content/app/building-your-application/deploying/static-exports)时不受支持。
 
-Middleware uses a [runtime](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes) that is a subset of all available Node.js APIs to help ensure low latency, since it may run in front of every route or asset in your application. This runtime does not require running “at the edge” and works in a single-region server. Additional configuration and infrastructure are required to run Middleware in multiple regions.
+Middleware 使用的[运行时](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes)，它是所有可用 Node.js API 的子集，以帮助确保低延迟，因为它可能在您的应用程序中的每个路由或资源前运行。此运行时不需要在“边缘”运行，并且可以在单区域服务器中工作。要在多个区域运行 Middleware，需要额外的配置和基础设施。
 
-If you are looking to add logic (or use an external package) that requires all Node.js APIs, you might be able to move this logic to a [layout](/docs/content/app/building-your-application/routing/layouts-and-templates#layouts) as a [Server Component](/docs/content/app/building-your-application/rendering/server-components). For example, checking [headers](/docs/content/app/api-reference/functions/headers) and [redirecting](/docs/content/app/api-reference/functions/redirect). You can also use headers, cookies, or query parameters to [redirect](/docs/content/app/api-reference/next-config-js/redirects#header-cookie-and-query-matching) or [rewrite](/docs/content/app/api-reference/next-config-js/rewrites#header-cookie-and-query-matching) through `next.config.js`. If that does not work, you can also use a [custom server](/docs/content/pages/building-your-application/configuring/custom-server).
+如果您希望添加需要所有 Node.js API 的逻辑（或使用外部包）, 您可以将此逻辑作为[服务器组件](/docs/content/app/building-your-application/rendering/server-components)移动到[布局](/docs/content/app/building-your-application/routing/layouts-and-templates#layouts)检查[headers](/docs/content/app/api-reference/functions/headers) 和 [redirecting](/docs/content/app/api-reference/functions/redirect)。您还可以使用 headers、cookies 或查询参数通过`next.config.js`进行[重定向](/docs/content/app/api-reference/next-config-js/redirects#header-cookie-and-query-matching) 或 [重写](/docs/content/app/api-reference/next-config-js/rewrites#header-cookie-and-query-matching)。如果这不起作用，您还可以使用[自定义服务器](/docs/content/pages/building-your-application/configuring/custom-server)。
 
-### Environment Variables
+### 环境变量
 
-Next.js can support both build time and runtime environment variables.
+Next.js 支持构建时和运行时环境变量。
 
-**By default, environment variables are only available on the server**. To expose an environment variable to the browser, it must be prefixed with `NEXT_PUBLIC_`. However, these public environment variables will be inlined into the JavaScript bundle during `next build`.
+**默认情况下，环境变量仅在服务器上可用**。要将环境变量暴露给浏览器，必须以`NEXT_PUBLIC_`为前缀。然而，这些公共环境变量将在`next build`期间内联到 JavaScript 包中。
 
-To read runtime environment variables, we recommend using `getServerSideProps` or [incrementally adopting the App Router](/docs/content/app/building-your-application/upgrading/app-router-migration). With the App Router, we can safely read environment variables on the server during dynamic rendering. This allows you to use a singular Docker image that can be promoted through multiple environments with different values.
+要读取运行时环境变量，我们建议使用`getServerSideProps`或[逐步采用 App Router](/docs/content/app/building-your-application/upgrading/app-router-migration)。使用 App Router，我们可以在动态渲染期间安全地在服务器上读取环境变量。这允许您使用单一的 Docker 镜像，并在多个环境中使用不同的值进行推广。
 
 ```jsx
 import { unstable_noStore as noStore } from 'next/cache';
@@ -113,36 +113,36 @@ export default function Component() {
 }
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - You can run code on server startup using the [`register` function](/docs/content/app/building-your-application/optimizing/instrumentation).
-> - We do not recommend using the [runtimeConfig](/docs/content/pages/api-reference/next-config-js/runtime-configuration) option, as this does not work with the standalone output mode. Instead, we recommend [incrementally adopting](/docs/content/app/building-your-application/upgrading/app-router-migration) the App Router.
+> - 您可以使用[`register` 函数](/docs/content/app/building-your-application/optimizing/instrumentation)在服务器启动时运行代码。
+> - 我们不建议使用[runtimeConfig](/docs/content/pages/api-reference/next-config-js/runtime-configuration)选项，因为这不适用于独立输出模式。相反，我们建议[逐步采用](/docs/content/app/building-your-application/upgrading/app-router-migration)App Router。
 
-### Caching and ISR
+### 缓存和 ISR
 
-Next.js can cache responses, generated static pages, build outputs, and other static assets like images, fonts, and scripts.
+Next.js 可以缓存响应、生成的静态页面、构建输出以及其他静态资源，如图像、字体和脚本。
 
-Caching and revalidating pages (using Incremental Static Regeneration (ISR) or newer functions in the App Router) use the **same shared cache**. By default, this cache is stored to the filesystem (on disk) on your Next.js server. **This works automatically when self-hosting** using both the Pages and App Router.
+缓存和重新验证页面(使用 Incremental Static Regeneration (ISR)或 App Router 中的更新功能)使用**相同的共享缓存**。默认情况下，此缓存存储在您的 Next.js 服务器上的文件系统（磁盘）中。当使用 Pages 和 App Router 进行 **自托管时，此功能会自动运行**。
 
-You can configure the Next.js cache location if you want to persist cached pages and data to durable storage, or share the cache across multiple containers or instances of your Next.js application.
+如果您想要将缓存的页面和数据保存到持久存储中，或者在 Next.js 应用程序的多个容器或实例之间共享缓存，则可以配置 Next.js 缓存位置。
 
-#### Automatic Caching
+#### 自动缓存
 
-- Next.js sets the `Cache-Control` header of `public, max-age=31536000, immutable` to truly immutable assets. It cannot be overridden. These immutable files contain a SHA-hash in the file name, so they can be safely cached indefinitely. For example, [Static Image Imports](/docs/content/app/building-your-application/optimizing/images#local-images). You can [configure the TTL](/docs/content/app/api-reference/components/image#caching-behavior) for images.
-- Incremental Static Regeneration (ISR) sets the `Cache-Control` header of `s-maxage: <revalidate in getStaticProps>, stale-while-revalidate`. This revalidation time is defined in your [`getStaticProps` function](/docs/content/pages/building-your-application/data-fetching/get-static-props) in seconds. If you set `revalidate: false`, it will default to a one-year cache duration.
-- Dynamically rendered pages set a `Cache-Control` header of `private, no-cache, no-store, max-age=0, must-revalidate` to prevent user-specific data from being cached. This applies to both the App Router and Pages Router. This also includes [Draft Mode](/docs/content/app/building-your-application/configuring/draft-mode).
+- Next.js 为真正不可变的资源设置`Cache-Control` header 为`public, max-age=31536000, immutable`。此设置无法被覆盖。这些不可变文件的文件名中包含 SHA 哈希，因此可以安全地无限期缓存。例如[静态图像导入](/docs/content/app/building-your-application/optimizing/images#local-images)。您可以为图像[配置 TTL](/docs/content/app/api-reference/components/image#caching-behavior)。
+- Incremental Static Regeneration (ISR)将`Cache-Control` header 设置为`s-maxage: <revalidate in getStaticProps>, stale-while-revalidate`。此重新验证时间在您的[`getStaticProps`函数](/docs/content/pages/building-your-application/data-fetching/get-static-props)中以秒为单位定义。如果您设置`revalidate: false`,则默认缓存持续时间为一年。
+- 动态渲染的页面将`Cache-Control` header 设置为`private, no-cache, no-store, max-age=0, must-revalidate`以防止缓存用户特定的数据。这适用于 App Router 和 Pages Router。这也包括 [Draft Mode](/docs/content/app/building-your-application/configuring/draft-mode)。
 
-#### Static Assets
+#### 静态资源
 
-If you want to host static assets on a different domain or CDN, you can use the `assetPrefix` [configuration](/docs/content/app/api-reference/next-config-js/assetPrefix) in `next.config.js`. Next.js will use this asset prefix when retrieving JavaScript or CSS files. Separating your assets to a different domain does come with the downside of extra time spent on DNS and TLS resolution.
+如果您希望在不同的域或 CDN 上托管静态资源，可以在`next.config.js`中使用`assetPrefix` [配置](/docs/content/app/api-reference/next-config-js/assetPrefix)。Next.js 在检索 JavaScript 或 CSS 文件时将使用此资源前缀。将资源分离到不同的域会带来额外的 DNS 和 TLS 解析时间的缺点。
 
-[Learn more about `assetPrefix`](/docs/content/app/api-reference/next-config-js/assetPrefix).
+[了解更多关于`assetPrefix`](/docs/content/app/api-reference/next-config-js/assetPrefix)的信息。
 
-#### Configuring Caching
+#### 配置缓存
 
-By default, generated cache assets will be stored in memory (defaults to 50mb) and on disk. If you are hosting Next.js using a container orchestration platform like Kubernetes, each pod will have a copy of the cache. To prevent stale data from being shown since the cache is not shared between pods by default, you can configure the Next.js cache to provide a cache handler and disable in-memory caching.
+默认情况下，生成的缓存资源将存储在内存（默认 50MB）和磁盘上。如果您使用像 Kubernetes 这样的容器编排平台托管 Next.js，每个 pod 都会有一份缓存的副本。因为默认情况下缓存不会在 pod 之间共享，您可以配置 Next.js 缓存以提供缓存处理程序并禁用内存缓存。
 
-To configure the ISR/Data Cache location when self-hosting, you can configure a custom handler in your `next.config.js` file:
+要在自托管时配置 ISR/数据缓存位置，您可以在`next.config.js`文件中配置自定义处理程序：
 
 ```jsx filename="next.config.js"
 module.exports = {
@@ -151,7 +151,7 @@ module.exports = {
 };
 ```
 
-Then, create `cache-handler.js` in the root of your project, for example:
+然后，在项目根目录中创建`cache-handler.js`，例如：
 
 ```jsx filename="cache-handler.js"
 const cache = new Map();
@@ -187,17 +187,17 @@ module.exports = class CacheHandler {
 };
 ```
 
-Using a custom cache handler will allow you to ensure consistency across all pods hosting your Next.js application. For instance, you can save the cached values anywhere, like [Redis](https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis) or AWS S3.
+使用自定义缓存处理程序可以确保托管您的 Next.js 应用程序的所有 pod 之间的一致性。例如，您可以将缓存的值保存到任何地方，如[Redis](https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis) 或 AWS S3。
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - `revalidatePath` is a convenience layer on top of cache tags. Calling `revalidatePath` will call the `revalidateTag` function with a special default tag for the provided page.
+> - `revalidatePath`是缓存标签之上的一个便利层。调用`revalidatePath`将使用为提供的页面设置的特殊默认标签调用`revalidateTag`函数。
 
-### Build Cache
+### 构建缓存
 
-Next.js generates an ID during `next build` to identify which version of your application is being served. The same build should be used and boot up multiple containers.
+Next.js 在`next build`期间生成一个 ID，以识别正在提供服务的应用程序版本。相同的构建应被用于启动多个容器。
 
-If you are rebuilding for each stage of your environment, you will need to generate a consistent build ID to use between containers. Use the `generateBuildId` command in `next.config.js`:
+如果您在环境的每个阶段都重新构建，您需要生成一个一致的构建 ID 以在容器之间使用。在`next.config.js`中使用`generateBuildId`命令：
 
 ```jsx filename="next.config.js"
 module.exports = {
@@ -208,21 +208,21 @@ module.exports = {
 };
 ```
 
-### Version Skew
+### 版本偏差
 
-Next.js will automatically mitigate most instances of [version skew](https://www.industrialempathy.com/posts/version-skew/) and automatically reload the application to retrieve new assets when detected. For example, if there is a mismatch in the `deploymentId`, transitions between pages will perform a hard navigation versus using a prefetched value.
+Next.js 将自动缓解大多数[版本偏差](https://www.industrialempathy.com/posts/version-skew/)的情况，并在检测到时自动重新加载应用程序以检索新资源。For example,如果`deploymentId` 不匹配，页面之间的过渡将执行硬导航，而不是使用预取的值。
 
-When the application is reloaded, there may be a loss of application state if it's not designed to persist between page navigations. For example, using URL state or local storage would persist state after a page refresh. However, component state like `useState` would be lost in such navigations.
+当应用程序重新加载时，如果没有设计为在页面导航之间持久化，可能会丢失应用程序状态。例如，使用 URL 状态或本地存储可以在页面刷新后持久化状态。然而，像`useState`这样的组件状态将在此类导航中丢失。
 
-Vercel provides additional [skew protection](https://vercel.com/docs/deployments/skew-protection?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) for Next.js applications to ensure assets and functions from the previous version are still available to older clients, even after the new version is deployed.
+Vercel 为 Next.js 应用程序提供额外的[版本偏差保护](https://vercel.com/docs/deployments/skew-protection?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)，以确保即使在新版本部署后，旧客户端仍然可以访问以前版本的资源和功能。
 
-You can manually configure the `deploymentId` property in your `next.config.js` file to ensure each request uses either `?dpl` query string or `x-deployment-id` header.
+您可以在`next.config.js`文件中手动配置`deploymentId`属性，以确保每个请求使用`?dpl`询字符串或`x-deployment-id`头。
 
-### Streaming and Suspense
+### Streaming 和 Suspense
 
-The Next.js App Router supports [streaming responses](/docs/content/app/building-your-application/routing/loading-ui-and-streaming) when self-hosting. If you are using Nginx or a similar proxy, you will need to configure it to disable buffering to enable streaming.
+Next.js App Router 在自托管时支持[流式响应](/docs/content/app/building-your-application/routing/loading-ui-and-streaming)。如果您使用 Nginx 或类似的代理，您需要配置它以禁用 buffering 来启用流式传输。
 
-For example, you can disable buffering in Nginx by setting `X-Accel-Buffering` to `no`:
+例如，您可以通过将`X-Accel-Buffering`设置为`no`来禁用 Nginx 中的 buffering：
 
 ```js filename="next.config.js"
 module.exports = {
@@ -242,12 +242,12 @@ module.exports = {
 };
 ```
 
-### Partial Prerendering
+### 部分预渲染
 
-[Partial Prendering (experimental)](/docs/content/app/building-your-application/rendering/partial-prerendering) works by default with Next.js and is not a CDN feature. This includes deployment as a Node.js server (through `next start`) and when used with a Docker container.
+[部分预渲染(实验性)](/docs/content/app/building-your-application/rendering/partial-prerendering)默认与 Next.js 配合使用，并且不是 CDN 功能。这包括作为 Node.js 服务器(通过 `next start`)部署以及与 Docker 容器一起使用时。
 
-### Usage with CDNs
+### 与 CDNs 一起使用
 
-When using a CDN in front on your Next.js application, the page will include `Cache-Control: private` response header when dynamic APIs are accessed. This ensures that the resulting HTML page is marked as non-cachable. If the page is fully prerendered to static, it will include `Cache-Control: public` to allow the page to be cached on the CDN.
+在 Next.js 应用程序的前端使用 CDN 时，当访问动态 API 时，页面将包含`Cache-Control: private`响应头。这确保生成的 HTML 页面被标记为不可缓存。如果页面完全预渲染为静态页面，它将包含`Cache-Control: public`，以允许页面在 CDN 上缓存。
 
-If you don't need a mix of both static and dynamic components, you can make your entire route static and cache the output HTML on a CDN. This Automatic Static Optimization is the default behavior when running `next build` if dynamic APIs are not used.
+如果您不需要混合使用静态和动态组件，您可以将整个路由设为静态，并将输出的 HTML 缓存到 CDN 上。如果未使用动态 API，在运行`next build`时，自动静态优化则是默认行为。

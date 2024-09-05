@@ -1,26 +1,26 @@
 ---
 title: Multi-Zones
-description: Learn how to build micro-frontends using Next.js Multi-Zones to deploy multiple Next.js apps under a single domain.
+description: 了解如何使用 Next.js Multi-Zones构建微前端，以在单个域下部署多个 Next.js 应用程序。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
 <details open>
-  <summary>Examples</summary>
+  <summary>例子</summary>
 
 - [With Zones](https://github.com/vercel/next.js/tree/canary/examples/with-zones)
 
 </details>
 
-Multi-Zones are an approach to micro-frontends that separate a large application on a domain into smaller Next.js applications that each serve a set of paths. This is useful when there are collections of pages unrelated to the other pages in the application. By moving those pages to a separate zone (i.e., a separate application), you can reduce the size of each application which improves build times and removes code that is only necessary for one of the zones.
+多区域是一种微前端方法，它将域上的大型应用程序分成较小的 Next.js 应用程序，每个应用程序服务于一组路径。当应用程序中有与其他页面无关的页面集合时，这非常有用。通过将这些页面移动到一个单独的区域（即一个单独的应用程序），您可以减少每个应用程序的大小，从而提高构建时间，并删除仅对其中一个区域必要的代码。
 
-For example, let's say you have the following set of pages that you would like to split up:
+例如，假设您有以下一组页面，您希望将它们拆分：
 
-- `/blog/*` for all blog posts
-- `/dashboard/*` for all pages when the user is logged-in to the dashboard
-- `/*` for the rest of your website not covered by other zones
+- `/blog/*` 针对所有博客文章
+- `/dashboard/*` 对于用户登录到 Dashboard 时的所有页面
+- `/*` 对于您的网站中未被其他区域覆盖的部分
 
-With Multi-Zones support, you can create three applications that all are served on the same domain and look the same to the user, but you can develop and deploy each of the applications independently.
+通过多区域支持，您可以创建三个在同一域上提供服务且对用户看起来相同的应用程序，但您可以独立开发和部署每个应用程序。
 
 <img
   alt="Three zones: A, B, C. Showing a hard navigation between routes from different zones, and soft navigations between routes within the same zone."
@@ -29,13 +29,13 @@ With Multi-Zones support, you can create three applications that all are served 
   height="auto"
 />
 
-Navigating between pages in the same zone will perform soft navigations, a navigation that does not require reloading the page. For example, in this diagram, navigating from `/` to `/products` will be a soft navigation.
+在同一区域内的页面之间导航将执行软导航，即不需要重新加载页面的导航。例如，在此图中，从 `/`导航到`/products`将是软导航。
 
-Navigating from a page in one zone to a page in another zone, such as from `/` to `/dashboard`, will perform a hard navigation, unloading the resources of the current page and loading the resources of the new page. Pages that are frequently visited together should live in the same zone to avoid hard navigations.
+从一个区域的页面导航到另一个区域的页面，例如从`/` 到 `/dashboard`，将执行硬导航，卸载当前页面的资源并加载新页面的资源。经常一起访问的页面应位于同一区域，以避免硬导航。
 
-## How to define a zone
+## 如何定义一个区域
 
-There are no special APIs to define a new zone. A zone is a normal Next.js application where you also configure a [basePath](/docs/content/app/api-reference/next-config-js/basePath) to avoid conflicts with pages and static files in other zones.
+没有特殊的 API 来定义新区域。区域是一个普通的 Next.js 应用程序，您还可以在其中配置[basePath](/docs/content/app/api-reference/next-config-js/basePath)以避免与其他区域中的页面和静态文件发生冲突。
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -44,17 +44,17 @@ const nextConfig = {
 };
 ```
 
-The default application that will handle all paths not sent to a more specific zone does not need a `basePath`.
+处理未发送到更特定区域的所有路径的默认应用程序不需要`basePath`。
 
-Next.js assets, such as JavaScript and CSS, will also be prefixed with `basePath` to make sure that they don't conflict with assets from other zones. These assets will be served under `/basePath/_next/...` for each of the zones.
+Next.js 资源（如 JavaScript 和 CSS）也将以`basePath`为前缀，以确保它们不会与其他区域的资源冲突。这些资源将在每个区域的`/basePath/_next/...`下提供。
 
-If the zone serves pages that don't share a common path prefix, such as `/home` and `/blog`, then you can also set [`assetPrefix`](/docs/content/app/api-reference/next-config-js/assetPrefix) to ensure that all Next.js assets are served under a unique path prefix for the zone without adding a path prefix to the rest of the routes in your application.
+如果区域提供的页面没有共享公共路径前缀，例如`/home` 和 `/blog`,那么您还可以设置 [`assetPrefix`](/docs/content/app/api-reference/next-config-js/assetPrefix) 以确保所有 Next.js 资产都在该区域的唯一路径前缀下提供，，而无需在应用程序中的其余路由中添加路径前缀。
 
-## How to route requests to the right zone
+## 如何将请求发送到正确的区域
 
-With the Multi Zones set-up, you need to route the paths to the correct zone since they are served by different applications. You can use any HTTP proxy to do this, but one of the Next.js applications can also be used to route requests for the entire domain.
+在设置多区域时，您需要将路径发送到正确的区域，因为它们由不同的应用程序提供服务。您可以使用任何 HTTP 代理来实现这一点，但也可以使用其中一个 Next.js 应用程序来发送整个域的请求。
 
-To route to the correct zone using a Next.js application, you can use [`rewrites`](/docs/content/app/api-reference/next-config-js/rewrites). For each path served by a different zone, you would add a rewrite rule to send that path to the domain of the other zone. For example:
+要使用 Next.js 应用程序发送到正确的区域，您可以使用[`rewrites`](/docs/content/app/api-reference/next-config-js/rewrites)。对于每个由不同区域提供服务的路径，您需要添加一个重写规则，将该路径发送到其他区域的域。例如：
 
 ```js filename="next.config.js"
 async rewrites() {
@@ -71,18 +71,18 @@ async rewrites() {
 }
 ```
 
-`destination` should be a URL that is served by the zone, including scheme and domain. This should point to the zone's production domain, but it can also be used to route requests to `localhost` in local development.
+应该是由区域提供服务的 URL，包括协议和域名。这应该指向区域的生产域，但在本地开发中也可以用于将请求发送到`localhost`。
 
-> **Good to know**: URL paths should be unique to a zone. For example, two zones trying to serve `/blog` would create a routing conflict.
+> **您需要知道**: URL 路径应在一个区域内唯一。例如，两个区域尝试提供`/blog`将会创建路由冲突。
 
-## Linking between zones
+## 区域之间的链接
 
-Links to paths in a different zone should use an `a` tag instead of the Next.js [`<Link>`](/docs/content/pages/api-reference/components/link) component. This is because Next.js will try to prefetch and soft navigate to any relative path in `<Link>` component, which will not work across zones.
+链接到不同区域的路径应使用`a`标签，而不是 Next.js 的 [`<Link>`](/docs/content/pages/api-reference/components/link)组件。这是因为 Next.js 会尝试预取和软导航到`<Link>`组件中的任何相对路径，这在跨区域时将不起作用。
 
-## Sharing code
+## 共享代码
 
-The Next.js applications that make up the different zones can live in any repository. However, it is often convenient to put these zones in a [monorepo](https://en.wikipedia.org/wiki/Monorepo) to more easily share code. For zones that live in different repositories, code can also be shared using public or private NPM packages.
+组成不同区域的 Next.js 应用程序可以存在于任何存储库中。然而，将这些区域放在一个[monorepo](https://en.wikipedia.org/wiki/Monorepo)中通常更方便，以便更轻松地共享代码。对于存在于不同存储库中的区域，也可以使用公共或私有 NPM 包来共享代码。
 
-Since the pages in different zones may be released at different times, feature flags can be useful for enabling or disabling features in unison across the different zones.
+由于不同区域的页面可能在不同时间发布，功能标志对于在不同区域中统一启用或禁用功能非常有用。
 
-For [Next.js on Vercel](https://vercel.com?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) applications, you can use a [monorepo](https://vercel.com/blog/monorepos-are-changing-how-teams-build-software?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) to deploy all affected zones with a single `git push`.
+对于[Vercel 上的 Next.js ](https://vercel.com?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) 应用程序，您可以使用[monorepo](https://vercel.com/blog/monorepos-are-changing-how-teams-build-software?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)通过单独的`git push`命令部署所有有关的的区域。
