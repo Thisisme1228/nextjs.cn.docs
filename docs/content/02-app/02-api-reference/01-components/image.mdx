@@ -12,12 +12,6 @@ description: Optimize Images in your Next.js Application using the built-in `nex
 
 </details>
 
-<PagesOnly>
-
-> **Good to know**: If you are using a version of Next.js prior to 13, you'll want to use the [next/legacy/image](/docs/content/pages/api-reference/components/image-legacy) documentation since the component was renamed.
-
-</PagesOnly>
-
 This API reference will help you understand how to use [props](#props) and [configuration options](#configuration-options) available for the Image Component. For features and usage, please see the [Image Component](/docs/content/app/building-your-application/optimizing/images) page.
 
 ```jsx filename="app/page.js"
@@ -135,8 +129,6 @@ A `loader` is a function returning a URL string for the image, given the followi
 
 Here is an example of using a custom loader:
 
-<AppOnly>
-
 ```js
 "use client";
 
@@ -160,32 +152,6 @@ export default function Page() {
 ```
 
 > **Good to know**: Using props like `loader`, which accept a function, requires using [Client Components](/docs/content/app/building-your-application/rendering/client-components) to serialize the provided function.
-
-</AppOnly>
-
-<PagesOnly>
-
-```js
-import Image from "next/image";
-
-const imageLoader = ({ src, width, quality }) => {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
-};
-
-export default function Page() {
-  return (
-    <img
-      loader={imageLoader}
-      src="me.png"
-      alt="Picture of the author"
-      width={500}
-      height={500}
-    />
-  );
-}
-```
-
-</PagesOnly>
 
 Alternatively, you can use the [loaderFile](#loaderfile) configuration in `next.config.js` to configure every instance of `next/image` in your application, without passing a prop.
 
@@ -311,23 +277,11 @@ Remember that the required width and height props can interact with your styling
 
 ### `onLoadingComplete`
 
-<AppOnly>
-
 ```jsx
 'use client'
 
 <img onLoadingComplete={(img) => console.log(img.naturalWidth)} />
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx
-<img onLoadingComplete={(img) => console.log(img.naturalWidth)} />
-```
-
-</PagesOnly>
 
 > **Warning**: Deprecated since Next.js 14 in favor of [`onLoad`](#onload).
 
@@ -335,11 +289,7 @@ A callback function that is invoked once the image is completely loaded and the 
 
 The callback function will be called with one argument, a reference to the underlying `<img>` element.
 
-<AppOnly>
-
 > **Good to know**: Using props like `onLoadingComplete`, which accept a function, requires using [Client Components](/docs/content/app/building-your-application/rendering/client-components) to serialize the provided function.
-
-</AppOnly>
 
 ### `onLoad`
 
@@ -351,11 +301,7 @@ A callback function that is invoked once the image is completely loaded and the 
 
 The callback function will be called with one argument, the Event which has a `target` that references the underlying `<img>` element.
 
-<AppOnly>
-
 > **Good to know**: Using props like `onLoad`, which accept a function, requires using [Client Components](/docs/content/app/building-your-application/rendering/client-components) to serialize the provided function.
-
-</AppOnly>
 
 ### `onError`
 
@@ -365,11 +311,7 @@ The callback function will be called with one argument, the Event which has a `t
 
 A callback function that is invoked if the image fails to load.
 
-<AppOnly>
-
 > **Good to know**: Using props like `onError`, which accept a function, requires using [Client Components](/docs/content/app/building-your-application/rendering/client-components) to serialize the provided function.
-
-</AppOnly>
 
 ### `loading`
 
@@ -560,8 +502,6 @@ module.exports = {
 
 This must point to a file relative to the root of your Next.js application. The file must export a default function that returns a string, for example:
 
-<AppOnly>
-
 ```js filename="my/image/loader.js"
 "use client";
 
@@ -570,29 +510,13 @@ export default function myImageLoader({ src, width, quality }) {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-```js filename="my/image/loader.js"
-export default function myImageLoader({ src, width, quality }) {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
-}
-```
-
-</PagesOnly>
-
 Alternatively, you can use the [`loader` prop](#loader) to configure each instance of `next/image`.
 
 Examples:
 
 - [Custom Image Loader Configuration](/docs/content/app/api-reference/next-config-js/images#example-loader-configuration)
 
-<AppOnly>
-
 > **Good to know**: Customizing the image loader file, which accepts a function, requires using [Client Components](/docs/content/app/building-your-application/rendering/client-components) to serialize the provided function.
-
-</AppOnly>
 
 ## Advanced
 

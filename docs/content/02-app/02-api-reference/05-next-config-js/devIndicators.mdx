@@ -5,8 +5,6 @@ description: Optimized pages include an indicator to let you know if it's being 
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-<AppOnly>
-
 `devIndicators` allows you to configure the on-screen indicators that give context about the current route you're viewing during development.
 
 ```ts filename="Types"
@@ -108,25 +106,3 @@ There are two reasons a route might opt out of static rendering:
 - An [uncached data request](/docs/content/app/building-your-application/data-fetching/fetching#fetch-api).
 
 Check your route for any of these conditions, and if you are not able to statically render the route, then consider using [`loading.js`](/docs/content/app/api-reference/file-conventions/loading) or [`<Suspense />`](https://react.dev/reference/react/Suspense) to leverage [streaming](/docs/content/app/building-your-application/routing/loading-ui-and-streaming#what-is-streaming).
-
-</AppOnly>
-
-<PagesOnly>
-
-> **Good to know**: This indicator was removed in Next.js version 10.0.1. We recommend upgrading to the latest version of Next.js.
-
-When a page qualifies for [Automatic Static Optimization](/docs/content/pages/building-your-application/rendering/automatic-static-optimization) we show an indicator to let you know.
-
-This is helpful since automatic static optimization can be very beneficial and knowing immediately in development if the page qualifies can be useful.
-
-In some cases this indicator might not be useful, like when working on electron applications. To remove it open `next.config.js` and disable the `autoPrerender` config in `devIndicators`:
-
-```js filename="next.config.js"
-module.exports = {
-  devIndicators: {
-    autoPrerender: false,
-  },
-};
-```
-
-</PagesOnly>

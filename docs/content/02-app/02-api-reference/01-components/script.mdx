@@ -70,21 +70,9 @@ Scripts that load with the `beforeInteractive` strategy are injected into the in
 
 Scripts denoted with this strategy are preloaded and fetched before any first-party code, but their execution does not block page hydration from occurring.
 
-<AppOnly>
-
 `beforeInteractive` scripts must be placed inside the root layout (`app/layout.tsx`) and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
 
-</AppOnly>
-
-<PagesOnly>
-
-`beforeInteractive` scripts must be placed inside the `Document` Component (`pages/_document.js`) and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
-
-</PagesOnly>
-
 **This strategy should only be used for critical scripts that need to be fetched before any part of the page becomes interactive.**
-
-<AppOnly>
 
 ```tsx filename="app/layout.tsx" switcher
 import Script from "next/script";
@@ -125,33 +113,6 @@ export default function RootLayout({ children }) {
   );
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx filename="pages/_document.js"
-import { Html, Head, Main, NextScript } from "next/document";
-import Script from "next/script";
-
-export default function Document() {
-  return (
-    <Html>
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-        <Script
-          src="https://example.com/script.js"
-          strategy="beforeInteractive"
-        />
-      </body>
-    </Html>
-  );
-}
-```
-
-</PagesOnly>
 
 > **Good to know**: Scripts with `beforeInteractive` will always be injected inside the `head` of the HTML document regardless of where it's placed in the component.
 
@@ -302,8 +263,6 @@ Some third-party scripts require users to run JavaScript code after the script h
 
 Here's an example of how to re-instantiate a Google Maps JS embed every time the component is mounted:
 
-<AppOnly>
-
 ```tsx filename="app/page.tsx" switcher
 "use client";
 
@@ -357,37 +316,6 @@ export default function Page() {
   );
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx
-import { useRef } from "react";
-import Script from "next/script";
-
-export default function Page() {
-  const mapRef = useRef();
-
-  return (
-    <>
-      <div ref={mapRef}></div>
-      <Script
-        id="google-maps"
-        src="https://maps.googleapis.com/maps/api/js"
-        onReady={() => {
-          new google.maps.Map(mapRef.current, {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8,
-          });
-        }}
-      />
-    </>
-  );
-}
-```
-
-</PagesOnly>
 
 ### `onError`
 
@@ -395,8 +323,6 @@ export default function Page() {
 
 Sometimes it is helpful to catch when a script fails to load. These errors can be handled with the onError property:
 
-<AppOnly>
-
 ```tsx filename="app/page.tsx" switcher
 "use client";
 
@@ -434,29 +360,6 @@ export default function Page() {
   );
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx
-import Script from "next/script";
-
-export default function Page() {
-  return (
-    <>
-      <Script
-        src="https://example.com/script.js"
-        onError={(e: Error) => {
-          console.error("Script failed to load", e);
-        }}
-      />
-    </>
-  );
-}
-```
-
-</PagesOnly>
 
 ## Version History
 
