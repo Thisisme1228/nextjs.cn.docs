@@ -197,6 +197,6 @@ export function Page() {
 
 Next.js 包含附加功能，以改善添加样式的编写体验：
 
-- 当使用`next dev`本地运行时, 本地样式表(无论是全局样式还是 CSS 模块) 将利用[快速刷新](/docs/architecture/fast-refresh)功能，在保存编辑时立即反映更改。
+- 当使用`next dev`本地运行时, 本地样式表(无论是全局样式还是 CSS 模块) 将利用[快速刷新](/docs/content/architecture/fast-refresh)功能，在保存编辑时立即反映更改。
 - 在使用`next build`构建生产环境时，CSS 文件将被打包成更少的压缩`.css`文件，以减少检索样式所需的网络请求数量。
-- 如果禁用了 JavaScript，样式仍将在生产构建中加载。(`next start`).然而，`next dev`仍然需要 JavaScript 来启用[快速刷新](/docs/architecture/fast-refresh)。
+- 如果禁用了 JavaScript，样式仍将在生产构建中加载。(`next start`).然而，`next dev`仍然需要 JavaScript 来启用[快速刷新](/docs/content/architecture/fast-refresh)。
