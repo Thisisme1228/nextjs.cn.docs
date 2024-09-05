@@ -117,11 +117,11 @@ const config: Config = {
         autoCollapseCategories: false,
       },
     },
-    algolia: {
-      appId: "AUJYIQ70HN",
-      apiKey: "25243dbf9049cf036e87f64b361bd2b9",
-      indexName: "nextjs.cn.docs",
-    },
+    // algolia: {
+    //   appId: "AUJYIQ70HN",
+    //   apiKey: "25243dbf9049cf036e87f64b361bd2b9",
+    //   indexName: "nextjs.cn.docs",
+    // },
     footer: {
       style: "dark",
       links: [
