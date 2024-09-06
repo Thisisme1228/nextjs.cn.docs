@@ -31,7 +31,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="欢迎来到Next.js中文文档 <head />"
+      description="欢迎来到Next.js中文文档 | Next.js14中文文档 | Next.js15中文文档"
     >
       <HomepageHeader />
       {/* <main>
