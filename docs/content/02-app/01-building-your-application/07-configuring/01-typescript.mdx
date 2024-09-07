@@ -1,74 +1,73 @@
 ---
 title: TypeScript
-description: Next.js provides a TypeScript-first development experience for building your React application.
+description: Next.js 提供了 TypeScript 优先的开发体验，用于构建您的 React 应用程序。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js provides a TypeScript-first development experience for building your React application.
+Next.js 提供了 TypeScript 优先的开发体验，用于构建您的 React 应用程序。
 
-It comes with built-in TypeScript support for automatically installing the necessary packages and configuring the proper settings.
+它内置了 TypeScript 支持，可以自动安装必要的包并配置适当的设置。
 
-As well as a [TypeScript Plugin](#typescript-plugin) for your editor.
+以及为您的编辑器提供的[TypeScript 插件](#typescript-plugin)。
 
-> **🎥 Watch:** Learn about the built-in TypeScript plugin → [YouTube (3 minutes)](https://www.youtube.com/watch?v=pqMqn9fKEf8)
+> **🎥 观看:** 了解内置的 TypeScript 插件 → [YouTube (3 分钟)](https://www.youtube.com/watch?v=pqMqn9fKEf8)
 
-## New Projects
+## 新项目
 
-`create-next-app` now ships with TypeScript by default.
+`create-next-app`现在默认附带 TypeScript。
 
 ```bash filename="Terminal"
 npx create-next-app@latest
 ```
 
-## Existing Projects
+## 现有项目
 
-Add TypeScript to your project by renaming a file to `.ts` / `.tsx`. Run `next dev` and `next build` to automatically install the necessary dependencies and add a `tsconfig.json` file with the recommended config options.
+通过将文件重命名为`.ts` / `.tsx`来将 TypeScript 添加到您的项目中。运行`next dev` 和 `next build`将自动安装必要的依赖项，并添加带有推荐配置选项的`tsconfig.json`文件。
 
-If you already had a `jsconfig.json` file, copy the `paths` compiler option from the old `jsconfig.json` into the new `tsconfig.json` file, and delete the old `jsconfig.json` file.
+如果您已经有一个`jsconfig.json`文件，请将旧`jsconfig.json`文件中的`paths`编译器选项复制到新的`tsconfig.json`文件中，然后删除旧的`jsconfig.json`文件。
 
-We also recommend you to use [`next.config.ts`](#type-checking-nextconfigts) over `next.config.js` for better type inference.
+我们还建议您使用[`next.config.ts`](#type-checking-nextconfigts) 代替`next.config.js`以获得更好的类型推断。
 
-## TypeScript Plugin
+## TypeScript 插件
 
-Next.js includes a custom TypeScript plugin and type checker, which VSCode and other code editors can use for advanced type-checking and auto-completion.
+Next.js 包含一个自定义的 TypeScript 插件和类型检查器，VSCode 和其他代码编辑器可以使用它们进行高级类型检查和自动补全。
 
-You can enable the plugin in VS Code by:
+您可以通过以下步骤在 VS Code 中启用插件：
 
-1. Opening the command palette (`Ctrl/⌘` + `Shift` + `P`)
-2. Searching for "TypeScript: Select TypeScript Version"
-3. Selecting "Use Workspace Version"
+1. 打开命令面板 (`Ctrl/⌘` + `Shift` + `P`)
+2. 搜索"TypeScript: Select TypeScript Version"
+3. 选择"Use Workspace Version"
 
 <img
   alt="TypeScript Command Palette"
-  srcLight="/docs/light/typescript-command-palette.png"
-  srcDark="/docs/dark/typescript-command-palette.png"
-  width="1600"
-  height="637"
+  src="/typescript-command-palette.avif"
+  width="100%"
+  height="auto"
 />
 
-Now, when editing files, the custom plugin will be enabled. When running `next build`, the custom type checker will be used.
+现在，在编辑文件时，自定义插件将被启用。在运行`next build`时，将使用自定义类型检查器。
 
-### Plugin Features
+### 插件功能
 
-The TypeScript plugin can help with:
+TypeScript 插件可以帮助:
 
-- Warning if the invalid values for [segment config options](/docs/content/app/api-reference/file-conventions/route-segment-config) are passed.
-- Showing available options and in-context documentation.
-- Ensuring the `use client` directive is used correctly.
-- Ensuring client hooks (like `useState`) are only used in Client Components.
+- 如果传递[段配置选项](/docs/content/app/api-reference/file-conventions/route-segment-config) 的无效值，则警告。
+- 显示可用选项和上下文文档。
+- 确保正确使用`use client`指令。
+- 确保客户端 hooks (如 `useState`)仅在客户端组件中使用。
 
-> **Good to know**: More features will be added in the future.
+> **您需要知道**:将来会添加更多功能。
 
-## Minimum TypeScript Version
+## 最低 TypeScript 版本
 
-It is highly recommended to be on at least `v4.5.2` of TypeScript to get syntax features such as [type modifiers on import names](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5/#type-on-import-names) and [performance improvements](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5/#real-path-sync-native).
+强烈建议使用至少`v4.5.2`版本的 TypeScript，以获得诸如[导入名称上的类型修饰符](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5/#type-on-import-names) 和 [性能改进](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5/#real-path-sync-native) 等语法功能。
 
-## Type checking in Next.js Configuration
+## Next.js 中的类型检查配置
 
-### Type checking next.config.js
+### 类型检查 next.config.js
 
-When using the `next.config.js` file, you can add some type checking in your IDE using JSDoc as below:
+当使用`next.config.js`文件时，您可以使用 JSDoc 在您的 IDE 中添加一些类型检查，如下所示：
 
 ```js filename="next.config.js"
 // @ts-check
@@ -81,9 +80,9 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### Type checking next.config.ts
+### 类型检查 next.config.ts
 
-You can use TypeScript and import types in your Next.js configuration by using `next.config.ts`.
+您可以使用 TypeScript，并通过使用`next.config.ts`在您的 Next.js 配置中导入类型。
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from "next";
@@ -95,13 +94,13 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 ```
 
-> **Good to know**: You can import Native ESM modules in `next.config.ts` without any additional configuration. Supports importing extensions like `.cjs`, `.cts`, `.mjs`, and `.mts`.
+> **您需要知道**: 您可以在`next.config.ts`中无需任何额外配置地导入原生 ESM 模块。支持导入`.cjs`、`.cts`、`.mjs`和`.mts`等扩展名。
 
-## Statically Typed Links
+## 静态类型链接
 
-Next.js can statically type links to prevent typos and other errors when using `next/link`, improving type safety when navigating between pages.
+Next.js 可以静态类型化链接，以防止在使用`next/link`时出现拼写错误和其他错误，从而在页面之间导航时提高类型安全性。
 
-To opt-into this feature, `experimental.typedRoutes` need to be enabled and the project needs to be using TypeScript.
+要启用此功能，需要启用`experimental.typedRoutes`并且项目需要使用 TypeScript。
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from "next";
@@ -115,9 +114,9 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 ```
 
-Next.js will generate a link definition in `.next/types` that contains information about all existing routes in your application, which TypeScript can then use to provide feedback in your editor about invalid links.
+Next.js 会在`.next/types`中生成一个链接定义，其中包含有关应用程序中所有现有路由的信息，TypeScript 可以使用这些信息在编辑器中提供有关无效链接的反馈。
 
-Currently, experimental support includes any string literal, including dynamic segments. For non-literal strings, you currently need to manually cast the `href` with `as Route`:
+目前，实验性支持包括任何字符串字面量，包括动态段。对于非字面量字符串，您需要手动将`href`强制转换为`as Route`:
 
 ```tsx
 import type { Route } from 'next';
@@ -133,7 +132,7 @@ import Link from 'next/link'
 <Link href="/aboot" />
 ```
 
-To accept `href` in a custom component wrapping `next/link`, use a generic:
+要在自定义组件`next/link`中接受`href`，请使用泛型：
 
 ```tsx
 import type { Route } from "next";
@@ -148,20 +147,20 @@ function Card<T extends string>({ href }: { href: Route<T> | URL }) {
 }
 ```
 
-> **How does it work?**
+> **它的工作原理?**
 >
-> When running `next dev` or `next build`, Next.js generates a hidden `.d.ts` file inside `.next` that contains information about all existing routes in your application (all valid routes as the `href` type of `Link`). This `.d.ts` file is included in `tsconfig.json` and the TypeScript compiler will check that `.d.ts` and provide feedback in your editor about invalid links.
+> 当运行`next dev` 或 `next build`时，Next.js 会在`.next`中生成一个隐藏的`.d.ts`文件，其中包含有关应用程序中所有现有路由的信息(所有有效路由作为`Link`的`href`类型)。这个 `.d.ts`文件会被包含在`tsconfig.json`中，TypeScript 编译器将检查该`.d.ts`文件，并在您的编辑器中提供有关无效链接的反馈。
 
-## End-to-End Type Safety
+## 端到端类型安全
 
-The Next.js App Router has **enhanced type safety**. This includes:
+Next.js App Router**增强了类型安全**。这包括:
 
-1. **No serialization of data between fetching function and page**: You can `fetch` directly in components, layouts, and pages on the server. This data _does not_ need to be serialized (converted to a string) to be passed to the client side for consumption in React. Instead, since `app` uses Server Components by default, we can use values like `Date`, `Map`, `Set`, and more without any extra steps. Previously, you needed to manually type the boundary between server and client with Next.js-specific types.
-2. **Streamlined data flow between components**: With the removal of `_app` in favor of root layouts, it is now easier to visualize the data flow between components and pages. Previously, data flowing between individual `pages` and `_app` were difficult to type and could introduce confusing bugs. With [colocated data fetching](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating) in the App Router, this is no longer an issue.
+1. **获取函数和页面之间没有数据序列化**: 您可以直接在服务器上的组件、布局和页面中使用`fetch`。这些数据不需要序列化 (转换为字符串) 即可传递到客户端供 React 使用。相反，由于`app`默认使用服务器组件，我们可以使用`Date`、`Map`、`Set`等值，而无需任何额外步骤。以前，您需要使用 Next.js 特定的类型手动定义服务器和客户端之间的边界。
+2. **简化组件之间的数据流**: 随着`_app`被根布局取代，现在更容易可视化组件和页面之间的数据流。以前，数据在各个`pages` 和 `_app`之间流动时很难进行类型检查，并且可能引入令人困惑的错误。通过在 App Router 中使用[colocated data fetching](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating)，这个问题不再存在。
 
-[Data Fetching in Next.js](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating) now provides as close to end-to-end type safety as possible without being prescriptive about your database or content provider selection.
+[Next.js 中的数据获取](/docs/content/app/building-your-application/data-fetching/caching-and-revalidating) 提供了尽可能接近端到端的类型安全，而无需对数据库或内容提供者选择进行规定。
 
-We're able to type the response data as you would expect with normal TypeScript. For example:
+我们可以像使用普通 TypeScript 一样对响应数据进行类型定义。例如：
 
 ```tsx filename="app/page.tsx"
 async function getData() {
@@ -178,39 +177,39 @@ export default async function Page() {
 }
 ```
 
-For _complete_ end-to-end type safety, this also requires your database or content provider to support TypeScript. This could be through using an [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping) or type-safe query builder.
+要实现完整的端到端类型安全，这还需要您的数据库或内容提供者支持 TypeScript。这可以通过使用[ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)或类型安全的查询构建器来实现。
 
-## Async Server Component TypeScript Error
+## 异步服务器组件 TypeScript 错误
 
-To use an `async` Server Component with TypeScript, ensure you are using TypeScript `5.1.3` or higher and `@types/react` `18.2.8` or higher.
+要将`async`服务器组件与 TypeScript 一起使用, 请确保您使用的是 TypeScript`5.1.3`或更高版本，以及`@types/react` `18.2.8`或更高版本。
 
-If you are using an older version of TypeScript, you may see a `'Promise<Element>' is not a valid JSX element` type error. Updating to the latest version of TypeScript and `@types/react` should resolve this issue.
+如果您使用的是较旧版本的 TypeScript，您可能会看到`'Promise<Element>' is not a valid JSX element`类型错误。更新到最新版本的 TypeScript 和 `@types/react`应该可以解决此问题。
 
-## Passing Data Between Server & Client Components
+## 在服务器和客户端组件之间传递数据
 
-When passing data between a Server and Client Component through props, the data is still serialized (converted to a string) for use in the browser. However, it does not need a special type. It’s typed the same as passing any other props between components.
+当通过 props 在服务器组件和客户端组件之间传递数据时，数据仍然会被序列化（转换为字符串）以便在浏览器中使用。然而，它不需要特殊的类型。它的类型检查方式与在组件之间传递任何其他 props 的类型检查方式相同。
 
-Further, there is less code to be serialized, as un-rendered data does not cross between the server and client (it remains on the server). This is only now possible through support for Server Components.
+此外，由于未渲染的数据不会在服务器和客户端之间传递（它保留在服务器上），因此需要序列化的代码更少。现在只有通过支持服务器组件才能实现这一点。
 
-## Path aliases and baseUrl
+## 路径别名和 baseUrl
 
-Next.js automatically supports the `tsconfig.json` `"paths"` and `"baseUrl"` options.
+Next.js 自动支持`tsconfig.json`中的`"paths"`和`"baseUrl"`选项。
 
-You can learn more about this feature on the [Module Path aliases documentation](/docs/content/app/building-your-application/configuring/absolute-imports-and-module-aliases).
+您可以在[Module Path aliases 文档](/docs/content/app/building-your-application/configuring/absolute-imports-and-module-aliases)中了解更多关于此功能的信息。
 
-## Incremental type checking
+## 增量类型检查
 
-Since `v10.2.1` Next.js supports [incremental type checking](https://www.typescriptlang.org/tsconfig#incremental) when enabled in your `tsconfig.json`, this can help speed up type checking in larger applications.
+自`v10.2.1`起，Next.js 在您的`tsconfig.json`中启用后，支持[增量类型检查](https://www.typescriptlang.org/tsconfig#incremental)，这可以帮助加快大型应用程序中的类型检查速度。
 
-## Ignoring TypeScript Errors
+## 忽略 TypeScript 错误
 
-Next.js fails your **production build** (`next build`) when TypeScript errors are present in your project.
+在您的项目中存在 TypeScript 错误时，Next.js 会**生产构建** (`next build`)失败。
 
-If you'd like Next.js to dangerously produce production code even when your application has errors, you can disable the built-in type checking step.
+如果您希望 Next.js 在您的应用程序存在错误时仍然危险地生成生产代码，您可以禁用内置的类型检查步骤。
 
-If disabled, be sure you are running type checks as part of your build or deploy process, otherwise this can be very dangerous.
+如果禁用，请确保在构建或部署过程中运行类型检查，否则这可能非常危险。
 
-Open `next.config.ts` and enable the `ignoreBuildErrors` option in the `typescript` config:
+打开`next.config.ts`并在`typescript`配置中启用`ignoreBuildErrors`选项：
 
 ```ts filename="next.config.ts"
 export default {
@@ -224,9 +223,9 @@ export default {
 };
 ```
 
-## Custom Type Declarations
+## 自定义类型声明
 
-When you need to declare custom types, you might be tempted to modify `next-env.d.ts`. However, this file is automatically generated, so any changes you make will be overwritten. Instead, you should create a new file, let's call it `new-types.d.ts`, and reference it in your `tsconfig.json`:
+当您需要声明自定义类型时，您可能会想要修改`next-env.d.ts`。然而，这个文件是自动生成的，因此您所做的任何更改都会被覆盖。相反，您应该创建一个叫`new-types.d.ts`的新文件，并在您的`tsconfig.json`中引用它：
 
 ```json filename="tsconfig.json"
 {
@@ -245,11 +244,11 @@ When you need to declare custom types, you might be tempted to modify `next-env.
 }
 ```
 
-## Version Changes
+## 版本变更
 
-| Version   | Changes                                                                                                                              |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `v15.0.0` | [`next.config.ts`](#type-checking-nextconfigts) support added for TypeScript projects.                                               |
-| `v13.2.0` | Statically typed links are available in beta.                                                                                        |
-| `v12.0.0` | [SWC](/docs/content/architecture/nextjs-compiler) is now used by default to compile TypeScript and TSX for faster builds.            |
-| `v10.2.1` | [Incremental type checking](https://www.typescriptlang.org/tsconfig#incremental) support added when enabled in your `tsconfig.json`. |
+| Version   | Changes                                                                                                    |
+| --------- | ---------------------------------------------------------------------------------------------------------- |
+| `v15.0.0` | [`next.config.ts`](#type-checking-nextconfigts) 增加对 TypeScript 项目的支持。                             |
+| `v13.2.0` | 静态类型链接在测试版中可用。                                                                               |
+| `v12.0.0` | [SWC](/docs/content/architecture/nextjs-compiler)现在默认用于编译 TypeScript 和 TSX，以加快构建速度。      |
+| `v10.2.1` | 在`tsconfig.json`中启用时，添加了[增量类型检查支持](https://www.typescriptlang.org/tsconfig#incremental)。 |

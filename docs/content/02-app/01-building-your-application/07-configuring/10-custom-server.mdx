@@ -1,19 +1,19 @@
 ---
-title: Custom Server
-description: Start a Next.js app programmatically using a custom server.
+title: 自定义服务器
+description: 使用自定义服务器以编程方式启动 Next.js 应用。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js includes its own server with `next start` by default. If you have an existing backend, you can still use it with Next.js (this is not a custom server). A custom Next.js server allows you to programmatically start a server for custom patterns. The majority of the time, you will not need this approach. However, it's available if you need to eject.
+Next.js 默认使用 `next start`启动其内置服务器。如果您已有现有的后端，您仍然可以将它与 `Next.js` 一起使用（这不是自定义服务器）。自定义的 `Next.js` 服务器允许您以编程方式启动一个用于自定义模式的服务器。大多数情况下，您不需要使用这种方法，除非您需要特殊处理。
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - Before deciding to use a custom server, keep in mind that it should only be used when the integrated router of Next.js can't meet your app requirements. A custom server will remove important performance optimizations, like **[Automatic Static Optimization](/docs/content/pages/building-your-application/rendering/automatic-static-optimization).**
-> - A custom server **cannot** be deployed on [Vercel](https://vercel.com/frameworks/nextjs).
-> - When using standalone output mode, it does not trace custom server files. This mode outputs a separate minimal `server.js` file, instead. These cannot be used together.
+> - 在决定使用自定义服务器之前，请记住，只有当 Next.js 的集成路由无法满足应用需求时，才应考虑使用自定义服务器。自定义服务器会移除重要的性能优化，比如 **[自动静态优化](/docs/content/pages/building-your-application/rendering/automatic-static-optimization)**。
+> - 自定义服务器**不能**部署到[Vercel](https://vercel.com/frameworks/nextjs)。
+> - 使用 standalone 输出模式时，它不会跟踪自定义服务器文件。此模式将输出一个独立的最小 server.js 文件。
 
-Take a look at the [following example](https://github.com/vercel/next.js/tree/canary/examples/custom-server) of a custom server:
+查看以下自定义服务器[示例](https://github.com/vercel/next.js/tree/canary/examples/custom-server)：
 
 ```ts filename="server.ts" switcher
 import { createServer } from "http";
@@ -63,9 +63,9 @@ app.prepare().then(() => {
 });
 ```
 
-> `server.js` does not run through the Next.js Compiler or bundling process. Make sure the syntax and source code this file requires are compatible with the current Node.js version you are using. [View an example](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
+> `server.js`不会经过 Next.js 的编译器或打包过程。请确保该文件所需的语法和源代码与您使用的 Node.js 版本兼容。[查看示例](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
 
-To run the custom server, you'll need to update the `scripts` in `package.json` like so:
+要运行自定义服务器，你需要在`package.json`中更新`scripts`：
 
 ```json filename="package.json"
 {
@@ -77,7 +77,7 @@ To run the custom server, you'll need to update the `scripts` in `package.json` 
 }
 ```
 
-Alternatively, you can set up `nodemon` ([example](https://github.com/vercel/next.js/tree/canary/examples/custom-server)). The custom server uses the following import to connect the server with the Next.js application:
+或者，你可以设置 `nodemon` ([示例](https://github.com/vercel/next.js/tree/canary/examples/custom-server))。自定义服务器使用以下导入将服务器与 Next.js 应用程序连接：
 
 ```js
 import next from "next";
@@ -85,7 +85,7 @@ import next from "next";
 const app = next({});
 ```
 
-The above `next` import is a function that receives an object with the following options:
+上面的`next`导入是一个函数，它接收一个包含以下选项的对象：
 
 | Option         | Type               | Description                                                                         |
 | -------------- | ------------------ | ----------------------------------------------------------------------------------- |
@@ -98,4 +98,4 @@ The above `next` import is a function that receives an object with the following
 | `port`         | `Number`           | (_Optional_) The port the server is running behind                                  |
 | `httpServer`   | `node:http#Server` | (_Optional_) The HTTP Server that Next.js is running behind                         |
 
-The returned `app` can then be used to let Next.js handle requests as required.
+返回的`app`可用于根据需要让 Next.js 处理请求。

@@ -1,36 +1,36 @@
 ---
-title: Absolute Imports and Module Path Aliases
-description: Configure module path aliases that allow you to remap certain import paths.
+title: 绝对导入和模块路径别名
+description: 配置允许您重新映射某些导入路径的模块路径别名。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
 <details>
-  <summary>Examples</summary>
+  <summary>例子</summary>
 
-- [Absolute Imports and Aliases](https://github.com/vercel/next.js/tree/canary/examples/with-absolute-imports)
+- [绝对导入和别名](https://github.com/vercel/next.js/tree/canary/examples/with-absolute-imports)
 
 </details>
 
-Next.js has in-built support for the `"paths"` and `"baseUrl"` options of `tsconfig.json` and `jsconfig.json` files.
+Next.js 内置支持`tsconfig.json` 和 `jsconfig.json`文件中的`"paths"` 和 `"baseUrl"`选项。
 
-These options allow you to alias project directories to absolute paths, making it easier to import modules. For example:
+这些选项允许您将项目目录别名设置为绝对路径，从而更容易导入模块。例如：
 
 ```tsx
 // before
-import { Button } from '../../../components/button'
+import { Button } from "../../../components/button";
 
 // after
-import { Button } from '@/components/button'
+import { Button } from "@/components/button";
 ```
 
-> **Good to know**: `create-next-app` will prompt to configure these options for you.
+> **您需要知道**: `create-next-app`将会提示您配置这些选项。
 
-## Absolute Imports
+## 绝对导入
 
-The `baseUrl` configuration option allows you to import directly from the root of the project.
+`baseUrl`配置选项允许您直接从项目根目录进行导入。
 
-An example of this configuration:
+这个配置的一个例子:
 
 ```json filename="tsconfig.json or jsconfig.json"
 {
@@ -42,18 +42,18 @@ An example of this configuration:
 
 ```tsx filename="components/button.tsx" switcher
 export default function Button() {
-  return <button>Click me</button>
+  return <button>Click me</button>;
 }
 ```
 
 ```jsx filename="components/button.js" switcher
 export default function Button() {
-  return <button>Click me</button>
+  return <button>Click me</button>;
 }
 ```
 
 ```tsx filename="app/page.tsx" switcher
-import Button from 'components/button'
+import Button from "components/button";
 
 export default function HomePage() {
   return (
@@ -61,12 +61,12 @@ export default function HomePage() {
       <h1>Hello World</h1>
       <Button />
     </>
-  )
+  );
 }
 ```
 
 ```jsx filename="app/page.js" switcher
-import Button from 'components/button'
+import Button from "components/button";
 
 export default function HomePage() {
   return (
@@ -74,15 +74,15 @@ export default function HomePage() {
       <h1>Hello World</h1>
       <Button />
     </>
-  )
+  );
 }
 ```
 
-## Module Aliases
+## 模块别名
 
-In addition to configuring the `baseUrl` path, you can use the `"paths"` option to "alias" module paths.
+除了配置`baseUrl`路径之外，您还可以使用`"paths"`选项来"alias"模块路径。
 
-For example, the following configuration maps `@/components/*` to `components/*`:
+例如，以下配置将`@/components/*`映射到`components/*`:
 
 ```json filename="tsconfig.json or jsconfig.json"
 {
@@ -97,18 +97,18 @@ For example, the following configuration maps `@/components/*` to `components/*`
 
 ```tsx filename="components/button.tsx" switcher
 export default function Button() {
-  return <button>Click me</button>
+  return <button>Click me</button>;
 }
 ```
 
 ```jsx filename="components/button.js" switcher
 export default function Button() {
-  return <button>Click me</button>
+  return <button>Click me</button>;
 }
 ```
 
 ```tsx filename="app/page.tsx" switcher
-import Button from '@/components/button'
+import Button from "@/components/button";
 
 export default function HomePage() {
   return (
@@ -116,12 +116,12 @@ export default function HomePage() {
       <h1>Hello World</h1>
       <Button />
     </>
-  )
+  );
 }
 ```
 
 ```jsx filename="app/page.js" switcher
-import Button from '@/components/button'
+import Button from "@/components/button";
 
 export default function HomePage() {
   return (
@@ -129,11 +129,11 @@ export default function HomePage() {
       <h1>Hello World</h1>
       <Button />
     </>
-  )
+  );
 }
 ```
 
-Each of the `"paths"` are relative to the `baseUrl` location. For example:
+每个`"paths"`都是相对于`baseUrl`位置的。例如：
 
 ```json filename="tsconfig.json or jsconfig.json"
 {
@@ -148,9 +148,9 @@ Each of the `"paths"` are relative to the `baseUrl` location. For example:
 ```
 
 ```tsx filename="app/page.tsx" switcher
-import Button from '@/components/button'
-import '@/styles/styles.css'
-import Helper from 'utils/helper'
+import Button from "@/components/button";
+import "@/styles/styles.css";
+import Helper from "utils/helper";
 
 export default function HomePage() {
   return (
@@ -158,14 +158,14 @@ export default function HomePage() {
       <h1>Hello World</h1>
       <Button />
     </Helper>
-  )
+  );
 }
 ```
 
 ```jsx filename="app/page.js" switcher
-import Button from '@/components/button'
-import '@/styles/styles.css'
-import Helper from 'utils/helper'
+import Button from "@/components/button";
+import "@/styles/styles.css";
+import Helper from "utils/helper";
 
 export default function HomePage() {
   return (
@@ -173,6 +173,6 @@ export default function HomePage() {
       <h1>Hello World</h1>
       <Button />
     </Helper>
-  )
+  );
 }
 ```
