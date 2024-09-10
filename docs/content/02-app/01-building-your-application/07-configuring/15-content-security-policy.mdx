@@ -1,6 +1,6 @@
 ---
 title: 内容安全策略 (CSP)
-description: Learn how to set a Content Security Policy (CSP) for your Next.js application.
+description: 学习如何为 Next.js 应用设置内容安全策略 (CSP)。
 related:
   links:
     - app/building-your-application/routing/middleware
@@ -9,12 +9,12 @@ related:
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-[Content Security Policy (CSP)](https://developer.mozilla.org/docs/Web/HTTP/CSP) is important to guard your Next.js application against various security threats such as cross-site scripting (XSS), clickjacking, and other code injection attacks.
+[内容安全策略(CSP)](https://developer.mozilla.org/docs/Web/HTTP/CSP)对于保护 Next.js 应用免受各种安全威胁至关重要，如跨站脚本攻击 (XSS)、点击劫持和其他代码注入攻击。
 
-By using CSP, developers can specify which origins are permissible for content sources, scripts, stylesheets, images, fonts, objects, media (audio, video), iframes, and more.
+通过使用 CSP，开发者可以指定允许的内容来源，包括脚本、样式表、图片、字体、对象、媒体（音频、视频）、iframe 等的来源。
 
 <details>
-  <summary>Examples</summary>
+  <summary>例子</summary>
 
 - [Strict CSP](https://github.com/vercel/next.js/tree/canary/examples/with-strict-csp)
 
@@ -22,19 +22,19 @@ By using CSP, developers can specify which origins are permissible for content s
 
 ## Nonces
 
-A [nonce](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/nonce) is a unique, random string of characters created for a one-time use. It is used in conjunction with CSP to selectively allow certain inline scripts or styles to execute, bypassing strict CSP directives.
+[Nonce](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/nonce) 是一个为一次性使用创建的唯一随机字符串。它与 CSP 一起使用，以选择性地允许某些内联脚本或样式执行，绕过严格的 CSP 指令。
 
-### Why use a nonce?
+### 为什么使用 nonce?
 
-Even though CSPs are designed to block malicious scripts, there are legitimate scenarios where inline scripts are necessary. In such cases, nonces offer a way to allow these scripts to execute if they have the correct nonce.
+尽管 CSP 旨在阻止恶意脚本，但在某些合法情况下内联脚本是必需的。在这些情况下，nonces 提供了一种允许这些脚本执行的方法，只要它们具有正确的 nonce。
 
-### Adding a nonce with Middleware
+### 添加带有 Middleware 的 nonce
 
-[Middleware](/docs/content/app/building-your-application/routing/middleware) enables you to add headers and generate nonces before the page renders.
+[Middleware](/docs/content/app/building-your-application/routing/middleware) 允许您在页面渲染之前添加头信息并生成 nonce。
 
-Every time a page is viewed, a fresh nonce should be generated. This means that you **must use dynamic rendering to add nonces**.
+每次查看页面时，应该生成一个新的 nonce。这意味着您**必须使用动态渲染来添加 nonce**。
 
-For example:
+例如:
 
 ```ts filename="middleware.ts" switcher
 import { NextRequest, NextResponse } from "next/server";
@@ -123,9 +123,9 @@ export function middleware(request) {
 }
 ```
 
-By default, Middleware runs on all requests. You can filter Middleware to run on specific paths using a [`matcher`](/docs/content/app/building-your-application/routing/middleware#matcher).
+默认情况下，中间件会在所有请求上运行。您可以使用[`matcher`](/docs/content/app/building-your-application/routing/middleware#matcher)来筛选中间件只在特定路径上运行。
 
-We recommend ignoring matching prefetches (from `next/link`) and static assets that don't need the CSP header.
+我们建议忽略`next/link`的预取请求和不需要 CSP 头的静态资源。
 
 ```ts filename="middleware.ts" switcher
 export const config = {
@@ -169,9 +169,9 @@ export const config = {
 };
 ```
 
-### Reading the nonce
+### 读取 nonce
 
-You can now read the nonce from a [Server Component](/docs/content/app/building-your-application/rendering/server-components) using [`headers`](/docs/content/app/api-reference/functions/headers):
+您现在可以使用[`headers`](/docs/content/app/api-reference/functions/headers)从[服务器组件](/docs/content/app/building-your-application/rendering/server-components) 中读取 nonce。
 
 ```tsx filename="app/page.tsx" switcher
 import { headers } from "next/headers";
@@ -207,9 +207,9 @@ export default function Page() {
 }
 ```
 
-## Without Nonces
+## 无 Nonces
 
-For applications that do not require nonces, you can set the CSP header directly in your [`next.config.js`](/docs/content/app/api-reference/next-config-js) file:
+对于不需要 nonce 的应用程序，您可以直接在[`next.config.js`](/docs/content/app/api-reference/next-config-js)文件中设置 CSP 头：
 
 ```js filename="next.config.js"
 const cspHeader = `
@@ -242,6 +242,6 @@ module.exports = {
 };
 ```
 
-## Version History
+## 版本历史
 
-We recommend using `v13.4.20+` of Next.js to properly handle and apply nonces.
+我们建议使用 Next.js 的 `v13.4.20+`来正确处理和应用 nonce。

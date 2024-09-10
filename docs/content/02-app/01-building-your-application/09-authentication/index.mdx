@@ -1,17 +1,17 @@
 ---
-title: Authentication
-description: Learn how to implement authentication in your Next.js application.
+title: 认证
+description: 了解如何在您的 Next.js 应用中实现认证。
 ---
 
-Understanding authentication is crucial for protecting your application's data. This page will guide you through what React and Next.js features to use to implement auth.
+理解认证对于保护应用的数据至关重要。本页面将指导您如何使用 React 和 Next.js 的功能来实现认证。
 
-Before starting, it helps to break down the process into three concepts:
+在开始之前，最好将过程分为三个概念：
 
-1. **[Authentication](#authentication)**: Verifies if the user is who they say they are. It requires the user to prove their identity with something they have, such as a username and password.
-2. **[Session Management](#session-management)**: Tracks the user's auth state across requests.
-3. **[Authorization](#authorization)**: Decides what routes and data the user can access.
+1. **[认证](#authentication)**: 验证用户是否是他们所声称的人。通常需要用户提供身份验证信息，如用户名和密码。
+2. **[Session 管理](#session-management)**: 跨请求跟踪用户的授权状态。
+3. **[授权](#authorization)**: 决定用户可以访问哪些路由和数据。
 
-This diagram shows the authentication flow using React and Next.js features:
+下图展示了使用 React 和 Next.js 功能的认证流程：
 
 <img
   alt="Diagram showing the authentication flow with React and Next.js features"
@@ -20,21 +20,21 @@ This diagram shows the authentication flow using React and Next.js features:
   height="auto"
 />
 
-The examples on this page walk through basic username and password auth for educational purposes. While you can implement a custom auth solution, for increased security and simplicity, we recommend using an authentication library. These offer built-in solutions for authentication, session management, and authorization, as well as additional features such as social logins, multi-factor authentication, and role-based access control. You can find a list in the [Auth Libraries](#auth-libraries) section.
+本页面上的示例演示了用于教学目的的基本用户名和密码认证。虽然您可以实现自定义的认证解决方案，但为了提高安全性和简化流程，我们建议使用认证库。这些库提供内置的认证、会话管理和授权解决方案，以及诸如社交登录、多因素认证和基于角色的访问控制等附加功能。在[Auth Libraries](#auth-libraries)部分可以找到相关列表。
 
-## Authentication
+## 认证
 
-### Sign-up and login functionality
+### 注册和登录功能
 
-You can use the [`<form>`](https://react.dev/reference/react-dom/components/form) element with React's [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations) and [`useActionState()`](https://react.dev/reference/react/useActionState) to capture user credentials, validate form fields, and call your Authentication Provider's API or database.
+您可以使用[`<form>`](https://react.dev/reference/react-dom/components/form)元素与 React 的[Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations)和[`useActionState()`](https://react.dev/reference/react/useActionState)来捕获用户凭据、验证表单字段，并调用您的认证提供商的 API 或数据库。
 
-Since Server Actions always execute on the server, they provide a secure environment for handling authentication logic.
+由于 Server Actions 始终在服务器上执行，它们提供了一个安全的环境来处理认证逻辑。
 
-Here are the steps to implement signup/login functionality:
+以下是实现注册/登录功能的步骤：
 
-#### 1. Capture user credentials
+#### 1. 捕获用户凭据
 
-To capture user credentials, create a form that invokes a Server Action on submission. For example, a signup form that accepts the user's name, email, and password:
+要捕获用户凭据，请创建一个表单，使其在提交时调用 Server Action。例如，一个接受用户名、电子邮件和密码的注册表单：
 
 ```tsx filename="app/ui/signup-form.tsx" switcher
 import { signup } from "@/app/actions/auth";
@@ -92,11 +92,11 @@ export async function signup(formData: FormData) {}
 export async function signup(formData) {}
 ```
 
-#### 2. Validate form fields on the server
+#### 2. 在服务器上验证表单字段
 
-Use the Server Action to validate the form fields on the server. If your authentication provider doesn't provide form validation, you can use a schema validation library like [Zod](https://zod.dev/) or [Yup](https://github.com/jquense/yup).
+使用 Server Action 在服务器上验证表单字段。如果您的认证提供商不提供表单验证，您可以使用像[Zod](https://zod.dev/)或[Yup](https://github.com/jquense/yup)这样的架构验证库。
 
-Using Zod as an example, you can define a form schema with appropriate error messages:
+使用 Zod 作为示例，您可以定义一个具有适当错误消息的表单方案：
 
 ```ts filename="app/lib/definitions.ts" switcher
 import { z } from "zod";
@@ -151,7 +151,7 @@ export const SignupFormSchema = z.object({
 });
 ```
 
-To prevent unnecessary calls to your authentication provider's API or database, you can `return` early in the Server Action if any form fields do not match the defined schema.
+为防止不必要地调用您的认证提供商的 API 或数据库，如果表单字段与定义的架构不匹配，您可以在`Server Action`中提前`return`。
 
 ```ts filename="app/actions/auth.ts" switcher
 import { SignupFormSchema, FormState } from "@/app/lib/definitions";
@@ -197,7 +197,7 @@ export async function signup(state, formData) {
 }
 ```
 
-Back in your `<SignupForm />`, you can use React's `useActionState()` hook to display validation errors and a pending state while the form is submitting:
+回到您的`<SignupForm />`，您可以使用 React 的`useActionState()` hook 来显示验证错误和表单提交中的挂起状态：
 
 ```tsx filename="app/ui/signup-form.tsx" switcher highlight={7,15,21,27-39}
 "use client";
@@ -289,13 +289,13 @@ export function SignupForm() {
 }
 ```
 
-> **Good to know:** Alternatively, you can use the [`useFormStatus`](https://react.dev/reference/react-dom/hooks/useFormStatus) hook to display the pending state.
+> **您需要知道:** 或者，您可以使用[`useFormStatus`](https://react.dev/reference/react-dom/hooks/useFormStatus) hook 来显示挂起状态。
 
-#### 3. Create a user or check user credentials
+#### 3. 创建用户或检查用户凭据
 
-After validating form fields, you can create a new user account or check if the user exists by calling your authentication provider's API or database.
+在验证表单字段后，您可以通过调用您的认证提供商的 API 或数据库来创建一个新用户账户或检查用户是否存在。
 
-Continuing from the previous example:
+从上一个示例继续：
 
 ```tsx filename="app/actions/auth.tsx" switcher
 export async function signup(state: FormState, formData: FormData) {
@@ -365,59 +365,59 @@ export async function signup(state, formData) {
 }
 ```
 
-After successfully creating the user account or verifying the user credentials, you can create a session to manage the user's auth state. Depending on your session management strategy, the session can be stored in a cookie or database, or both. Continue to the [Session Management](#session-management) section to learn more.
+成功创建用户账户或验证用户凭据后，您可以创建一个会话来管理用户的认证状态。根据您的会话管理策略，会话可以存储在 cookie 或数据库中，或者同时存储在两者中。继续阅读[会话管理](#session-management)章节了解更多。
 
-> **Tips:**
+> **提示:**
 >
-> - The example above is verbose since it breaks down the authentication steps for the purpose of education. This highlights that implementing your own secure solution can quickly become complex. Consider using an [Auth Library](#auth-libraries) to simplify the process.
-> - To improve the user experience, you may want to check for duplicate emails or usernames earlier in the registration flow. For example, as the user types in a username or the input field loses focus. This can help prevent unnecessary form submissions and provide immediate feedback to the user. You can debounce requests with libraries such as [use-debounce](https://www.npmjs.com/package/use-debounce) to manage the frequency of these checks.
+> - 上述示例比较冗长，因为它详细解释了认证步骤以用于教学。这强调了实现自己安全的解决方案很快就会变得复杂。考虑使用[认证库](#auth-libraries)来简化流程。
+> - 为了改善用户体验，您可能希望在注册流程中更早地检查重复的电子邮件或用户名。例如，在用户输入用户名或输入框失去焦点时进行检查。这有助于防止不必要的表单提交并为用户提供即时反馈。您可以使用像[use-debounce](https://www.npmjs.com/package/use-debounce)这样的库来管理这些检查的频率。
 
-## Session Management
+## Session 管理
 
-Session management ensures that the user's authenticated state is preserved across requests. It involves creating, storing, refreshing, and deleting sessions or tokens.
+会话管理确保用户的认证状态在多个请求之间保持。它涉及创建、存储、刷新和删除会话或令牌。
 
-There are two types of sessions:
+会话有两种类型：
 
-1. [**Stateless**](#stateless-sessions): Session data (or a token) is stored in the browser's cookies. The cookie is sent with each request, allowing the session to be verified on the server. This method is simpler, but can be less secure if not implemented correctly.
-2. [**Database**](#database-sessions): Session data is stored in a database, with the user's browser only receiving the encrypted session ID. This method is more secure, but can be complex and use more server resources.
+1. [**无状态会话**](#stateless-sessions): 会话数据（或令牌）存储在浏览器的 cookie 中。cookie 随每个请求发送，允许服务器验证会话。这种方法更简单，但如果没有正确实现，可能不太安全。
+2. [**数据库会话**](#database-sessions): 会话数据存储在数据库中，用户的浏览器只接收加密的会话 ID。这种方法更安全，但实现起来更复杂，并且会消耗更多的服务器资源。
 
-> **Good to know:** While you can use either method, or both, we recommend using session management library such as [iron-session](https://github.com/vvo/iron-session) or [Jose](https://github.com/panva/jose).
+> **您需要知道:** 虽然您可以使用任意一种方法，甚至同时使用两种方法，但我们建议使用像[iron-session](https://github.com/vvo/iron-session) 或 [Jose](https://github.com/panva/jose)这样的会话管理库。
 
 ### Stateless Sessions
 
-To create and manage stateless sessions, there are a few steps you need to follow:
+要创建和管理无状态会话，您需要遵循以下步骤：
 
-1. Generate a secret key, which will be used to sign your session, and store it as an [environment variable](/docs/content/app/building-your-application/configuring/environment-variables).
-2. Write logic to encrypt/decrypt session data using a session management library.
-3. Manage cookies using the Next.js [`cookies()`](/docs/content/app/api-reference/functions/cookies) API.
+1. 生成一个密钥，该密钥将用于签署您的会话，并将其作为[环境变量存储](/docs/content/app/building-your-application/configuring/environment-variables)。
+2. 使用会话管理库编写加密/解密会话数据的逻辑。
+3. 使用 Next.js 的 [`cookies()`](/docs/content/app/api-reference/functions/cookies)API 管理 cookies。
 
-In addition to the above, consider adding functionality to [update (or refresh)](#updating-or-refreshing-sessions) the session when the user returns to the application, and [delete](#deleting-the-session) the session when the user logs out.
+除了以上内容外，建议添加功能来在用户返回应用程序时[更新（或刷新）](#updating-or-refreshing-sessions)会话，并在用户注销时[删除](#deleting-the-session)会话。
 
-> **Good to know:** Check if your [auth library](#auth-libraries) includes session management.
+> **您需要知道:** 检查您的[认证库](#auth-libraries)是否包含会话管理功能。
 
-#### 1. Generating a secret key
+#### 1. 生成密钥
 
-There are a few ways you can generate secret key to sign your session. For example, you may choose to use the `openssl` command in your terminal:
+有几种方法可以生成用于签署会话的密钥。例如，您可以在终端中使用`openssl`命令：
 
 ```bash filename="terminal"
 openssl rand -base64 32
 ```
 
-This command generates a 32-character random string that you can use as your secret key and store in your [environment variables file](/docs/content/app/building-your-application/configuring/environment-variables):
+此命令会生成一个 32 个字符的随机字符串，您可以将其用作密钥，并将其存储在您的[环境变量文件中](/docs/content/app/building-your-application/configuring/environment-variables)：
 
 ```bash filename=".env"
 SESSION_SECRET=your_secret_key
 ```
 
-You can then reference this key in your session management logic:
+然后您可以在会话管理逻辑中引用该密钥：
 
 ```js filename="app/lib/session.js"
 const secretKey = process.env.SESSION_SECRET;
 ```
 
-#### 2. Encrypting and decrypting sessions
+#### 2. 加密和解密会话
 
-Next, you can use your preferred [session management library](#session-management-libraries) to encrypt and decrypt sessions. Continuing from the previous example, we'll use [Jose](https://www.npmjs.com/package/jose) (compatible with the [Edge Runtime](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes)) and React's [`server-only`](https://www.npmjs.com/package/server-only) package to ensure that your session management logic is only executed on the server.
+接下来，您可以使用您喜欢的[会话管理库](#session-management-libraries)来加密和解密会话。继续上面的例子，我们将使用[Jose](https://www.npmjs.com/package/jose)（与[Edge 运行时](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes)兼容）和 React 的[`server-only`](https://www.npmjs.com/package/server-only)，以确保会话管理逻辑仅在服务器上执行。
 
 ```tsx filename="app/lib/session.ts" switcher
 import "server-only";
@@ -474,21 +474,21 @@ export async function decrypt(session) {
 }
 ```
 
-> **Tips**:
+> **提示**:
 >
-> - The payload should contain the **minimum**, unique user data that'll be used in subsequent requests, such as the user's ID, role, etc. It should not contain personally identifiable information like phone number, email address, credit card information, etc, or sensitive data like passwords.
+> 有效载荷应仅包含在后续请求中使用的**最少**、唯一的用户数据，如用户 ID、角色等。不应包含诸如电话号码、电子邮件地址、信用卡信息等个人身份信息，也不应包含密码等敏感数据。
 
-#### 3. Setting cookies (recommended options)
+#### 3. 设置 cookies (推荐选择)
 
-To store the session in a cookie, use the Next.js [`cookies()`](/docs/content/app/api-reference/functions/cookies) API. The cookie should be set on the server, and include the recommended options:
+要在 cookie 中存储会话，请使用 Next.js 的[`cookies()`](/docs/content/app/api-reference/functions/cookies)API。cookie 应该在服务器上设置，并包含以下推荐选项：
 
-- **HttpOnly**: Prevents client-side JavaScript from accessing the cookie.
-- **Secure**: Use https to send the cookie.
-- **SameSite**: Specify whether the cookie can be sent with cross-site requests.
-- **Max-Age or Expires**: Delete the cookie after a certain period.
-- **Path**: Define the URL path for the cookie.
+- **HttpOnly**: 防止客户端 JavaScript 访问 cookie。
+- **Secure**: 使用 https 发送 cookie。
+- **SameSite**: 指定是否允许 cookie 随跨站点请求发送。
+- **Max-Age or Expires**: 在指定时间后删除 cookie。
+- **Path**: 定义 cookie 的 URL 路径。
 
-Please refer to [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) for more information on each of these options.
+请参考[MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)获取有关这些选项的更多信息。
 
 ```ts filename="app/lib/session.ts" switcher
 import "server-only";
@@ -526,7 +526,7 @@ export async function createSession(userId) {
 }
 ```
 
-Back in your Server Action, you can invoke the `createSession()` function, and use the [`redirect()`](/docs/content/app/building-your-application/routing/redirecting) API to redirect the user to the appropriate page:
+在您的服务器操作中，您可以调用`createSession()`函数，并使用[`redirect()`](/docs/content/app/building-your-application/routing/redirecting)将用户重定向到合适的页面：
 
 ```ts filename="app/actions/auth.ts" switcher
 import { createSession } from "@/app/lib/session";
@@ -562,14 +562,14 @@ export async function signup(state, formData) {
 }
 ```
 
-> **Tips**:
+> **提示**:
 >
-> - **Cookies should be set on the server** to prevent client-side tampering.
-> - 🎥 Watch: Learn more about stateless sessions and authentication with Next.js → [YouTube (11 minutes)](https://www.youtube.com/watch?v=DJvM2lSPn6w).
+> - **Cookie 应在服务器上设置** 以防止客户端篡改。
+> - 🎥 观看: 了解有关 Next.js 无状态会话和身份验证的更多信息 → [YouTube (11 分钟)](https://www.youtube.com/watch?v=DJvM2lSPn6w).
 
-#### Updating (or refreshing) sessions
+#### 更新 (或刷新) sessions
 
-You can also extend the session's expiration time. This is useful for keeping the user logged in after they access the application again. For example:
+您还可以扩展会话的过期时间。这对于用户重新访问应用程序后保持登录状态非常有用。例如：
 
 ```ts filename="app/lib/session.ts" switcher
 import "server-only";
@@ -619,11 +619,11 @@ export async function updateSession() {
 }
 ```
 
-> **Tip:** Check if your auth library supports refresh tokens, which can be used to extend the user's session.
+> **提示:** 检查您的身份验证库是否支持刷新令牌，这可以用于扩展用户会话。
 
-#### Deleting the session
+#### 删除 session
 
-To delete the session, you can delete the cookie:
+要删除会话，可以删除 cookie：
 
 ```ts filename="app/lib/session.ts" switcher
 import "server-only";
@@ -643,7 +643,7 @@ export function deleteSession() {
 }
 ```
 
-Then you can reuse the `deleteSession()` function in your application, for example, on logout:
+然后您可以在应用程序中重用`deleteSession()`函数，例如在用户注销时：
 
 ```ts filename="app/actions/auth.ts" switcher
 import { cookies } from "next/headers";
@@ -667,11 +667,11 @@ export async function logout() {
 
 ### Database Sessions
 
-To create and manage database sessions, you'll need to follow these steps:
+要创建和管理数据库会话，您需要遵循以下步骤：
 
-1. Create a table in your database to store session and data (or check if your Auth Library handles this).
-2. Implement functionality to insert, update, and delete sessions
-3. Encrypt the session ID before storing it in the user's browser, and ensure the database and cookie stay in sync (this is optional, but recommended for optimistic auth checks in [Middleware](#optimistic-checks-with-middleware-optional)).
+1. 在数据库中创建一个表来存储会话和数据（或检查您的认证库是否处理此功能）。
+2. 实现插入、更新和删除会话的功能。
+3. 在存储到用户浏览器之前加密会话 ID，并确保数据库和 cookie 保持同步（此步骤是可选的，但推荐用于 [Middleware](#optimistic-checks-with-middleware-optional)中的乐观验证）。
 
 For example:
 
@@ -743,38 +743,38 @@ export async function createSession(id) {
 }
 ```
 
-> **Tips**:
+> **提示**:
 >
-> - For faster data retrieval, consider using a database like [Vercel Redis](https://vercel.com/docs/storage/vercel-kv). However, you can also keep the session data in your primary database, and combine data requests to reduce the number of queries.
-> - You may opt to use database sessions for more advanced use cases, such as keeping track of the last time a user logged in, or number of active devices, or give users the ability to log out of all devices.
+> - 为了更快地检索数据，您可以考虑使用类似[Vercel Redis](https://vercel.com/docs/storage/vercel-kv)的数据库。然而，您也可以将会话数据保留在主数据库中，并结合数据请求来减少查询次数。
+> - 您可以选择使用数据库会话来处理更高级的用例，例如跟踪用户上次登录时间或活跃设备数量，或让用户有能力注销所有设备。
 
-After implementing session management, you'll need to add authorization logic to control what users can access and do within your application. Continue to the [Authorization](#authorization) section to learn more.
+实现会话管理后，您需要添加授权逻辑来控制用户可以在应用程序中访问的内容和执行的操作。继续阅读[授权](#authorization)部分以了解更多信息。
 
 ## Authorization
 
-Once a user is authenticated and a session is created, you can implement authorization to control what the user can access and do within your application.
+一旦用户经过身份验证并创建了会话，您可以实施授权来控制用户在应用程序中可以访问和执行的操作。
 
-There are two main types of authorization checks:
+主要有两种授权检查类型：
 
-1. **Optimistic**: Checks if the user is authorized to access a route or perform an action using the session data stored in the cookie. These checks are useful for quick operations, such as showing/hiding UI elements or redirecting users based on permissions or roles.
-2. **Secure**: Checks if the user is authorized to access a route or perform an action using the session data stored in the database. These checks are more secure and are used for operations that require access to sensitive data or actions.
+1. **Optimistic**: 使用存储在 cookie 中的会话数据检查用户是否有权访问某个路由或执行某个操作。这些检查适用于快速操作，例如根据权限或角色显示/隐藏 UI 元素或重定向用户。
+2. **Secure**: 使用存储在数据库中的会话数据检查用户是否有权访问某个路由或执行某个操作。这些检查更加安全，适用于需要访问敏感数据或操作的场景。
 
-For both cases, we recommend:
+对于这两种情况，我们建议：
 
-- Creating a [Data Access Layer](#creating-a-data-access-layer-dal) to centralize your authorization logic
-- Using [Data Transfer Objects (DTO)](#using-data-transfer-objects-dto) to only return the necessary data
-- Optionally use [Middleware](#optimistic-checks-with-middleware-optional) to perform optimistic checks.
+- 创建一个 [数据访问层](#creating-a-data-access-layer-dal) 来集中您的授权逻辑。
+- 使用[数据传输对象 (DTO)](#using-data-transfer-objects-dto)以仅返回必要的数据。
+- 可选地[Middleware](#optimistic-checks-with-middleware-optional)来执行乐观检查。
 
-### Optimistic checks with Middleware (Optional)
+### 中间件中的乐观检查（可选）
 
-There are some cases where you may want to use [Middleware](/docs/content/app/building-your-application/routing/middleware) and redirect users based on permissions:
+在某些情况下，您可能希望使用[Middleware](/docs/content/app/building-your-application/routing/middleware) 并根据权限重定向用户：
 
-- To perform optimistic checks. Since Middleware runs on every route, it's a good way to centralize redirect logic and pre-filter unauthorized users.
-- To protect static routes that share data between users (e.g. content behind a paywall).
+- 执行 optimistic checks。由于中间件运行在每个路由上， 所以集中重定向逻辑和预过滤未经授权的用户非常适合。
+- 保护在用户之间共享数据的静态路由（例如在付费墙后面的内容）
 
-However, since Middleware runs on every route, including [prefetched](/docs/content/app/building-your-application/routing/linking-and-navigating#2-prefetching) routes, it's important to only read the session from the cookie (optimistic checks), and avoid database checks to prevent performance issues.
+然而，由于中间件运行在每个路由上，包括[预加载](/docs/content/app/building-your-application/routing/linking-and-navigating#2-prefetching)的路由，因此仅应从 cookie 中读取会话（乐观检查），并避免数据库检查以防止性能问题是非常重要的。
 
-For example:
+例如:
 
 ```tsx filename="middleware.ts" switcher
 import { NextRequest, NextResponse } from "next/server";
@@ -860,21 +860,21 @@ export const config = {
 };
 ```
 
-While Middleware can be useful for initial checks, it should not be your only line of defense in protecting your data. The majority of security checks should be performed as close as possible to your data source, see [Data Access Layer](#creating-a-data-access-layer-dal) for more information.
+尽管中间件可以用于初始检查，但它不应是保护数据的唯一防线。大多数安全检查应尽可能接近数据源进行，更多信息请参见[数据访问层](#creating-a-data-access-layer-dal)。
 
-> **Tips**:
+> **提示**:
 >
-> - In Middleware, you can also read cookies using `req.cookies.get('session).value`.
-> - Middleware uses the [Edge Runtime](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes), check if your Auth library and session management library are compatible.
-> - You can use the `matcher` property in the Middleware to specify which routes Middleware should run on. Although, for auth, it's recommended Middleware runs on all routes.
+> - 在中间件中，您还可以使用`req.cookies.get('session).value`读取 cookie。
+> - 中间件使用[Edge Runtime](/docs/content/app/building-your-application/rendering/edge-and-nodejs-runtimes), 以检查您的身份验证库和会话管理库是否兼容。
+> - 您可以使用中间件的`matcher`属性指定中间件应在哪些路由上运行。但是，对于身份验证，建议在所有路由上运行中间件。
 
 ### Creating a Data Access Layer (DAL)
 
-We recommend creating a DAL to centralize your data requests and authorization logic.
+我们建议创建一个 DAL 来集中您的数据请求和授权逻辑。
 
-The DAL should include a function that verifies the user's session as they interact with your application. At the very least, the function should check if the session is valid, then redirect or return the user information needed to make further requests.
+DAL 应包括一个函数，用于在用户与应用程序交互时验证其会话。至少，函数应检查会话是否有效，然后重定向或返回进行进一步请求所需的用户信息。
 
-For example, create a separate file for your DAL that includes a `verifySession()` function. Then use React's [cache](https://react.dev/reference/react/cache) API to memoize the return value of the function during a React render pass:
+例如，创建一个单独的文件来包含`verifySession()`函数。然后使用 React 的 [cache](https://react.dev/reference/react/cache) API 来在 React 渲染过程中缓存函数的返回值：
 
 ```tsx filename="app/lib/dal.ts" switcher
 import "server-only";
@@ -912,7 +912,7 @@ export const verifySession = cache(async () => {
 });
 ```
 
-You can then invoke the `verifySession()` function in your data requests, Server Actions, Route Handlers:
+然后，您可以在数据请求、服务器操作和路由处理程序中调用`verifySession()`函数：
 
 ```tsx filename="app/lib/dal.ts" switcher
 export const getUser = cache(async () => {
@@ -966,17 +966,17 @@ export const getUser = cache(async () => {
 });
 ```
 
-> **Tip**:
+> **提示**:
 >
-> - A DAL can be used to protect data fetched at request time. However, for static routes that share data between users, data will be fetched at build time and not at request time. Use [Middleware](#optimistic-checks-with-middleware-optional) to protect static routes.
-> - For secure checks, you can check if the session is valid by comparing the session ID with your database. Use React's [cache](https://react.dev/reference/react/cache) function to avoid unnecessary duplicate requests to the database during a render pass.
-> - You may wish to consolidate related data requests in a JavaScript class that runs `verifySession()` before any methods.
+> - 数据访问层 (DAL) 可以用来保护在请求时获取的数据。然而，对于用户之间共享数据的静态路由，数据会在构建时获取而不是在请求时获取。使用 [Middleware](#optimistic-checks-with-middleware-optional)来保护静态路由。
+> - 对于安全检查，您可以通过与数据库中的会话 ID 进行比较来验证会话是否有效。使用 React 的[cache](https://react.dev/reference/react/cache)函数避免在渲染期间向数据库发出不必要的重复请求。
+> - 您可以将相关的数据请求整合到 JavaScript 类中，并在任何方法之前运行`verifySession()`函数。
 
-### Using Data Transfer Objects (DTO)
+### 使用数据传输对象(DTO)
 
-When retrieving data, it's recommended you return only the necessary data that will be used in your application, and not entire objects. For example, if you're fetching user data, you might only return the user's ID and name, rather than the entire user object which could contain passwords, phone numbers, etc.
+在检索数据时，建议您只返回将在应用程序中使用的必要数据，而不是整个对象。例如，如果您正在获取用户数据，您可能只返回用户的 ID 和姓名，而不是包含密码、电话号码等的整个用户对象。
 
-However, if you have no control over the returned data structure, or are working in a team where you want to avoid whole objects being passed to the client, you can use strategies such as specifying what fields are safe to be exposed to the client.
+但是，如果您无法控制返回的数据结构，或者您在一个团队中工作并希望避免将整个对象传递给客户端，您可以使用策略来指定哪些字段可以安全地暴露给客户端。
 
 ```tsx filename="app/lib/dto.ts" switcher
 import "server-only";
@@ -1040,16 +1040,16 @@ export async function getProfileDTO(slug) {
 }
 ```
 
-By centralizing your data requests and authorization logic in a DAL and using DTOs, you can ensure that all data requests are secure and consistent, making it easier to maintain, audit, and debug as your application scales.
+通过在 DAL 中集中化您的数据请求和授权逻辑，并使用 DTO，您可以确保所有数据请求都是安全且一致的，从而使您的应用程序在扩展时更易于维护、审核和调试。
 
-> **Good to know**:
+> **您需要知道**:
 >
-> - There are a couple of different ways you can define a DTO, from using `toJSON()`, to individual functions like the example above, or JS classes. Since these are JavaScript patterns and not a React or Next.js feature, we recommend doing some research to find the best pattern for your application.
-> - Learn more about security best practices in our [Security in Next.js article](/blog/security-nextjs-server-components-actions).
+> - 有几种不同的方式可以定义 DTO，例如使用`toJSON()`，或者像上面的例子那样使用单独的函数，或 JavaScript 类。由于这些是 JavaScript 模式，而不是 React 或 Next.js 的功能，我们建议进行一些研究，以找到适合您应用程序的最佳模式。
+> - 了解更多安全性最佳实践，请参阅我们的[Next.js 安全性文章](/blog/security-nextjs-server-components-actions).
 
 ### Server Components
 
-Auth check in [Server Components](/docs/content/app/building-your-application/rendering/server-components) are useful for role-based access. For example, to conditionally render components based on the user's role:
+在[服务器组件](/docs/content/app/building-your-application/rendering/server-components) 中进行身份验证检查对于基于角色的访问非常有用。例如，可以根据用户的角色有条件地渲染组件：
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import { verifySession } from "@/app/lib/dal";
@@ -1085,17 +1085,17 @@ export default function Dashboard() {
 }
 ```
 
-In the example, we use the `verifySession()` function from our DAL to check for 'admin', 'user', and unauthorized roles. This pattern ensures that each user interacts only with components appropriate to their role.
+在此示例中，我们使用 DAL 中的 `verifySession()`函数来检查 'admin'、'user' 和未经授权的角色。此模式确保每个用户只与与其角色相对应的组件进行交互。
 
-### Layouts and auth checks
+### 布局与身份验证检查
 
-Due to [Partial Rendering](/docs/content/app/building-your-application/routing/linking-and-navigating#4-partial-rendering), be cautious when doing checks in [Layouts](/docs/content/app/building-your-application/routing/layouts-and-templates) as these don't re-render on navigation, meaning the user session won't be checked on every route change.
+由于[部分渲染](/docs/content/app/building-your-application/routing/linking-and-navigating#4-partial-rendering), 在布局中进行检查时要谨慎，因为这些布局在导航时不会重新渲染，这意味着用户会话不会在每次路由更改时进行检查。
 
-Instead, you should do the checks close to your data source or the component that'll be conditionally rendered.
+相反，您应该在接近数据源或将被有条件渲染的组件处进行检查。
 
-For example, consider a shared layout that fetches the user data and displays the user image in a nav. Instead of doing the auth check in the layout, you should fetch the user data (`getUser()`) in the layout and do the auth check in your DAL.
+例如，考虑一个共享的布局，它获取用户数据并在导航中显示用户图像。您不应该在布局中进行身份验证检查，而应在布局中获取用户数据 (`getUser()`)，并在您的 DAL 中进行身份验证检查。
 
-This guarantees that wherever `getUser()` is called within your application, the auth check is performed, and prevents developers forgetting to check the user is authorized to access the data.
+这可以保证在应用程序中的任何地方调用 getUser() 时，都会进行身份验证检查，并防止开发人员忘记检查用户是否有权访问数据。
 
 ```tsx filename="app/layout.tsx" switcher
 export default async function Layout({
@@ -1139,15 +1139,15 @@ export const getUser = cache(async () => {
 });
 ```
 
-> **Good to know:**
+> **您需要知道:**
 >
-> - A common pattern in SPAs is to `return null` in a layout or a top-level component if a user is not authorized. This pattern is not **not recommended** since Next.js applications have multiple entry points, which will not prevent nested route segments and Server Actions from being accessed.
+> - 单页应用程序 (SPA) 的常见模式是，如果用户未授权，则在布局或顶级组件中返回 null。由于 Next.js 应用程序具有多个入口点，此模式 不推荐，因为它无法防止嵌套路由段和服务器操作被访问。
 
 ### Server Actions
 
-Treat [Server Actions](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations) with the same security considerations as public-facing API endpoints, and verify if the user is allowed to perform a mutation.
+将[服务器操作](/docs/content/app/building-your-application/data-fetching/server-actions-and-mutations) 视为具有与公开的 API 端点相同的安全考虑，并验证用户是否有权限执行变更操作。
 
-In the example below, we check the user's role before allowing the action to proceed:
+在下面的示例中，我们在允许操作继续进行之前检查了用户的角色：
 
 ```ts filename="app/lib/actions.ts" switcher
 "use server";
@@ -1185,9 +1185,9 @@ export async function serverAction() {
 
 ### Route Handlers
 
-Treat [Route Handlers](/docs/content/app/building-your-application/routing/route-handlers) with the same security considerations as public-facing API endpoints, and verify if the user is allowed to access the Route Handler.
+将[路由处理程序](/docs/content/app/building-your-application/routing/route-handlers)视为具有与公开的 API 端点相同的安全考虑，并验证用户是否有权限访问路由处理程序。
 
-For example:
+例如
 
 ```ts filename="app/api/route.ts" switcher
 import { verifySession } from "@/app/lib/dal";
@@ -1235,13 +1235,13 @@ export async function GET() {
 }
 ```
 
-The example above demonstrates a Route Handler with a two-tier security check. It first checks for an active session, and then verifies if the logged-in user is an 'admin'.
+上面的示例展示了一个带有两层安全检查的路由处理程序。首先检查是否有活动的会话，然后验证已登录的用户是否为 'admin'。
 
 ## Context Providers
 
-Using context providers for auth work due to [interleaving](/docs/content/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components). However, React `context` is not supported in Server Components, making them only applicable to Client Components.
+使用 context providers 进行身份验证工作是由于[interleaving](/docs/content/app/building-your-application/rendering/composition-patterns#interleaving-server-and-client-components)的原因。然而，React `context`在服务器组件中不支持，它们仅适用于客户端组件。
 
-This works, but any child Server Components will be rendered on the server first, and will not have access to the context provider’s session data:
+这可以工作，但任何子服务器组件都将首先在服务器上渲染，且无法访问 context provider 的会话数据：
 
 ```tsx filename="app/layout.ts" switcher
 import { ContextProvider } from "auth-lib";
@@ -1287,13 +1287,13 @@ export default function Profile() {
 }
 ```
 
-If session data is needed in Client Components (e.g. for client-side data fetching),use React’s [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue) API to prevent sensitive session data from being exposed to the client.
+如果客户端组件需要会话数据（例如，用于客户端的数据获取），请使用 React 的 [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue)API，防止敏感的会话数据暴露给客户端。
 
 ## Resources
 
-Now that you've learned about authentication in Next.js, here are Next.js-compatible libraries and resources to help you implement secure authentication and session management:
+现在您已经了解了 Next.js 中的身份验证，以下是一些兼容 Next.js 的库和资源，帮助您实现安全的身份验证和会话管理：
 
-### Auth Libraries
+### 身份验证库
 
 - [Auth0](https://auth0.com/docs/quickstart/webapp/nextjs/01-login)
 - [Clerk](https://clerk.com/docs/quickstarts/nextjs)
@@ -1305,16 +1305,16 @@ Now that you've learned about authentication in Next.js, here are Next.js-compat
 - [Stytch](https://stytch.com/docs/guides/quickstarts/nextjs)
 - [WorkOS](https://workos.com/docs/user-management)
 
-### Session Management Libraries
+### Session 管理库
 
 - [Iron Session](https://github.com/vvo/iron-session)
 - [Jose](https://github.com/panva/jose)
 
-## Further Reading
+## 延伸阅读
 
-To continue learning about authentication and security, check out the following resources:
+继续学习身份验证和安全性，您可以参考以下资源：
 
-- [How to think about security in Next.js](/blog/security-nextjs-server-components-actions)
-- [Understanding XSS Attacks](https://vercel.com/guides/understanding-xss-attacks)
-- [Understanding CSRF Attacks](https://vercel.com/guides/understanding-csrf-attacks)
-- [The Copenhagen Book](https://thecopenhagenbook.com/)
+- [如何看待 Next.js 中的安全性](/blog/security-nextjs-server-components-actions)
+- [了解 XSS 攻击](https://vercel.com/guides/understanding-xss-attacks)
+- [了解 CSRF 攻击](https://vercel.com/guides/understanding-csrf-attacks)
+- [Copenhagen Book](https://thecopenhagenbook.com/)

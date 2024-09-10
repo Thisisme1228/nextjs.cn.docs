@@ -1,22 +1,22 @@
 ---
-title: Setting up Playwright with Next.js
+title: 在Next.js中设置Playwright
 nav_title: Playwright
-description: Learn how to set up Playwright with Next.js for End-to-End (E2E) testing.
+description: 了解如何在Next.js中设置Playwright 以进行端到端(E2E)测试。
 ---
 
-Playwright is a testing framework that lets you automate Chromium, Firefox, and WebKit with a single API. You can use it to write **End-to-End (E2E)** testing. This guide will show you how to set up Playwright with Next.js and write your first tests.
+Playwright 是一个测试框架，允许您使用单一 API 自动化 Chromium、Firefox 和 WebKit。您可以使用它编写**端到端 (E2E)** 测试。本指南将向您展示如何在 Next.js 中设置 Playwright 并编写您的第一个测试。
 
-## Quickstart
+## 快速开始
 
-The fastest way to get started is to use `create-next-app` with the [with-playwright example](https://github.com/vercel/next.js/tree/canary/examples/with-playwright). This will create a Next.js project complete with Playwright configured.
+最快的入门方式是使用`create-next-app`和[with-playwright 示例](https://github.com/vercel/next.js/tree/canary/examples/with-playwright)。这将创建一个已配置 Playwright 的 Next.js 项目。
 
 ```bash filename="Terminal"
 npx create-next-app@latest --example with-playwright with-playwright-app
 ```
 
-## Manual setup
+## 手动开始
 
-To install Playwright, run the following command:
+要安装 Playwright，请运行以下命令：
 
 ```bash filename="Terminal"
 npm init playwright
@@ -26,11 +26,11 @@ yarn create playwright
 pnpm create playwright
 ```
 
-This will take you through a series of prompts to setup and configure Playwright for your project, including adding a `playwright.config.ts` file. Please refer to the [Playwright installation guide](https://playwright.dev/docs/intro#installation) for the step-by-step guide.
+通过一系列提示来设置和配置您的项目的 Playwright，包括添加`playwright.config.ts`文件。有关详细步骤，请参考 [Playwright 安装指南](https://playwright.dev/docs/intro#installation)。
 
-## Creating your first Playwright E2E test
+## 创建您的第一个 Playwright E2E 测试
 
-Create two new Next.js pages:
+创建两个新的 Next.js 页面：
 
 ```tsx filename="app/page.tsx"
 import Link from "next/link";
@@ -58,7 +58,7 @@ export default function Page() {
 }
 ```
 
-Then, add a test to verify that your navigation is working correctly:
+然后，添加一个测试来验证导航是否正常运行：
 
 ```ts filename="tests/example.spec.ts"
 import { test, expect } from "@playwright/test";
@@ -75,24 +75,24 @@ test("should navigate to the about page", async ({ page }) => {
 });
 ```
 
-> **Good to know**:
+> **您需要知道**:
 >
-> You can use `page.goto("/")` instead of `page.goto("http://localhost:3000/")`, if you add [`"baseURL": "http://localhost:3000"`](https://playwright.dev/docs/api/class-testoptions#test-options-base-url) to the `playwright.config.ts` [configuration file](https://playwright.dev/docs/test-configuration).
+> 如果在`playwright.config.ts`[配置文件](https://playwright.dev/docs/test-configuration)中添加了[`"baseURL": "http://localhost:3000"`](https://playwright.dev/docs/api/class-testoptions#test-options-base-url)，您可以使用`page.goto("/")`而不是`page.goto("http://localhost:3000/")`。
 
-### Running your Playwright tests
+### 运行您的 Playwright 测试
 
-Playwright will simulate a user navigating your application using three browsers: Chromium, Firefox and Webkit, this requires your Next.js server to be running. We recommend running your tests against your production code to more closely resemble how your application will behave.
+laywright 将模拟用户在您的应用中使用三个浏览器导航： Chromium、 Firefox 和 Webkit, 这需要您的 Next.js 服务器正在运行。我们建议在生产代码上运行测试，以更接近您的应用在实际环境中的行为。
 
-Run `npm run build` and `npm run start`, then run `npx playwright test` in another terminal window to run the Playwright tests.
+运行 `npm run build` 和 `npm run start`, 然后在另一个终端窗口中运行`npx playwright test`以执行 Playwright 测试。
 
-> **Good to know**: Alternatively, you can use the [`webServer`](https://playwright.dev/docs/test-webserver/) feature to let Playwright start the development server and wait until it's fully available.
+> **您需要知道**: 或者, 您可以使用[`webServer`](https://playwright.dev/docs/test-webserver/) 功能让 Playwright 启动开发服务器并等待其完全可用。
 
-### Running Playwright on Continuous Integration (CI)
+### 在持续集成 (CI) 中运行 Playwright
 
-Playwright will by default run your tests in the [headless mode](https://playwright.dev/docs/ci#running-headed). To install all the Playwright dependencies, run `npx playwright install-deps`.
+默认情况下，Playwright 将以[无头模式](https://playwright.dev/docs/ci#running-headed)运行您的测试。要安装所有 Playwright 依赖项，请运行`npx playwright install-deps`。
 
-You can learn more about Playwright and Continuous Integration from these resources:
+您可以从以下资源了解更多关于 Playwright 和持续集成的信息：
 
-- [Next.js with Playwright example](https://github.com/vercel/next.js/tree/canary/examples/with-playwright)
+- [带有 Playwright 例子的 Next.js](https://github.com/vercel/next.js/tree/canary/examples/with-playwright)
 - [Playwright on your CI provider](https://playwright.dev/docs/ci)
 - [Playwright Discord](https://discord.com/invite/playwright-807756831384403968)

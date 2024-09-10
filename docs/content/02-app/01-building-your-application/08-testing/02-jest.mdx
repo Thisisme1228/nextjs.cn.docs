@@ -1,26 +1,26 @@
 ---
-title: Setting up Jest with Next.js
+title: 在Next.js中设置Jest
 nav_title: Jest
-description: Learn how to set up Jest with Next.js for Unit Testing and Snapshot Testing.
+description: 了解如何在 Next.js 中设置 Jest 进行单元测试和快照测试。
 ---
 
-Jest and React Testing Library are frequently used together for **Unit Testing** and **Snapshot Testing**. This guide will show you how to set up Jest with Next.js and write your first tests.
+Jest 和 React Testing Library 经常一起使用以进行**单元测试**和**快照测试**。本指南将向您展示如何在 Next.js 中设置 Jest 并编写您的第一个测试。
 
-> **Good to know:** Since `async` Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run **unit tests** for synchronous Server and Client Components, we recommend using an **E2E tests** for `async` components.
+> **您需要知道:** 由于 `async`服务器组件是 React 生态系统中的新特性，Jest 目前不支持它们。虽然您仍可以对同步的服务器和客户端组件运行**单元测试**, 但我们建议对`async`组件使用**E2E tests**测试。
 
-## Quickstart
+## 快速开始
 
-You can use `create-next-app` with the Next.js [with-jest](https://github.com/vercel/next.js/tree/canary/examples/with-jest) example to quickly get started:
+您可以使用 Next.js 的 [with-jest](https://github.com/vercel/next.js/tree/canary/examples/with-jest)示例通过`create-next-app`快速开始：
 
 ```bash filename="Terminal"
 npx create-next-app@latest --example with-jest with-jest-app
 ```
 
-## Manual setup
+## 手动设置
 
-Since the release of [Next.js 12](https://nextjs.org/blog/next-12), Next.js now has built-in configuration for Jest.
+自从[Next.js 12](https://nextjs.org/blog/next-12)发布, Next.js 目前对 Jest 已经有了内置的配置。
 
-To set up Jest, install `jest` and the following packages as dev dependencies:
+要设置 Jest, 请安装`jest`和下列的开发依赖包：
 
 ```bash filename="Terminal"
 npm install -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom
@@ -30,7 +30,7 @@ yarn add -D jest jest-environment-jsdom @testing-library/react @testing-library/
 pnpm install -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom
 ```
 
-Generate a basic Jest configuration file by running the following command:
+通过运行下列命令生成一个基本的 Jest 配置文件：
 
 ```bash filename="Terminal"
 npm init jest@latest
@@ -40,9 +40,9 @@ yarn create jest@latest
 pnpm create jest@latest
 ```
 
-This will take you through a series of prompts to setup Jest for your project, including automatically creating a `jest.config.ts|js` file.
+这将引导您完成一系列提示，以为您的项目设置 Jest，包括自动创建一个`jest.config.ts|js`文件。
 
-Update your config file to use `next/jest`. This transformer has all the necessary configuration options for Jest to work with Next.js:
+更新您的配置文件以使用`next/jest`。此转换器包含所有必要的配置选项，确保 Jest 可以与 Next.js 一起使用：
 
 ```ts filename="jest.config.ts" switcher
 import type { Config } from "jest";
@@ -86,20 +86,20 @@ const config = {
 module.exports = createJestConfig(config);
 ```
 
-Under the hood, `next/jest` is automatically configuring Jest for you, including:
+在幕后，`next/jest`会自动为您配置 Jest，包括：
 
-- Setting up `transform` using the [Next.js Compiler](/docs/content/architecture/nextjs-compiler)
-- Auto mocking stylesheets (`.css`, `.module.css`, and their scss variants), image imports and [`next/font`](/docs/content/pages/building-your-application/optimizing/fonts)
-- Loading `.env` (and all variants) into `process.env`
-- Ignoring `node_modules` from test resolving and transforms
-- Ignoring `.next` from test resolving
-- Loading `next.config.js` for flags that enable SWC transforms
+- [Next.js 编译器](/docs/content/architecture/nextjs-compiler)设置`transform`
+- 自动 mock 样式表（如 .css, .module.css 以及它们的 scss variants）、图像导入和 [`next/font`](/docs/content/pages/building-your-application/optimizing/fonts)
+- 将`.env` (和所有 variants)加载到`process.env`
+- 忽略`node_modules`中的测试解析和转换
+- 忽略`.next`目录中的测试解析
+- 加载 `next.config.js`以启用 SWC 转换的标志
 
-> **Good to know**: To test environment variables directly, load them manually in a separate setup script or in your `jest.config.ts` file. For more information, please see [Test Environment Variables](/docs/content/pages/building-your-application/configuring/environment-variables#test-environment-variables).
+> **您需要知道**: 要直接测试环境变量，请在单独的设置脚本或`jest.config.ts`文件中手动加载它们。有关更多信息，请参阅[测试环境变量](/docs/content/pages/building-your-application/configuring/environment-variables#test-environment-variables)。
 
-## Optional: Handling Absolute Imports and Module Path Aliases
+## 可选：处理绝对导入和模块路径别名
 
-If your project is using [Module Path Aliases](/docs/content/pages/building-your-application/configuring/absolute-imports-and-module-aliases), you will need to configure Jest to resolve the imports by matching the paths option in the `jsconfig.json` file with the `moduleNameMapper` option in the `jest.config.js` file. For example:
+如果您的项目使用了[模块路径别名](/docs/content/pages/building-your-application/configuring/absolute-imports-and-module-aliases), 则需要配置`Jest`来解析这些导入，将`jsconfig.json`文件中的路径选项与`jest.config.js`文件中的`moduleNameMapper`选项匹配。例如：
 
 ```json filename="tsconfig.json or jsconfig.json"
 {
@@ -121,9 +121,9 @@ moduleNameMapper: {
 }
 ```
 
-## Optional: Extend Jest with custom matchers
+## 可选：使用自定义匹配器扩展 Jest
 
-`@testing-library/jest-dom` includes a set of convenient [custom matchers](https://github.com/testing-library/jest-dom#custom-matchers) such as `.toBeInTheDocument()` making it easier to write tests. You can import the custom matchers for every test by adding the following option to the Jest configuration file:
+`@testing-library/jest-dom`包含了一组便捷的[自定义匹配器](https://github.com/testing-library/jest-dom#custom-matchers) 如 `.toBeInTheDocument()` 让编写测试更加容易。您可以通过在 Jest 配置文件中添加以下选项，为每个测试导入这些自定义匹配器：
 
 ```ts filename="jest.config.ts" switcher
 setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"];
@@ -143,13 +143,13 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom";
 ```
 
-> **Good to know:**[`extend-expect` was removed in `v6.0`](https://github.com/testing-library/jest-dom/releases/tag/v6.0.0), so if you are using `@testing-library/jest-dom` before version 6, you will need to import `@testing-library/jest-dom/extend-expect` instead.
+> **您需要知道:**[`extend-expect`在`v6.0`中被移除](https://github.com/testing-library/jest-dom/releases/tag/v6.0.0), 如果您使用的是 version 6 之前的`@testing-library/jest-dom`, 您需要导入`@testing-library/jest-dom/extend-expect`。
 
-If you need to add more setup options before each test, you can add them to the `jest.setup.js` file above.
+如果您需要在每次测试之前添加更多的设置选项，可以将它们添加到上述的`jest.setup.js`文件中。
 
-## Add a test script to `package.json`:
+## 将测试脚本添加到`package.json`:
 
-Finally, add a Jest `test` script to your `package.json` file:
+最后，将 Jest 的 `test`脚本添加到`package.json`文件中:
 
 ```json filename="package.json" highlight={6-7}
 {
@@ -163,13 +163,13 @@ Finally, add a Jest `test` script to your `package.json` file:
 }
 ```
 
-`jest --watch` will re-run tests when a file is changed. For more Jest CLI options, please refer to the [Jest Docs](https://jestjs.io/docs/cli#reference).
+`jest --watch`将在文件更改时重新运行测试。有关更多 Jest CLI 选项，请参阅[Jest 文档](https://jestjs.io/docs/cli#reference)。
 
-### Creating your first test:
+### 创建您的第一个测试：
 
-Your project is now ready to run tests. Create a folder called `__tests__` in your project's root directory.
+现在，您的项目已准备好运行测试。请在项目的根目录下创建一个名为`__tests__`的文件夹。
 
-For example, we can add a test to check if the `<Page />` component successfully renders a heading:
+例如，我们可以添加一个测试，检查 `<Page />`组件是否成功渲染标题：
 
 ```jsx filename="app/page.js
 import Link from "next/link";
@@ -200,7 +200,7 @@ describe("Page", () => {
 });
 ```
 
-Optionally, add a [snapshot test](https://jestjs.io/docs/snapshot-testing) to keep track of any unexpected changes in your component:
+可以选择添加一个[快照测试](https://jestjs.io/docs/snapshot-testing)，用于追踪组件中的任何意外更改：
 
 ```jsx filename="__tests__/snapshot.js"
 import { render } from "@testing-library/react";
@@ -212,9 +212,9 @@ it("renders homepage unchanged", () => {
 });
 ```
 
-## Running your tests
+## 运行您的测试
 
-Then, run the following command to run your tests:
+然后，运行以下命令来执行您的测试：
 
 ```bash filename="Terminal"
 npm run test
@@ -224,11 +224,11 @@ yarn test
 pnpm test
 ```
 
-## Additional Resources
+## 额外资源
 
-For further reading, you may find these resources helpful:
+您可能会发现以下资源对进一步阅读有所帮助：
 
-- [Next.js with Jest example](https://github.com/vercel/next.js/tree/canary/examples/with-jest)
-- [Jest Docs](https://jestjs.io/docs/getting-started)
-- [React Testing Library Docs](https://testing-library.com/docs/react-testing-library/intro/)
-- [Testing Playground](https://testing-playground.com/) - use good testing practices to match elements.
+- [带有 Jest 例子的 Next.js](https://github.com/vercel/next.js/tree/canary/examples/with-jest)
+- [Jest 文档](https://jestjs.io/docs/getting-started)
+- [React 测试库文档](https://testing-library.com/docs/react-testing-library/intro/)
+- [Testing Playground](https://testing-playground.com/) - 使用良好的测试实践来匹配元素。

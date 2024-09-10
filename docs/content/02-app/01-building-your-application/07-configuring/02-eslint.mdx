@@ -1,11 +1,11 @@
 ---
 title: ESLint
-description: Next.js provides an integrated ESLint experience by default. These conformance rules help you use Next.js in an optimal way.
+description: Next.js 默认提供集成的 ESLint 体验。这些一致性规则帮助您以最佳方式使用 Next.js。
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-Next.js provides an integrated [ESLint](https://eslint.org/) experience out of the box. Add `next lint` as a script to `package.json`:
+Next.js 开箱即提供了集成的[ESLint](https://eslint.org/)体验。将`next lint`作为`script`添加到 package.json：
 
 ```json filename="package.json"
 {
@@ -15,29 +15,31 @@ Next.js provides an integrated [ESLint](https://eslint.org/) experience out of t
 }
 ```
 
-Then run `npm run lint` or `yarn lint`:
+然后运行`npm run lint` 或 `yarn lint`:
 
 ```bash filename="Terminal"
 yarn lint
 ```
 
-If you don't already have ESLint configured in your application, you will be guided through the installation and configuration process.
+如果您的应用程序中尚未配置 ESLint，系统会引导您完成安装和配置过程。
 
 ```bash filename="Terminal"
 yarn lint
 ```
 
-> You'll see a prompt like this:
+> 您将看到如下提示：
 >
-> ? How would you like to configure ESLint?
+> ? 您想如何配置 ESLint？
 >
 > ❯ Strict (recommended)  
 > Base  
 > Cancel
 
-One of the following three options can be selected:
+可以选择以下三个选项之一：
 
-- **Strict**: Includes Next.js' base ESLint configuration along with a stricter [Core Web Vitals rule-set](#core-web-vitals). This is the recommended configuration for developers setting up ESLint for the first time.
+Strict：包含 Next.js 的基础 ESLint 配置以及更严格的 Core Web Vitals 规则集。这是第一次设置 ESLint 时的推荐配置。
+
+- **Strict**: 包含 Next.js 的基础 ESLint 配置以及更严格的[Core Web Vitals rule-set](#core-web-vitals)。这是第一次设置 ESLint 时的推荐配置。
 
   ```json filename=".eslintrc.json"
   {
@@ -45,7 +47,7 @@ One of the following three options can be selected:
   }
   ```
 
-- **Base**: Includes Next.js' base ESLint configuration.
+- **Base**: 包含 Next.js 的基础 ESLint 配置。
 
   ```json filename=".eslintrc.json"
   {
@@ -53,35 +55,35 @@ One of the following three options can be selected:
   }
   ```
 
-- **Cancel**: Does not include any ESLint configuration. Only select this option if you plan on setting up your own custom ESLint configuration.
+- **Cancel**: 不包含任何 ESLint 配置。仅当您计划自行设置自定义 ESLint 配置时选择此项。
 
-If either of the two configuration options are selected, Next.js will automatically install `eslint` and `eslint-config-next` as dependencies in your application and create an `.eslintrc.json` file in the root of your project that includes your selected configuration.
+如果选择了其中的任一配置选项，Next.js 会自动在您的应用中安装 eslint 和 eslint-config-next 作为依赖项，并在项目根目录创建 .eslintrc.json 文件，包含您选择的配置。
 
-You can now run `next lint` every time you want to run ESLint to catch errors. Once ESLint has been set up, it will also automatically run during every build (`next build`). Errors will fail the build, while warnings will not.
+现在，您可以通过 `next lint` 运行 ESLint 来捕获错误。一旦设置了 ESLint，它还会在每次构建时（next build）自动运行。错误将导致构建失败，而警告不会。
 
-> If you do not want ESLint to run during `next build`, refer to the documentation for [Ignoring ESLint](/docs/content/app/api-reference/next-config-js/eslint).
+如果您不希望在`next build`时运行 ESLint，请参阅[忽略 ESLint](/docs/content/app/api-reference/next-config-js/eslint)文档。
 
-We recommend using an appropriate [integration](https://eslint.org/docs/user-guide/integrations#editors) to view warnings and errors directly in your code editor during development.
+我们建议使用适当的[集成工具](https://eslint.org/docs/user-guide/integrations#editors)在开发期间直接在代码编辑器中查看警告和错误。
 
-## ESLint Config
+## ESLint 配置
 
-The default configuration (`eslint-config-next`) includes everything you need to have an optimal out-of-the-box linting experience in Next.js. If you do not have ESLint already configured in your application, we recommend using `next lint` to set up ESLint along with this configuration.
+如果您希望将 eslint-config-next 与其他 ESLint 配置结合使用，请参阅其他配置部分，了解如何在不引发冲突的情况下进行操作。
 
-> If you would like to use `eslint-config-next` along with other ESLint configurations, refer to the [Additional Configurations](#additional-configurations) section to learn how to do so without causing any conflicts.
+> 默认配置(`eslint-config-next`)包含了在 Next.js 中拥有最佳 linting 体验所需的全部内容。如果您的应用程序中尚未配置 ESLint，我们建议使用`next lint`来设置 ESLint 并应用此配置。
 
-Recommended rule-sets from the following ESLint plugins are all used within `eslint-config-next`:
+`eslint-config-next`使用了以下 ESLint 插件中推荐规则集：
 
 - [`eslint-plugin-react`](https://www.npmjs.com/package/eslint-plugin-react)
 - [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks)
 - [`eslint-plugin-next`](https://www.npmjs.com/package/@next/eslint-plugin-next)
 
-This will take precedence over the configuration from `next.config.js`.
+这些规则优先于 next.config.js 中的配置。
 
-## ESLint Plugin
+## ESLint 插件
 
-Next.js provides an ESLint plugin, [`eslint-plugin-next`](https://www.npmjs.com/package/@next/eslint-plugin-next), already bundled within the base configuration that makes it possible to catch common issues and problems in a Next.js application. The full set of rules is as follows:
+Next.js 提供了一个 ESLint 插件，[`eslint-plugin-next`](https://www.npmjs.com/package/@next/eslint-plugin-next)，该插件已包含在基础配置中，可以捕捉 Next.js 应用中的常见问题。完整的规则集如下：
 
-✔️ Enabled in the recommended configuration
+✔️ 在推荐配置中启用
 
 |     | Rule                                                                                                                     | Description                                                                                                              |
 | :-: | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
@@ -107,13 +109,13 @@ Next.js provides an ESLint plugin, [`eslint-plugin-next`](https://www.npmjs.com/
 | ✔️  | @next/next/no-typos                                                                                                      | Prevent common typos in [Next.js's data fetching functions](/docs/content/pages/building-your-application/data-fetching) |
 | ✔️  | [@next/next/no-unwanted-polyfillio](/docs/messages/no-unwanted-polyfillio)                                               | Prevent duplicate polyfills from Polyfill.io.                                                                            |
 
-If you already have ESLint configured in your application, we recommend extending from this plugin directly instead of including `eslint-config-next` unless a few conditions are met. Refer to the [Recommended Plugin Ruleset](#recommended-plugin-ruleset) to learn more.
+如果您的应用程序中已经配置了 ESLint，我们建议直接扩展使用此插件，而不是包含`eslint-config-next`，除非满足一些特定条件。请参阅[推荐的插件规则集](#recommended-plugin-ruleset)了解更多详情。
 
-### Custom Settings
+### 自定义设置
 
 #### `rootDir`
 
-If you're using `eslint-plugin-next` in a project where Next.js isn't installed in your root directory (such as a monorepo), you can tell `eslint-plugin-next` where to find your Next.js application using the `settings` property in your `.eslintrc`:
+如果您在 Next.js 未安装在根目录的项目（例如 monorepo）中使用`eslint-plugin-next`，可以通过 .eslintrc 中的 settings 属性指定 Next.js 应用的位置：
 
 ```json filename=".eslintrc.json"
 {
@@ -126,11 +128,11 @@ If you're using `eslint-plugin-next` in a project where Next.js isn't installed 
 }
 ```
 
-`rootDir` can be a path (relative or absolute), a glob (i.e. `"packages/*/"`), or an array of paths and/or globs.
+rootDir 可以是路径（相对或绝对），也可以是通配符（如 "packages/\*/"），或路径和/或通配符的数组。
 
-## Linting Custom Directories and Files
+## 自定义目录和文件的 Linting
 
-By default, Next.js will run ESLint for all files in the `pages/`, `app/`, `components/`, `lib/`, and `src/` directories. However, you can specify which directories using the `dirs` option in the `eslint` config in `next.config.js` for production builds:
+默认情况下，Next.js 会对 `pages/`、`app/`、`components/`、`lib/` 和 `src/` 目录中的所有文件运行 ESLint。但是，您可以通过在`next.config.js`中的`eslint`配置中使用`dirs`选项指定用于生产构建的目录:
 
 ```js filename="next.config.js"
 module.exports = {
@@ -140,23 +142,23 @@ module.exports = {
 };
 ```
 
-Similarly, the `--dir` and `--file` flags can be used for `next lint` to lint specific directories and files:
+同样地，可以使用 `--dir`和`--file`标志通过`next lint`对特定目录和文件进行 lint：
 
 ```bash filename="Terminal"
 next lint --dir pages --dir utils --file bar.js
 ```
 
-## Caching
+## 缓存
 
-To improve performance, information of files processed by ESLint are cached by default. This is stored in `.next/cache` or in your defined [build directory](/docs/content/app/api-reference/next-config-js/distDir). If you include any ESLint rules that depend on more than the contents of a single source file and need to disable the cache, use the `--no-cache` flag with `next lint`.
+为提高性能，ESLint 处理的文件信息默认会被缓存，存储在`.next/cache`中，或者存储在您定义的[构建目录](/docs/content/app/api-reference/next-config-js/distDir)中。如果您包含的 ESLint 规则依赖于不止一个源文件的内容，并且需要禁用缓存，可以通过 --no-cache 标志禁用缓存：
 
 ```bash filename="Terminal"
 next lint --no-cache
 ```
 
-## Disabling Rules
+## 禁用规则
 
-If you would like to modify or disable any rules provided by the supported plugins (`react`, `react-hooks`, `next`), you can directly change them using the `rules` property in your `.eslintrc`:
+如果您想修改或禁用任何由支持的插件（`react`, `react-hooks`, `next`）提供的规则，您可以通过 `.eslintrc `中的 `rules`属性直接更改它们：
 
 ```json filename=".eslintrc.json"
 {
@@ -170,7 +172,7 @@ If you would like to modify or disable any rules provided by the supported plugi
 
 ### Core Web Vitals
 
-The `next/core-web-vitals` rule set is enabled when `next lint` is run for the first time and the **strict** option is selected.
+当您第一次运行`next lint`并选择 **strict** 配置时，`next/core-web-vitals`规则集会启用。
 
 ```json filename=".eslintrc.json"
 {
@@ -178,13 +180,13 @@ The `next/core-web-vitals` rule set is enabled when `next lint` is run for the f
 }
 ```
 
-`next/core-web-vitals` updates `eslint-plugin-next` to error on a number of rules that are warnings by default if they affect [Core Web Vitals](https://web.dev/vitals/).
+`next/core-web-vitals`会将一些默认作为警告的规则提升为错误，这些规则可能会影响`Core Web Vitals`。
 
-> The `next/core-web-vitals` entry point is automatically included for new applications built with [Create Next App](/docs/content/app/api-reference/create-next-app).
+> `next/core-web-vitals`入口点会自动包含在使用[Create Next App](/docs/content/app/api-reference/create-next-app)构建的新应用中。
 
 ### TypeScript
 
-In addition to the Next.js ESLint rules, `create-next-app --typescript` will also add TypeScript-specific lint rules with `next/typescript` to your config:
+除了 Next.js 的 ESLint 规则外，'create-next-app——typescript'也会在您的配置中添加带有'next/typescript'的 typescript 特有的 lint 规则:
 
 ```json filename=".eslintrc.json"
 {
@@ -192,16 +194,17 @@ In addition to the Next.js ESLint rules, `create-next-app --typescript` will als
 }
 ```
 
-Those rules are based on [`plugin:@typescript-eslint/recommended`](https://typescript-eslint.io/linting/configs#recommended).
-See [typescript-eslint > Configs](https://typescript-eslint.io/linting/configs) for more details.
+这些规则基于[`plugin:@typescript-eslint/recommended`](https://typescript-eslint.io/linting/configs#recommended)。
 
-## Usage With Other Tools
+有关更多详细信息，[typescript-eslint > Configs](https://typescript-eslint.io/linting/configs)。
+
+## 与其他工具一起使用
 
 ### Prettier
 
-ESLint also contains code formatting rules, which can conflict with your existing [Prettier](https://prettier.io/) setup. We recommend including [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) in your ESLint config to make ESLint and Prettier work together.
+ESLint 还包含代码格式化规则，这些规则可能与现有的[Prettier](https://prettier.io/) 配置产生冲突。我们建议在 ESLint 配置中包含[eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) ，以便 ESLint 和 Prettier 协同工作。
 
-First, install the dependency:
+首先，安装依赖项：
 
 ```bash filename="Terminal"
 npm install --save-dev eslint-config-prettier
@@ -213,7 +216,7 @@ pnpm add --save-dev eslint-config-prettier
 bun add --dev eslint-config-prettier
 ```
 
-Then, add `prettier` to your existing ESLint config:
+然后，在现有的 ESLint 配置中添加 prettier：
 
 ```json filename=".eslintrc.json"
 {
@@ -223,7 +226,7 @@ Then, add `prettier` to your existing ESLint config:
 
 ### lint-staged
 
-If you would like to use `next lint` with [lint-staged](https://github.com/okonet/lint-staged) to run the linter on staged git files, you'll have to add the following to the `.lintstagedrc.js` file in the root of your project in order to specify usage of the `--file` flag.
+如果您希望将`next lint`与[lint-staged](https://github.com/okonet/lint-staged)结合使用，以便在已暂存的 Git 文件上运行 linter，需要在项目根目录的`.lintstagedrc.js`文件中添加以下内容，指定使用`--file`标志：
 
 ```js filename=".lintstagedrc.js"
 const path = require("path");
@@ -238,21 +241,21 @@ module.exports = {
 };
 ```
 
-## Migrating Existing Config
+## 迁移现有配置
 
-### Recommended Plugin Ruleset
+### 推荐的插件规则集
 
-If you already have ESLint configured in your application and any of the following conditions are true:
+如果您已经在应用程序中配置了 ESLint，并且以下任一条件成立：
 
-- You have one or more of the following plugins already installed (either separately or through a different config such as `airbnb` or `react-app`):
+- 您已经安装了以下任一插件(单独安装或通过其他配置如`airbnb` 或 `react-app`安装):
   - `react`
   - `react-hooks`
   - `jsx-a11y`
   - `import`
-- You've defined specific `parserOptions` that are different from how Babel is configured within Next.js (this is not recommended unless you have [customized your Babel configuration](/docs/content/pages/building-your-application/configuring/babel))
-- You have `eslint-plugin-import` installed with Node.js and/or TypeScript [resolvers](https://github.com/benmosher/eslint-plugin-import#resolvers) defined to handle imports
+- 您定义了与 Next.js 中 Babel 配置不同的`parserOptions`（不建议，除非您已[定义了 Babel 配置](/docs/content/pages/building-your-application/configuring/babel)）
+- 您安装了带有 Node.js 和/或 TypeScript[resolvers](https://github.com/benmosher/eslint-plugin-import#resolvers)的 `eslint-plugin-import`，以处理导入
 
-Then we recommend either removing these settings if you prefer how these properties have been configured within [`eslint-config-next`](https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/index.js) or extending directly from the Next.js ESLint plugin instead:
+如果您喜欢在[' eslint-config-next ']中配置这些属性那么我们建议删除这些设置，或直接从 Next.js 的 ESLint 插件扩展：
 
 ```js
 module.exports = {
@@ -263,7 +266,7 @@ module.exports = {
 };
 ```
 
-The plugin can be installed normally in your project without needing to run `next lint`:
+这个插件可以在您的项目中正常安装，而不需要运行'next lint':
 
 ```bash filename="Terminal"
 npm install --save-dev @next/eslint-plugin-next
@@ -275,11 +278,11 @@ pnpm add --save-dev @next/eslint-plugin-next
 bun add --dev @next/eslint-plugin-next
 ```
 
-This eliminates the risk of collisions or errors that can occur due to importing the same plugin or parser across multiple configurations.
+这样可以避免由于跨多个配置导入相同插件或解析器而引发的冲突或错误。
 
-### Additional Configurations
+### 其他配置
 
-If you already use a separate ESLint configuration and want to include `eslint-config-next`, ensure that it is extended last after other configurations. For example:
+如果您已经使用了单独的 ESLint 配置并希望包含`eslint-config-next`，请确保它是在其他配置之后扩展的。例如：
 
 ```json filename=".eslintrc.json"
 {
@@ -287,6 +290,6 @@ If you already use a separate ESLint configuration and want to include `eslint-c
 }
 ```
 
-The `next` configuration already handles setting default values for the `parser`, `plugins` and `settings` properties. There is no need to manually re-declare any of these properties unless you need a different configuration for your use case.
+`next`配置已经处理了`parser`、`plugins` 和 `settings` 属性的默认值，除非您需要不同的配置，否则无需手动重新声明这些属性。
 
-If you include any other shareable configurations, **you will need to make sure that these properties are not overwritten or modified**. Otherwise, we recommend removing any configurations that share behavior with the `next` configuration or extending directly from the Next.js ESLint plugin as mentioned above.
+如果您包含了其他共享配置，**需要确保这些属性未被覆盖或修改**。否则，我们建议删除与 next 配置共享行为的任何配置，或如上所述直接从 Next.js ESLint 插件扩展。
